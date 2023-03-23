@@ -78,6 +78,11 @@ void Control::disableMouseInput()
 	SetConsoleMode(hInput, prev_mode & ~ENABLE_QUICK_EDIT_MODE);
 }
 
+void Control::gotoXY(int pX, int pY)
+{
+	SetConsoleCursorPosition(consoleOutput, COORD{ (short)pX, (short)pY });
+}
+
 int Control::getConsoleInput()
 {
 	int c = _getch();

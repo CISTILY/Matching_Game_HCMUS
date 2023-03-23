@@ -2,7 +2,7 @@
 
 #define NORMAL 0
 #define LOCK 1
-#define DELETE -1
+#define DEL -1
 
 struct Point
 {
