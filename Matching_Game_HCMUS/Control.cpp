@@ -91,38 +91,38 @@ int Control::getConsoleInput()
 	{
 		switch (_getch())
 		{
-		case KEY_UP:				//lên
+		case KEY_UP:				// Mũi tên lên
 			return 2;
-		case KEY_LEFT:				//trái
+		case KEY_LEFT:				// Mũi tên trái
 			return 3;
-		case KEY_RIGHT:				//phải
+		case KEY_RIGHT:				// Mũi tên phải
 			return 4;
-		case KEY_DOWN:				//xuống
+		case KEY_DOWN:				// Mũi tên xuống
 			return 5;
-		default:				//nút khác
+		default:					//nút khác
 			return 0;
 		}
 	}
 	else
 	{
-		if (c == KEY_ESC)                  //esc
+		if (c == KEY_ESC)					// Nút esc
 			return 1;
-		else if (c == 87 || c == 119) //W, w
+		else if (c == 87 || c == 119)		// Nút W, w
 			return 2;
-		else if (c == 65 || c == 97)  //A, a
+		else if (c == 65 || c == 97)		// Nút A, a
 			return 3;
-		else if (c == 68 || c == 100) //D, d
+		else if (c == 68 || c == 100)		// Nút D, d
 			return 4;
-		else if (c == 83 || c == 115) //S, s
+		else if (c == 83 || c == 115)		// Nút S, s
 			return 5;
-		else if (c == 13)             //Enter
+		else if (c == 13)					// Nút Enter
 			return 6;
-		else if (c == 72 || c == 104) //H, h
+		else if (c == 72 || c == 104)		// Nút H, h
 			return 7;
-		else if (c == 77 || c == 109) // M, m
+		else if (c == 77 || c == 109)		// Nút M, m
 			return 8;
 		else
-			return 0;                 //nút khác
+			return 0;						// Nút khác
 	}
 }
 
