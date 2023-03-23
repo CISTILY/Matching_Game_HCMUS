@@ -121,8 +121,8 @@ int Control::getConsoleInput()
 			return 7;
 		else if (c == 77 || c == 109)		// Nút M, m
 			return 8;
-		else
-			return 0;						// Nút khác
+		else                                // Nút khác
+			return 0;						
 	}
 }
 
