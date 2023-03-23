@@ -99,7 +99,7 @@ int Control::getConsoleInput()
 			return 4;
 		case KEY_DOWN:				// Mũi tên xuống
 			return 5;
-		default:					//nút khác
+		default:					// Nút khác
 			return 0;
 		}
 	}
