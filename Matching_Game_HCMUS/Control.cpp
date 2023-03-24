@@ -10,7 +10,7 @@ void Control::setUpConsole()
 	hideScrollBars();
 	setConsoleTitle();
 	disableMaximize();
-	disableCursor(false);
+	showCursor(false);
 	disableMouseInput();
 }
 
@@ -59,7 +59,7 @@ void Control::setConsoleColor(int background, int text)
 	SetConsoleTextAttribute(consoleOutput, background * 16 + text);
 }
 
-void Control::disableCursor(bool show)
+void Control::showCursor(bool show)
 {
 	CONSOLE_CURSOR_INFO info = { 1, show };
 	SetConsoleCursorInfo(consoleOutput, &info);

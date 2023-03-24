@@ -49,7 +49,7 @@ struct Control {
 	static void hideScrollBars();					// Ẩn thanh cuộn của cửa sổ
 	static void setConsoleTitle();					// Thiết lập tiêu đề cho cửa sổ
 	static void disableMaximize();					// Tắt chức năng toàn màn hình
-	static void disableCursor(bool);				// Tất con trỏ
+	static void showCursor(bool);				// Tất con trỏ
 	static void setFontInfo();						// Thiết lập font chữ
 	static void clearConsole();						// Xoá cửa sổ
 	static void disableMouseInput();				// Tắt đầu vào từ chuột
