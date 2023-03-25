@@ -16,7 +16,7 @@ void Control::setUpConsole()
 
 void Control::setFontInfo()
 {
-	// 12 - 24
+	// 12 - 24 
 	CONSOLE_FONT_INFOEX info;
 	info.cbSize = sizeof(info);
 	GetCurrentConsoleFontEx(consoleOutput, FALSE, &info);

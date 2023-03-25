@@ -841,6 +841,7 @@ void Game::deleteBlock()
 {
 	_lockedBlock = 0;
 	bool isChecking = false;
+
 	if (!checkMatching(_lockedBlockPair[0], _lockedBlockPair[1], isChecking)) 
 	{
 		for (auto block : _lockedBlockPair)
@@ -849,24 +850,32 @@ void Game::deleteBlock()
 		board->selectedBlock(_x, _y, GREEN);
 		return;
 	}
+
 	for (auto block : _lockedBlockPair)
 		board->deleteBlock(block.first, block.second);
+
 	_lockedBlockPair.clear();
 	board->selectedBlock(_x, _y, GREEN);
 	_remainBlocks -= 2;
-	if (_remainBlocks == 0) {
+
+	if (_remainBlocks == 0) 
+	{
 		Control::setConsoleColor(BRIGHT_WHITE, RED);
 		Control::gotoXY(69, 18);
 		cout << "Game Announcement";
+
 		Control::setConsoleColor(BRIGHT_WHITE, BLUE);
 		Control::gotoXY(67, 19);
 		cout << "You have won the game.";
+
 		Control::setConsoleColor(BRIGHT_WHITE, BLUE);
 		Control::gotoXY(69, 20);
 		cout << "CONGRATULATIONS!";
+
 		Control::gotoXY(70, 21);
 		cout << "Your score: " << score;
 		// Control::playSound(WIN_SOUND);
+
 		board->unselectedBlock(_x, _y);
 		_x = board->getXAt(0, 0);
 		_y = board->getYAt(0, 0);
@@ -875,19 +884,24 @@ void Game::deleteBlock()
 		Sleep(7000);
 		return;
 	}
+
 	isChecking = true;
+
 	if (!isAvailableBlock(isChecking)) 
 	{
 		Control::setConsoleColor(BRIGHT_WHITE, RED);
 		Control::gotoXY(69, 18);
 		cout << "Game Announcement";
+
 		Control::gotoXY(64, 19);
 		cout << "There are no more ways left!";
 		// Control::playSound(EFFECT_SOUND);
+
 		Sleep(1000);
 		Control::gotoXY(62, 21);
 		cout << "Auto reset the board. Have fun!";
 		Sleep(4000);
+
 		startGame();
 	}
 }
@@ -897,16 +911,19 @@ bool Game::isAvailableBlock(bool isChecking)
 	int size = board->getSize();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
+
 	for (int i = 0; i < size; i++) 
 	{
 		for (int j = 0; j < size; j++) 
 		{
 			firstBlock.first = board->getXAt(i, j);
 			firstBlock.second = board->getYAt(i, j);
+
 			if (board->getCheck(firstBlock.first, firstBlock.second) == DEL) 
 			{
 				continue;
 			}
+
 			for (int m = i; m < size; m++) 
 			{
 				for (int n = 0; n < size; n++) 
@@ -914,8 +931,10 @@ bool Game::isAvailableBlock(bool isChecking)
 					if (i == m && n <= j) continue;
 					secondBlock.first = board->getXAt(m, n);
 					secondBlock.second = board->getYAt(m, n);
+
 					if (board->getCheck(secondBlock.first, secondBlock.second) == DEL)
 						continue;
+
 					if (checkMatching(firstBlock, secondBlock, isChecking)) 
 					{
 						return true;
@@ -940,10 +959,13 @@ void Game::askContinue()
 	// Menu::printRectangle(60, 18, 6, 2);
 	Control::gotoXY(36, 16);
 	Control::setConsoleColor(BRIGHT_WHITE, GREEN);
+
 	cout << "Do you want to play another round?";
 	string str[2] = { "Yes", "No" };
+
 	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, GREEN }, top = 19;
 	bool choice = 1;
+
 	auto print1 = [&]()
 	{
 		int i = 0;
@@ -959,6 +981,7 @@ void Game::askContinue()
 		}
 	};
 	print1();
+
 	while (true)
 	{
 		int key = Control::getConsoleInput();
@@ -985,16 +1008,19 @@ void Game::moveSuggestion()
 	int size = board->getSize();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
+
 	for (int i = 0; i < size; i++) 
 	{
 		for (int j = 0; j < size; j++) 
 		{
 			firstBlock.first = board->getXAt(i, j);
 			firstBlock.second = board->getYAt(i, j);
+
 			if (board->getCheck(firstBlock.first, firstBlock.second) == DEL) 
 			{
 				continue;
 			}
+
 			for (int m = i; m < size; m++) 
 			{
 				for (int n = 0; n < size; n++) 
@@ -1002,8 +1028,10 @@ void Game::moveSuggestion()
 					if (i == m && n <= j) continue;
 					secondBlock.first = board->getXAt(m, n);
 					secondBlock.second = board->getYAt(m, n);
+
 					if (board->getCheck(secondBlock.first, secondBlock.second) == DEL)
 						continue;
+
 					if (checkMatching(firstBlock, secondBlock, isHelp)) 
 					{
 						if (isHelp) 
