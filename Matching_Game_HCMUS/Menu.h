@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include "Control.h"
 #include "Game.h"
-#include "Board.h"
 #include <random>
 #include <fstream>
 #include <windows.h>
