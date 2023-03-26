@@ -1,5 +1,4 @@
 #include "Control.h"
-#include "Menu.h"
 
 int main()
 {
