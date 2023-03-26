@@ -14,7 +14,7 @@ Board::Board(int psize, int pX, int pY) : size(psize), left(pX), top(pY)
 	background = new string[psize * 10];
 }
 
-void Board::deleteBoard()
+Board::~Board()
 {
 	for (int i = 0; i < size; i++)
 		delete[] pBoard[i];
@@ -1050,7 +1050,6 @@ void Board::createBackground() {
 	while (!bg.eof()) {
 		getline(bg, background[i]);
 		i++;
-		break;
 	}
 	bg.close();
 }

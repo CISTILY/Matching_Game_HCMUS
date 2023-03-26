@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <iostream>
 #include <string>
-#include <cstring>
 #include <unordered_map>
 #include "Control.h"
 #include "Game.h"
