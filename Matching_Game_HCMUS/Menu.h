@@ -1,11 +1,13 @@
 ﻿#pragma once
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <unordered_map>
 #include "Control.h"
-#include "Game.h"
+// #include "Game.h"
 #include <random>
 #include <fstream>
+#include <windows.h>
 
 #define _EASY 4
 #define _MEDIUM 6
@@ -16,7 +18,7 @@ struct Menu
 {
 	static bool exitGame;									// Event thoát game
 	static int current_option;								// Lựa chọn hiện tại
-	const static string options[8];							// Tên các lựa chọn
+	const static string options[10];						// Tên các lựa chọn
 	static void mainScreen();								// Màn hình chính
 	static void mainMenu();									// Menu
 	static void playMenu();									// Menu play
@@ -31,6 +33,8 @@ struct Menu
 	static void printAnimation();							// In hiệu ứng mở đầu
 	static void printRectangle(int, int, int, int);			// Vẽ hình chữ nhật
 	static void changeOption(bool, bool);					// Thay đổi lựa chọn
+	static void enterUsername();
+	static void playGuestMode();
 };
 struct Player {
 	string playerName;

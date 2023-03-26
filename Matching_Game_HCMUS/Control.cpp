@@ -45,7 +45,7 @@ void Control::hideScrollBars()
 
 void Control::setConsoleTitle()
 {
-	SetConsoleTitle(L""); // PIKACHU
+	SetConsoleTitle(L"MATCHING GAME");
 }
 
 void Control::disableMaximize()

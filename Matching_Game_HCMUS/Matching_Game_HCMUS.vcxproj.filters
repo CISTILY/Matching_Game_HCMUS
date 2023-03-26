@@ -51,4 +51,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="easy.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="medium.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="start.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

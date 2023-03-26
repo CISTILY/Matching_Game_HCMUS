@@ -1050,6 +1050,7 @@ void Board::createBackground() {
 	while (!bg.eof()) {
 		getline(bg, background[i]);
 		i++;
+		break;
 	}
 	bg.close();
 }
