@@ -18,7 +18,7 @@ struct Board {
 	string* background;
 
 	Board(int, int, int);
-	void deleteBoard();
+	~Board();
 
 	int getSize();					//Lấy kích cỡ
 	int getLeft();					//Lấy tọa độ trái bắt đầu bàn cờ
