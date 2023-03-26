@@ -275,12 +275,12 @@ void Game::printInterface()
 	board->buildBoardData();
 	board->renderBoard();
 
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	//Menu::printRectangle(59, 1, 33, 10);
 	//Menu::printRectangle(59, 12, 33, 10);
 
 	//Menu::printRectangle(60, 2, 31, 2);
-	Control::setConsoleColor(BRIGHT_WHITE, RED);
+	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(67, 3);
 	cout << "PLAYER'S INFORMATION";
 
@@ -307,9 +307,9 @@ void Game::printInterface()
 		cout << "Class: " << className;
 	}
 
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	//Menu::printRectangle(60, 13, 31, 2);
-	Control::setConsoleColor(BRIGHT_WHITE, RED);
+	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(69, 14);
 	cout << "GAME INFORMATION";
 	Control::setConsoleColor(WHITE, BLUE);
@@ -320,7 +320,7 @@ void Game::printInterface()
 	Control::gotoXY(80, 17);
 	cout << score;
 
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	//Menu::printRectangle(59, 24, 33, 2);
 	//Menu::printRectangle(59, 27, 14, 2);
 	//Menu::printRectangle(78, 27, 14, 2);
@@ -863,9 +863,9 @@ void Game::askContinue()
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
 	Control::gotoXY(0, 0);
-	Control::setConsoleColor(BRIGHT_WHITE, RED);
+	Control::setConsoleColor(WHITE, RED);
 	// Menu::printLogo();
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	// Menu::printRectangle(34, 13, 35, 8);
 	// Menu::printRectangle(37, 18, 7, 2);
 	// Menu::printRectangle(60, 18, 6, 2);

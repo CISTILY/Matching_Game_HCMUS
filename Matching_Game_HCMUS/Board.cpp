@@ -88,7 +88,7 @@ void Board::showBoard()
 {
 	if (pBoard == NULL)
 		return;
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
 
 	// Draw top line
@@ -257,7 +257,7 @@ void Board::unselectedBlock(int x, int y) {
 	if (getCheck(x, y) != DEL)
 		pBoard[r][c].setCheck(NORMAL);
 
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	for (int i = y - 1; i <= y + 1; i++) {
 		for (int j = x - 3; j <= x + 3; j++) {
 			Control::gotoXY(j, i);
@@ -304,7 +304,7 @@ void Board::deleteBlock(int x, int y)
 	int c = getCAt(x, y);
 	pBoard[r][c].setCheck(DEL);
 
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	for (int i = y - 1; i <= y + 1; i++) {
 		for (int j = x - 3; j <= x + 3; j++) {
 			Control::gotoXY(j, i);
@@ -351,7 +351,7 @@ void Board::deleteBlock(int x, int y)
 }
 
 void Board::drawLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
-	Control::setConsoleColor(RED, BRIGHT_WHITE);
+	Control::setConsoleColor(RED, WHITE);
 	if (firstBlock.first == secondBlock.first) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
 		putchar(30);
@@ -378,7 +378,7 @@ void Board::drawLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
 }
 
 void Board::deleteLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
-	Control::setConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
+	Control::setConsoleColor(WHITE, WHITE);
 	if (firstBlock.first == secondBlock.first) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
 		putchar(32);
@@ -405,7 +405,7 @@ void Board::deleteLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
 }
 
 void Board::drawLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Lcorner) {
-	Control::setConsoleColor(RED, BRIGHT_WHITE);
+	Control::setConsoleColor(RED, WHITE);
 	// down-left corner
 	if (Lcorner.first < secondBlock.first && Lcorner.second > firstBlock.second) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
@@ -476,7 +476,7 @@ void Board::drawLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 }
 
 void Board::deleteLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Lcorner) {
-	Control::setConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
+	Control::setConsoleColor(WHITE, WHITE);
 	// down-left corner
 	if (Lcorner.first < secondBlock.first && Lcorner.second > firstBlock.second) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
@@ -547,7 +547,7 @@ void Board::deleteLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 }
 
 void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Zcorner1, pair<int, int>Zcorner2) {
-	Control::setConsoleColor(RED, BRIGHT_WHITE);
+	Control::setConsoleColor(RED, WHITE);
 	// down-left corner
 	if (Zcorner1.first < secondBlock.first && Zcorner1.second > firstBlock.second) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
@@ -634,7 +634,7 @@ void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 }
 
 void Board::deleteLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Zcorner1, pair<int, int>Zcorner2) {
-	Control::setConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
+	Control::setConsoleColor(WHITE, WHITE);
 	// down-left corner
 	if (Zcorner1.first < secondBlock.first && Zcorner1.second > firstBlock.second) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
@@ -721,7 +721,7 @@ void Board::deleteLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 }
 
 void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Ucorner1, pair<int, int>Ucorner2) {
-	Control::setConsoleColor(RED, BRIGHT_WHITE);
+	Control::setConsoleColor(RED, WHITE);
 	//========================================================================//
 	if (Ucorner1.first < firstBlock.first && Ucorner1.second < secondBlock.second) {
 		for (int i = Ucorner1.first; i <= firstBlock.first - 2; i++) {
@@ -881,7 +881,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 }
 
 void Board::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Ucorner1, pair<int, int>Ucorner2) {
-	Control::setConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
+	Control::setConsoleColor(WHITE, WHITE);
 	//========================================================================//
 	if (Ucorner1.first < firstBlock.first && Ucorner1.second < secondBlock.second) {
 		for (int i = Ucorner1.first; i <= firstBlock.first - 2; i++) {
@@ -1045,7 +1045,7 @@ void Board::createBackground() {
 	if (size == 4)
 		bg.open("easy.txt");
 	else
-		bg.open("images\\medium.txt");
+		bg.open("medium.txt");
 	int i = 0;
 	while (!bg.eof()) {
 		getline(bg, background[i]);

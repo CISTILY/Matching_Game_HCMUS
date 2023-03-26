@@ -424,7 +424,7 @@ void Menu::exitScreen()
 		{
 			if (!choice)
 			{
-				Control::setConsoleColor(BLACK, BRIGHT_WHITE);
+				Control::setConsoleColor(BLACK, WHITE);
 				Control::clearConsole();
 				exit(0);
 			}
