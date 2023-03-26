@@ -1,14 +1,14 @@
 #pragma once
 #include "Board.h"
 #include "Point.h"
-// #include "Menu.h"
 #include <iostream>
 #include <vector>
+#include "Menu.h"
 #include <string>
 #include <fstream>
 
-#define LEFT 12
-#define TOP 4
+#define LEFT 5
+#define TOP 1
 
 using namespace std;
 
@@ -44,7 +44,7 @@ struct Game {
 	void moveUp();
 	void moveDown();
 
-	char getPokemons(int x, int y);
+	char getCharacter(int x, int y);
 
 	void lockBlock();
 	void deleteBlock();
@@ -53,3 +53,4 @@ struct Game {
 	void askContinue();
 	void moveSuggestion();
 };
+
