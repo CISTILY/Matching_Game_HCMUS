@@ -276,10 +276,10 @@ void Game::printInterface()
 	board->renderBoard();
 
 	Control::setConsoleColor(WHITE, BLACK);
-	//Menu::printRectangle(59, 1, 33, 10);
-	//Menu::printRectangle(59, 12, 33, 10);
+	Menu::printRectangle(59, 1, 33, 10);
+	Menu::printRectangle(59, 12, 33, 10);
 
-	//Menu::printRectangle(60, 2, 31, 2);
+	Menu::printRectangle(60, 2, 31, 2);
 	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(67, 3);
 	cout << "PLAYER'S INFORMATION";
@@ -308,7 +308,7 @@ void Game::printInterface()
 	}
 
 	Control::setConsoleColor(WHITE, BLACK);
-	//Menu::printRectangle(60, 13, 31, 2);
+	Menu::printRectangle(60, 13, 31, 2);
 	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(69, 14);
 	cout << "GAME INFORMATION";
@@ -321,9 +321,9 @@ void Game::printInterface()
 	cout << score;
 
 	Control::setConsoleColor(WHITE, BLACK);
-	//Menu::printRectangle(59, 24, 33, 2);
-	//Menu::printRectangle(59, 27, 14, 2);
-	//Menu::printRectangle(78, 27, 14, 2);
+	Menu::printRectangle(59, 24, 33, 2);
+	Menu::printRectangle(59, 27, 14, 2);
+	Menu::printRectangle(78, 27, 14, 2);
 
 	Control::setConsoleColor(WHITE, PURPLE);
 	Control::gotoXY(67, 25);
@@ -864,11 +864,11 @@ void Game::askContinue()
 	Control::clearConsole();
 	Control::gotoXY(0, 0);
 	Control::setConsoleColor(WHITE, RED);
-	// Menu::printLogo();
+	Menu::printLogo();
 	Control::setConsoleColor(WHITE, BLACK);
-	// Menu::printRectangle(34, 13, 35, 8);
-	// Menu::printRectangle(37, 18, 7, 2);
-	// Menu::printRectangle(60, 18, 6, 2);
+	Menu::printRectangle(34, 13, 35, 8);
+	Menu::printRectangle(37, 18, 7, 2);
+	Menu::printRectangle(60, 18, 6, 2);
 	Control::gotoXY(36, 16);
 	Control::setConsoleColor(WHITE, GREEN);
 	cout << "Do you want to play another round?";
