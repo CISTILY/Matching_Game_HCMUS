@@ -1043,7 +1043,7 @@ void Board::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 void Board::createBackground() {
 	ifstream bg;
 	if (size == 4)
-		bg.open("images\\easy.txt");
+		bg.open("easy.txt");
 	else
 		bg.open("images\\medium.txt");
 	int i = 0;

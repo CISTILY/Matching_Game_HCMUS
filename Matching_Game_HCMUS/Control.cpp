@@ -31,7 +31,7 @@ void Control::setAndCenterWindow()
 	RECT rectOfClient, rectOfWindow;
 	GetClientRect(consoleWindow, &rectOfClient);
 	GetWindowRect(consoleWindow, &rectOfWindow);
-	int width = 1100;
+	int width = 1220;
 	int height = 768;
 	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
 	int	posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
