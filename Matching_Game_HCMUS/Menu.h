@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include "Control.h"
-// #include "Game.h"
+#include "Game.h"
 #include <random>
 #include <fstream>
 
