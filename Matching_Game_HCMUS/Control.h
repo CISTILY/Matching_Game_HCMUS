@@ -35,6 +35,15 @@
 #define KEY_RIGHT 77	// Mũi tên phải
 #define KEY_ESC 27		// Nút ESC
 
+// SOUNDTRACK
+#define ERROR_SOUND 0
+#define ENTER_SOUND 1
+#define ENTERMENU_SOUND 2
+#define GAMESTART_SOUND 3
+#define WIN_SOUND 4
+#define MOVE_SOUND 5
+#define GETPOINT_SOUND 6
+
 using namespace std;
 
 struct Control {

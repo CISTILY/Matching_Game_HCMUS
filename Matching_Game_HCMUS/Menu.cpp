@@ -41,7 +41,7 @@ void Menu::mainScreen()
 			function_map[options[current_option]]();
 			break;
 		default:
-			//Control::playSound(ERROR_SOUND);
+			Control::playSound(ERROR_SOUND);
 			loadMenu = 0;
 		}
 	}
@@ -204,7 +204,7 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 	if ((direction == 0 && (current_option == 4 || current_option == 0))
 		|| (direction == 1 && (current_option == 3 || current_option == 7)))
 	{
-		//Control::playSound(ERROR_SOUND);
+		Control::playSound(ERROR_SOUND);
 		return;
 	}
 	Control::setConsoleColor(WHITE, BLACK);
@@ -220,7 +220,7 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 	(direction == 1) ? current_option++ : current_option--;
 	if (flag)
 	{
-		//Control::playSound(MOVE_SOUND);
+		Control::playSound(ENTER_SOUND);
 		Control::setConsoleColor(WHITE, RED);
 		Control::gotoXY(43, top + current_option % 4 * 2);
 		putchar(175);
@@ -352,7 +352,7 @@ void Menu::helpScreen()
 	putchar(174);
 	while (Control::getConsoleInput() != 6)
 	{
-		//Control::playSound(ERROR_SOUND);
+		Control::playSound(ERROR_SOUND);
 	}
 }
 
@@ -403,7 +403,7 @@ void Menu::exitScreen()
 		int i = 0;
 		while (i < 2)
 		{
-			//Control::playSound(MOVE_SOUND);
+			Control::playSound(MOVE_SOUND);
 			Control::setConsoleColor(WHITE, color[i]);
 			Control::gotoXY(left[choice * 3], top);        putchar(word[i * 2]);
 			Control::gotoXY(left[choice * 3 + 1], top);    cout << str[choice];
@@ -432,7 +432,7 @@ void Menu::exitScreen()
 		}
 		else
 		{
-			//Control::playSound(ERROR_SOUND);
+			Control::playSound(ERROR_SOUND);
 		}
 	}
 }
@@ -598,7 +598,7 @@ void Menu::leaderBoard()
 	putchar(174);
 	while (Control::getConsoleInput() != 6)
 	{
-		//Control::playSound(ERROR_SOUND);
+		Control::playSound(ERROR_SOUND);
 	}
 }
 

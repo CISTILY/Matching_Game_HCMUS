@@ -126,11 +126,11 @@ int Control::getConsoleInput()
 	}
 }
 
-/* void Control::playSound(int i)
+ void Control::playSound(int i)
 {
-	static vector<const wchar_t*> soundFile{ L"move.wav", L"enter.wav", L"error.wav", L"placed.wav", L"win.wav",  L"background.wav", L"effect.wav" };
+	static vector<const wchar_t*> soundFile{ L"Error.wav", L"Enter.wav", L"EnterMenu.wav", L"GameStart.wav", L"Win.wav",  L"Move.wav", L"GetPoint.wav" };
 	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
-} */
+} 
 
 int getRandomInt(int begin, int end)
 {

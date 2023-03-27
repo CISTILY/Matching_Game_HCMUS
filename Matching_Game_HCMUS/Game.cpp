@@ -20,6 +20,7 @@ Game::~Game() {
 void Game::startGame()
 {
 	Control::clearConsole();
+	Control::playSound(GAMESTART_SOUND);
 	while (isPlaying) {
 		_remainBlocks = _mode * _mode;
 		score = 0;
@@ -47,7 +48,7 @@ void Game::startGame()
 			switch (Control::getConsoleInput())
 			{
 			case 0:
-				//Control::playSound(ERROR_SOUND);
+				Control::playSound(ERROR_SOUND);
 				break;
 			case 1:
 				saveData();
@@ -152,11 +153,11 @@ void Game::setupGame() {
 	}
 	putchar(188);
 
-	//Control::setConsoleColor(WHITE, LIGHT_BLUE);
+	Control::setConsoleColor(WHITE, LIGHT_BLUE);
 	Control::gotoXY(x + 8, y + 4);
 	cout << "GUEST MODE";
 
-	//Control::setConsoleColor(WHITE, LIGHT_BLUE);
+	Control::setConsoleColor(WHITE, LIGHT_BLUE);
 	Control::gotoXY(x + 2, y + 1);
 	cout << "Username: ";
 	cin.getline(playerName, 15);
@@ -166,6 +167,7 @@ void Game::setupGame() {
 		strcpy_s(mode, "EASY");
 	else
 		strcpy_s(mode, "MEDIUM");
+
 	Control::showCursor(false);
 }
 
@@ -179,7 +181,7 @@ void Game::moveRight()
 {
 	if (_x < board->getXAt(board->getSize() - 1, board->getSize() - 1))
 	{
-		//Control::playSound(MOVE_SOUND);
+		Control::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -194,8 +196,8 @@ void Game::moveRight()
 			board->selectedBlock(_x, _y, GREEN);
 		}
 	}
-	//else
-		//Control::playSound(ERROR_SOUND);
+	else
+		Control::playSound(ERROR_SOUND);
 
 }
 
@@ -203,7 +205,7 @@ void Game::moveLeft()
 {
 	if (_x > board->getXAt(0, 0))
 	{
-		//Control::playSound(MOVE_SOUND);
+		Control::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -218,15 +220,15 @@ void Game::moveLeft()
 			board->selectedBlock(_x, _y, GREEN);
 		}
 	}
-	//else
-		//Control::playSound(ERROR_SOUND);
+	else
+		Control::playSound(ERROR_SOUND);
 }
 
 void Game::moveDown()
 {
 	if (_y < board->getYAt(board->getSize() - 1, board->getSize() - 1))
 	{
-		//Control::playSound(MOVE_SOUND);
+		Control::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -241,15 +243,15 @@ void Game::moveDown()
 			board->selectedBlock(_x, _y, GREEN);
 		}
 	}
-	//else
-		//Control::playSound(ERROR_SOUND);
+	else
+		Control::playSound(ERROR_SOUND);
 }
 
 void Game::moveUp()
 {
 	if (_y > board->getYAt(0, 0))
 	{
-		//Control::playSound(MOVE_SOUND);
+		Control::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -264,8 +266,8 @@ void Game::moveUp()
 			board->selectedBlock(_x, _y, GREEN);
 		}
 	}
-	//else
-		//Control::playSound(ERROR_SOUND);
+	else
+		Control::playSound(ERROR_SOUND);
 }
 
 void Game::printInterface()
@@ -276,10 +278,10 @@ void Game::printInterface()
 	board->renderBoard();
 
 	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
-	//Menu::printRectangle(59, 1, 33, 10);
-	//Menu::printRectangle(59, 12, 33, 10);
+	Menu::printRectangle(59, 1, 33, 10);
+	Menu::printRectangle(59, 12, 33, 10);
 
-	//Menu::printRectangle(60, 2, 31, 2);
+	Menu::printRectangle(60, 2, 31, 2);
 	Control::setConsoleColor(BRIGHT_WHITE, RED);
 	Control::gotoXY(67, 3);
 	cout << "PLAYER'S INFORMATION";
@@ -308,7 +310,7 @@ void Game::printInterface()
 	}
 
 	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
-	//Menu::printRectangle(60, 13, 31, 2);
+	Menu::printRectangle(60, 13, 31, 2);
 	Control::setConsoleColor(BRIGHT_WHITE, RED);
 	Control::gotoXY(69, 14);
 	cout << "GAME INFORMATION";
@@ -321,9 +323,9 @@ void Game::printInterface()
 	cout << score;
 
 	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
-	//Menu::printRectangle(59, 24, 33, 2);
-	//Menu::printRectangle(59, 27, 14, 2);
-	//Menu::printRectangle(78, 27, 14, 2);
+	Menu::printRectangle(59, 24, 33, 2);
+	Menu::printRectangle(59, 27, 14, 2);
+	Menu::printRectangle(78, 27, 14, 2);
 
 	Control::setConsoleColor(WHITE, PURPLE);
 	Control::gotoXY(67, 25);
@@ -343,7 +345,7 @@ char Game::getCharacter(int x, int y)
 
 void Game::lockBlock()
 {
-	//Control::playSound(ENTER_SOUND);
+	Control::playSound(ENTER_SOUND);
 	if (board->getCheck(_x, _y) == LOCK || board->getCheck(_x, _y) == DEL) {
 		return;
 	}
@@ -779,6 +781,7 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 }
 
 void Game::deleteBlock() {
+	Control::playSound(GETPOINT_SOUND);
 	_lockedBlock = 0;
 	bool isChecking = false;
 	if (!checkMatching(_lockedBlockPair[0], _lockedBlockPair[1], isChecking)) {
@@ -805,7 +808,7 @@ void Game::deleteBlock() {
 		cout << "CONGRATULATIONS!";
 		Control::gotoXY(70, 21);
 		cout << "Your score: " << score;
-		//Control::playSound(WIN_SOUND);
+		Control::playSound(WIN_SOUND);
 		board->unselectedBlock(_x, _y);
 		_x = board->getXAt(0, 0);
 		_y = board->getYAt(0, 0);
@@ -864,11 +867,11 @@ void Game::askContinue()
 	Control::clearConsole();
 	Control::gotoXY(0, 0);
 	Control::setConsoleColor(BRIGHT_WHITE, RED);
-	// Menu::printLogo();
+	Menu::printLogo();
 	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
-	// Menu::printRectangle(34, 13, 35, 8);
-	// Menu::printRectangle(37, 18, 7, 2);
-	// Menu::printRectangle(60, 18, 6, 2);
+	Menu::printRectangle(34, 13, 35, 8);
+	Menu::printRectangle(37, 18, 7, 2);
+	Menu::printRectangle(60, 18, 6, 2);
 	Control::gotoXY(36, 16);
 	Control::setConsoleColor(WHITE, GREEN);
 	cout << "Do you want to play another round?";
@@ -880,7 +883,7 @@ void Game::askContinue()
 		int i = 0;
 		while (i < 2)
 		{
-			//Control::playSound(MOVE_SOUND);
+			Control::playSound(MOVE_SOUND);
 			Control::setConsoleColor(WHITE, color[i]);
 			Control::gotoXY(left[choice * 3], top);        putchar(word[i * 2]);
 			Control::gotoXY(left[choice * 3 + 1], top);    cout << str[choice];
@@ -903,8 +906,8 @@ void Game::askContinue()
 				isPlaying = false;
 			return;
 		}
-		//else
-			//Control::playSound(ERROR_SOUND);
+		else
+			Control::playSound(ERROR_SOUND);
 	}
 }
 

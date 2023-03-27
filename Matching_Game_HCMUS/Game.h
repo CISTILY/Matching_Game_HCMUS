@@ -4,12 +4,11 @@
 #include "Menu.h"
 #include <iostream>
 #include <vector>
-#include "Menu.h"
 #include <string>
 #include <fstream>
 
-#define LEFT 5
-#define TOP 1
+#define LEFT 12
+#define TOP 4
 
 using namespace std;
 
