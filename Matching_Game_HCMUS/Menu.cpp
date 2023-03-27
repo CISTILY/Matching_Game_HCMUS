@@ -85,26 +85,26 @@ void Menu::printLogo()
 
 
 	SetConsoleOutputCP(CP_UTF8);
-	SetConsoleCP(CP_UTF8);
+	
 
 
 
 	unsigned char logo[] = u8R"(
 
-    ████─╮  ████─╮       ███─╮    ████████─╮   ███████─╮  ██─╮  ██─╮  ██─╮  ████─╮  ██─╮   ███████─╮
-    ██ ██╰╮██ ██ │      ██ ██╰╮   ╰──██ ╭──╯  ██ ╭─────╯  ██ │  ██ │  ██ │  ██ ██╰╮ ██ │  ██ ╭─────╯
-    ██ │████ ╭██ │     ██ ╭╯██╰╮     ██ │     ██ │        ████████ │  ██ │  ██ │██╰╮██ │  ██ │  ████─╮
-    ██ │ ╰───╯██ │    █████████╰╮    ██ │     ██ │        ██ ╭──██ │  ██ │  ██ │ ██╰██ │  ██ │   ██ ╭╯
-    ██ │      ██ │   ██ ╭─────██╰╮   ██ │      ███████─╮  ██ │  ██ │  ██ │  ██ │  ████ │   ███████ ╭╯
-    ╰──╯      ╰──╯   ╰──╯     ╰──╯   ╰──╯      ╰───────╯  ╰──╯  ╰──╯  ╰──╯  ╰──╯  ╰────╯   ╰───────╯
+     ████─╮  ████─╮      ███─╮    ████████─╮   ███████─╮  ██─╮  ██─╮  ██─╮  ████─╮  ██─╮   ███████─╮
+     ██ ██╰╮██ ██ │     ██ ██╰╮   ╰──██ ╭──╯  ██ ╭─────╯  ██ │  ██ │  ██ │  ██ ██╰╮ ██ │  ██ ╭─────╯
+     ██ │████ ╭██ │    ██ ╭╯██╰╮     ██ │     ██ │        ████████ │  ██ │  ██ │██╰╮██ │  ██ │  ████─╮
+     ██ │ ╰───╯██ │   █████████╰╮    ██ │     ██ │        ██ ╭──██ │  ██ │  ██ │ ██╰██ │  ██ │   ██ ╭╯
+     ██ │      ██ │  ██ ╭─────██╰╮   ██ │      ███████─╮  ██ │  ██ │  ██ │  ██ │  ████ │   ███████ ╭╯
+     ╰──╯      ╰──╯  ╰──╯     ╰──╯   ╰──╯      ╰───────╯  ╰──╯  ╰──╯  ╰──╯  ╰──╯  ╰────╯   ╰───────╯
 
 
-			       ███████─╮       ███─╮      ████─╮  ████─╮  ████████─╮
-			      ██ ╭─────╯      ██ ██╰╮     ██ ██╰╮██ ██ │  ██ ╭─────╯
-			      ██ │  ████─╮   ██ ╭╯██╰╮    ██ │████ ╭██ │  ████████─╮
-			      ██ │   ██ ╭╯  █████████╰╮   ██ │ ╰───╯██ │  ██ ╭─────╯
-			       ███████ ╭╯  ██ ╭─────██╰╮  ██ │      ██ │  ████████─╮
-			       ╰───────╯   ╰──╯     ╰──╯  ╰──╯      ╰──╯  ╰────────╯
+		           ███████─╮       ███─╮      ████─╮  ████─╮  ████████─╮
+		          ██ ╭─────╯      ██ ██╰╮     ██ ██╰╮██ ██ │  ██ ╭─────╯
+		          ██ │  ████─╮   ██ ╭╯██╰╮    ██ │████ ╭██ │  ████████─╮
+		          ██ │   ██ ╭╯  █████████╰╮   ██ │ ╰───╯██ │  ██ ╭─────╯
+		           ███████ ╭╯  ██ ╭─────██╰╮  ██ │      ██ │  ████████─╮
+		           ╰───────╯   ╰──╯     ╰──╯  ╰──╯      ╰──╯  ╰────────╯
 
 	)";
 
@@ -337,9 +337,9 @@ void Menu::helpScreen()
 	Control::gotoXY(left + 3, top + 20);
 	cout << "Developers:";
 	Control::gotoXY(left + 31, top + 19);
-	cout << "Dev 1: Tran Tung Lam (21127337)";
+	cout << "Dev 1: Nguyen Van Le Ba Thanh (22127390)";
 	Control::gotoXY(left + 31, top + 21);
-	cout << "Dev 2: Le Minh (21127645)";
+	cout << "Dev 2: Vu Thai Phuc (22127337)";
 
 	Control::setConsoleColor(WHITE, BLACK);
 	printRectangle(45, 27, 8, 2);
@@ -386,16 +386,20 @@ void Menu::exitScreen()
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
 	Control::setConsoleColor(WHITE, BLACK);
-	Menu::printRectangle(34, 13, 35, 8);
-	Menu::printRectangle(37, 18, 7, 2);
-	Menu::printRectangle(60, 18, 6, 2);
+	Menu::printRectangle(34, 17, 35, 6);
+	Menu::printRectangle(37, 20, 7, 2);
+	Menu::printRectangle(60, 20, 6, 2);
 	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(0, 0);
 	printLogo();
-	Control::gotoXY(42, 16);
+
+	SetConsoleOutputCP(437);
+
+	Control::setConsoleColor(WHITE, RED);
+	Control::gotoXY(42, 18);
 	cout << "Do you want to exit?";
 	string str[2] = { "Yes", "No" };
-	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, RED }, top = 19;
+	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, RED }, top = 21;
 	bool choice = 0;
 	bool loop = 1;
 	auto print1 = [&]()
@@ -424,7 +428,7 @@ void Menu::exitScreen()
 		{
 			if (!choice)
 			{
-				Control::setConsoleColor(BLACK, BRIGHT_WHITE);
+				Control::setConsoleColor(BLACK, WHITE);
 				Control::clearConsole();
 				exit(0);
 			}
