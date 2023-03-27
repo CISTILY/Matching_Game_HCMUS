@@ -278,10 +278,10 @@ void Game::printInterface()
 	board->renderBoard();
 
 	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
-	//Menu::printRectangle(59, 1, 33, 10);
-	//Menu::printRectangle(59, 12, 33, 10);
+	Menu::printRectangle(59, 1, 33, 10);
+	Menu::printRectangle(59, 12, 33, 10);
 
-	//Menu::printRectangle(60, 2, 31, 2);
+	Menu::printRectangle(60, 2, 31, 2);
 	Control::setConsoleColor(BRIGHT_WHITE, RED);
 	Control::gotoXY(67, 3);
 	cout << "PLAYER'S INFORMATION";
