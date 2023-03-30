@@ -1,6 +1,6 @@
 ﻿#include "Menu.h"
 int Menu::current_option;
-const string Menu::options[10] = { "Play", "LeaderBoard", "Help", "Exit", "Easy", "  Medium   ", "Back", "Exit", "Username", "Guest Mode" };
+const string Menu::options[10] = { "Play", "LeaderBoard", "Help", "Exit", "Easy", "  Medium   ", "Back", "Exit", "Username:            ", "Guest Mode" };
 
 void Menu::mainScreen()
 {
@@ -18,6 +18,7 @@ void Menu::mainScreen()
 	};
 	//Control::playSound(BACKGROUND_SOUND);
 	//printAnimation();
+
 	bool loadMenu = 1;
 	while (true)
 	{
@@ -83,12 +84,12 @@ void Menu::printLogo()
 
 			//cout << startback[1];
 
+	/*for (int i = 0; i < 100; ++i)
+		cout << i << endl;*/
+
+
 
 	SetConsoleOutputCP(CP_UTF8);
-	
-
-
-
 	unsigned char logo[] = u8R"(
 
      ████─╮  ████─╮      ███─╮    ████████─╮   ███████─╮  ██─╮  ██─╮  ██─╮  ████─╮  ██─╮   ███████─╮
@@ -108,16 +109,15 @@ void Menu::printLogo()
 
 	)";
 
-	Control::gotoXY(1, 0);
+	Control::gotoXY(0, 0);
 	Control::setConsoleColor(WHITE, LIGHT_RED);
 	cout << logo;
+
+	SetConsoleOutputCP(437);
 }
 
 void Menu::printOptionsBoard()
 {
-	SetConsoleOutputCP(437);
-	SetConsoleCP(437);
-
 	Control::setConsoleColor(WHITE, BLACK);
 	int left = 47; //48
 	int top = 19;
@@ -201,15 +201,18 @@ void Menu::printOptionsBoard()
 void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 {
 	int top = 20;
+
 	if ((direction == 0 && (current_option == 4 || current_option == 0))
 		|| (direction == 1 && (current_option == 3 || current_option == 7)))
 	{
 		Control::playSound(ERROR_SOUND);
 		return;
 	}
+
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::gotoXY(53 - (int)options[current_option].length() / 2, top + current_option % 4 * 2);
 	cout << options[current_option];
+
 	if (flag)
 	{
 		Control::gotoXY(43, top + current_option % 4 * 2);
@@ -217,7 +220,12 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 		Control::gotoXY(63, top + current_option % 4 * 2);
 		putchar(32);
 	}
-	(direction == 1) ? current_option++ : current_option--;
+
+	if (direction == 1)
+		++current_option;
+	else
+		--current_option;
+
 	if (flag)
 	{
 		Control::playSound(ENTER_SOUND);
@@ -227,6 +235,96 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 		Control::gotoXY(53 - (int)options[current_option].length() / 2, top + current_option % 4 * 2);
 		cout << options[current_option];
 		Control::gotoXY(63, top + current_option % 4 * 2);
+		putchar(174);
+	}
+}
+
+void Menu::chooseMode(bool direction, bool flag, int &current_option) //0: lên, 1: xuống
+{
+	int leftRec = 38, topRec = 19;
+	int top = 20;
+	
+	if ((direction == 0 && current_option == 8)
+		|| (direction == 1 && current_option == 9))
+	{
+		Control::playSound(ERROR_SOUND);
+		return;
+	}
+
+	Control::setConsoleColor(WHITE, LIGHT_BLUE);
+
+	Control::gotoXY(leftRec, topRec +  (current_option - 8) % 2 * 3);
+	putchar(201);
+	for (int i = 1; i < 25; i++)
+	{
+		putchar(205);
+
+	}
+	putchar(187);
+
+	Control::gotoXY(leftRec, topRec + (current_option - 8) % 2 * 3 + 1);
+	putchar(186);
+	Control::gotoXY(leftRec + 25, topRec + (current_option - 8) % 2 * 3 + 1);
+	putchar(186);
+
+	Control::gotoXY(leftRec, topRec + (current_option - 8) % 2 * 3 + 2);
+	putchar(200);
+	for (int i = 1; i < 25; i++)
+	{
+		putchar(205);
+
+	}
+	putchar(188);
+
+	Control::gotoXY(51 - (int)options[current_option].length() / 2, top + (current_option - 8) % 2 * 3);
+	cout << options[current_option];
+
+	if (flag)
+	{
+		Control::gotoXY(34, top + (current_option - 8) % 2 * 3);
+		putchar(32);
+		Control::gotoXY(67, top + (current_option - 8) % 2 * 3);
+		putchar(32);
+	}
+
+	if (direction == 1)
+		++current_option;
+	else
+		--current_option;
+
+	if (flag)
+	{
+		Control::playSound(ENTER_SOUND);
+		Control::setConsoleColor(WHITE, BLUE);
+
+		Control::gotoXY(leftRec, topRec + (current_option - 8) % 2 * 3);
+		putchar(201);
+		for (int i = 1; i < 25; i++)
+		{
+			putchar(205);
+
+		}
+		putchar(187);
+
+		Control::gotoXY(leftRec, topRec + (current_option - 8) % 2 * 3 + 1);
+		putchar(186);
+		Control::gotoXY(leftRec + 25, topRec + (current_option - 8) % 2 * 3 + 1);
+		putchar(186);
+
+		Control::gotoXY(leftRec, topRec + (current_option - 8) % 2 * 3 + 2);
+		putchar(200);
+		for (int i = 1; i < 25; i++)
+		{
+			putchar(205);
+
+		}
+		putchar(188);
+
+		Control::gotoXY(34, top + (current_option - 8) % 2 * 3);
+		putchar(175);
+		Control::gotoXY(51 - (int)options[current_option].length() / 2, top + (current_option - 8) % 2 * 3);
+		cout << options[current_option];
+		Control::gotoXY(67, top + (current_option - 8) % 2 * 3);
 		putchar(174);
 	}
 }
@@ -393,7 +491,6 @@ void Menu::exitScreen()
 	Control::gotoXY(0, 0);
 	printLogo();
 
-	SetConsoleOutputCP(437);
 
 	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(42, 18);
@@ -443,15 +540,19 @@ void Menu::exitScreen()
 
 void Menu::playEasy()
 {
+	current_option = 9;
+
 	Game g(_EASY);
-	g.setupGame();
+	g.setupGame(current_option);
 	g.startGame();
 }
 
 void Menu::playMedium()
 {
+	current_option = 9;
+
 	Game g(_MEDIUM);
-	g.setupGame();
+	g.setupGame(current_option);
 	g.startGame();
 }
 
@@ -460,7 +561,7 @@ void Menu::leaderBoard()
 	current_option = 0;
 	Control::clearConsole();
 	Player p[100];
-	Control::setConsoleColor(BRIGHT_WHITE, RED);
+	Control::setConsoleColor(WHITE, RED);
 	cout << R"(
 	  _      ______          _____  ______ _____  ____   ____          _____  _____  
 	 | |    |  ____|   /\   |  __ \|  ____|  __ \|  _ \ / __ \   /\   |  __ \|  __ \ 

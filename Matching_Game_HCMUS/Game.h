@@ -34,7 +34,7 @@ struct Game {
 	Game(int);
 	~Game();
 
-	void setupGame();
+	void setupGame(int);
 	void startGame();
 	void printInterface();
 	void saveData();

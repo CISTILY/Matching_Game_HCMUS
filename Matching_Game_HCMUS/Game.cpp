@@ -86,81 +86,63 @@ void Game::startGame()
 	saveData();
 }
 
-void Game::setupGame() {
+void Game::setupGame(int current_option) {
 	Control::setConsoleColor(WHITE, YELLOW);
 	Control::clearConsole();
 	Control::gotoXY(0, 0);
 	Menu::printLogo();
-	Control::showCursor(true);
 
 	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(25, 17);
 	cout << "Please enter your name shortly, under 10 characters!";
 
-	int x = 38;
-	int y = 19;
-	int n = 25;
+	int loop = 1;
 
-	SetConsoleOutputCP(437);
-
-	Control::setConsoleColor(WHITE, LIGHT_BLUE);
-
-	Control::gotoXY(x, y);
-	putchar(201);
-	for (int i = 1; i < n; i++)
-	{
-		putchar(205);
-
-	}
-	putchar(187);
-
-	Control::gotoXY(x, y + 1);
-	putchar(186);
-	Control::gotoXY(x + n, y + 1);
-	putchar(186);
-
-	Control::gotoXY(x, y + 2);
-	putchar(200);
-	for (int i = 1; i < n; i++)
-	{
-		putchar(205);
-
-	}
-	putchar(188);
-
-
-
-	Control::gotoXY(x, y + 3);
-	putchar(201);
-	for (int i = 1; i < n; i++)
-	{
-		putchar(205);
-
-	}
-	putchar(187);
-
-	Control::gotoXY(x, y + 4);
-	putchar(186);
-	Control::gotoXY(x + n, y + 4);
-	putchar(186);
-
-	Control::gotoXY(x, y + 5);
-	putchar(200);
-	for (int i = 1; i < n; i++)
-	{
-		putchar(205);
-
-	}
-	putchar(188);
-
-	Control::setConsoleColor(WHITE, LIGHT_BLUE);
-	Control::gotoXY(x + 8, y + 4);
-	cout << "GUEST MODE";
-
-	Control::setConsoleColor(WHITE, LIGHT_BLUE);
+	/*Control::setConsoleColor(WHITE, LIGHT_BLUE);
 	Control::gotoXY(x + 2, y + 1);
-	cout << "Username: ";
-	cin.getline(playerName, 15);
+	cout << "Username: ";*/
+
+	/*Control::setConsoleColor(WHITE, LIGHT_BLUE);
+	Control::gotoXY(x + 8, y + 4);
+	cout << "GUEST MODE";*/
+
+
+	Menu::chooseMode(0, 1, current_option);
+	
+	while (loop)
+	{
+		switch (Control::getConsoleInput())
+		{
+		case 2:
+			Menu::chooseMode(0, 1, current_option);
+			break;
+		case 5:
+			Menu::chooseMode(1, 1, current_option);
+			break;
+		case 6:
+			if (current_option == 8)
+			{
+				Control::playSound(ENTER_SOUND);
+				Control::showCursor(true);
+				Control::gotoXY(49, 20);
+				cout << ">> ";
+				cin.getline(playerName, 15);
+				loop = 0;
+			}
+			else
+			{
+				srand((unsigned)time(0));
+				
+				for (int i = 0; i < 10; ++i)
+					playerName[i] = rand() % 58 + 65;
+				loop = 0;
+				//function_map[options[current_option]]();
+			}
+			break;
+		default:
+			Control::playSound(ERROR_SOUND);
+		}
+	}
 
 
 	if (_mode == 4)
@@ -277,12 +259,12 @@ void Game::printInterface()
 	board->buildBoardData();
 	board->renderBoard();
 
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	Menu::printRectangle(59, 1, 33, 10);
 	Menu::printRectangle(59, 12, 33, 10);
 
 	Menu::printRectangle(60, 2, 31, 2);
-	Control::setConsoleColor(BRIGHT_WHITE, RED);
+	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(67, 3);
 	cout << "PLAYER'S INFORMATION";
 
@@ -309,9 +291,9 @@ void Game::printInterface()
 		cout << "Class: " << className;
 	}
 
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	Menu::printRectangle(60, 13, 31, 2);
-	Control::setConsoleColor(BRIGHT_WHITE, RED);
+	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(69, 14);
 	cout << "GAME INFORMATION";
 	Control::setConsoleColor(WHITE, BLUE);
@@ -322,7 +304,7 @@ void Game::printInterface()
 	Control::gotoXY(80, 17);
 	cout << score;
 
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	Menu::printRectangle(59, 24, 33, 2);
 	Menu::printRectangle(59, 27, 14, 2);
 	Menu::printRectangle(78, 27, 14, 2);
@@ -866,9 +848,9 @@ void Game::askContinue()
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
 	Control::gotoXY(0, 0);
-	Control::setConsoleColor(BRIGHT_WHITE, RED);
+	Control::setConsoleColor(WHITE, RED);
 	Menu::printLogo();
-	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::setConsoleColor(WHITE, BLACK);
 	Menu::printRectangle(34, 13, 35, 8);
 	Menu::printRectangle(37, 18, 7, 2);
 	Menu::printRectangle(60, 18, 6, 2);
