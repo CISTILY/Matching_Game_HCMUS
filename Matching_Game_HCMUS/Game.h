@@ -7,14 +7,14 @@
 #include <string>
 #include <fstream>
 
-#define LEFT 12
-#define TOP 4
+#define LEFT 7
+#define TOP 2
 
 using namespace std;
 
 struct Game {
 	Board* board;				// Create new board
-	char playerName[15] = "", playerID[9] = "", className[8] = "", mode[8] = "";
+	char playerName[15] = "", mode[8] = "";
 	int _mode;
 	int _x, _y;
 	bool isPlaying;

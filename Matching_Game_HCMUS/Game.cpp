@@ -30,7 +30,7 @@ void Game::startGame()
 		_y = board->getYAt(0, 0);
 		Control::gotoXY(_x, _y);
 		board->selectedBlock(_x, _y, GREEN);
-		putchar(board->getCharacter(_x, _y));
+		//putchar(board->getCharacter(_x, _y));
 		Control::gotoXY(_x, _y);
 		if (!isAvailableBlock(true)) {
 			Control::setConsoleColor(WHITE, RED);
@@ -124,9 +124,15 @@ void Game::setupGame(int current_option) {
 			{
 				Control::playSound(ENTER_SOUND);
 				Control::showCursor(true);
+
+				khongCoKiTu:
 				Control::gotoXY(49, 20);
 				cout << ">> ";
 				cin.getline(playerName, 15);
+
+				if (playerName[0] == 0)
+					goto khongCoKiTu;
+
 				loop = 0;
 			}
 			else
@@ -155,7 +161,7 @@ void Game::setupGame(int current_option) {
 
 void Game::saveData() {
 	fstream fs("rank\\leaderboard.txt", ios::app);
-	fs << playerName << '\n' << playerID << '\n' << className << '\n' << mode << '\n' << score << '\n';
+	fs << playerName << '\n' << mode << '\n' << score << '\n';
 	fs.close();
 }
 
@@ -270,26 +276,7 @@ void Game::printInterface()
 
 	Control::setConsoleColor(WHITE, BLUE);
 	Control::gotoXY(65, 5);
-	if (strlen(playerName) != 0)
-		cout << "Player's name: " << playerName;
-	else {
-		strcpy_s(playerName, "unknown");
-		cout << "Player's name: " << playerName;
-	}
-	Control::gotoXY(65, 7);
-	if (strlen(playerID) != 0)
-		cout << "Student's ID: " << playerID;
-	else {
-		strcpy_s(playerID, "unknown");
-		cout << "Student's ID: " << playerID;
-	}
-	Control::gotoXY(65, 9);
-	if (strlen(className) != 0)
-		cout << "Class: " << className;
-	else {
-		strcpy_s(className, "unknown");
-		cout << "Class: " << className;
-	}
+	cout << "Player's name: " << playerName;
 
 	Control::setConsoleColor(WHITE, BLACK);
 	Menu::printRectangle(60, 13, 31, 2);
@@ -851,14 +838,14 @@ void Game::askContinue()
 	Control::setConsoleColor(WHITE, RED);
 	Menu::printLogo();
 	Control::setConsoleColor(WHITE, BLACK);
-	Menu::printRectangle(34, 13, 35, 8);
-	Menu::printRectangle(37, 18, 7, 2);
-	Menu::printRectangle(60, 18, 6, 2);
-	Control::gotoXY(36, 16);
+	Menu::printRectangle(34, 17, 35, 8);
+	Menu::printRectangle(37, 21, 7, 2);
+	Menu::printRectangle(60, 21, 6, 2);
+	Control::gotoXY(36, 19);
 	Control::setConsoleColor(WHITE, GREEN);
 	cout << "Do you want to play another round?";
 	string str[2] = { "Yes", "No" };
-	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, GREEN }, top = 19;
+	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, GREEN }, top = 22;
 	bool choice = 1;
 	auto print1 = [&]()
 	{
