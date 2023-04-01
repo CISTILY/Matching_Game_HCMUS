@@ -87,8 +87,6 @@ void Menu::printLogo()
 	SetConsoleOutputCP(CP_UTF8);
 	
 
-
-
 	unsigned char logo[] = u8R"(
 
      ████─╮  ████─╮      ███─╮    ████████─╮   ███████─╮  ██─╮  ██─╮  ██─╮  ████─╮  ██─╮   ███████─╮

@@ -20,7 +20,7 @@ void Control::setFontInfo()
 	CONSOLE_FONT_INFOEX info;
 	info.cbSize = sizeof(info);
 	GetCurrentConsoleFontEx(consoleOutput, FALSE, &info);
-	info.dwFontSize.X = 12;
+	info.dwFontSize.X = 12;	
 	info.dwFontSize.Y = 24;
 	wcscpy_s(info.FaceName, L"Consolas");
 	SetCurrentConsoleFontEx(consoleOutput, FALSE, &info);
@@ -40,7 +40,7 @@ void Control::setAndCenterWindow()
 
 void Control::hideScrollBars()
 {
-	ShowScrollBar(GetConsoleWindow(), SB_BOTH, 0);
+	ShowScrollBar(consoleWindow, SB_BOTH, 0);
 }
 
 void Control::setConsoleTitle()
@@ -50,8 +50,7 @@ void Control::setConsoleTitle()
 
 void Control::disableMaximize()
 {
-	SetWindowLong(consoleWindow, GWL_STYLE,
-		GetWindowLong(consoleWindow, GWL_STYLE) & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME));
+	SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME));
 }
 
 void Control::setConsoleColor(int background, int text)
@@ -126,7 +125,7 @@ int Control::getConsoleInput()
 	}
 }
 
- void Control::playSound(int i)
+void Control::playSound(int i)
 {
 	static vector<const wchar_t*> soundFile{ L"Error.wav", L"Enter.wav", L"EnterMenu.wav", L"GameStart.wav", L"Win.wav",  L"Move.wav", L"GetPoint.wav" };
 	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
