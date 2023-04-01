@@ -56,6 +56,7 @@ struct Control {
 	static void setAndCenterWindow();				// Thiết lập và canh giữa cửa sổ game
 	static void setConsoleColor(int, int);			// Thiết lập màu cho cửa sổ game
 	static void hideScrollBars();					// Ẩn thanh cuộn của cửa sổ
+	//static void ShowScrollbar(BOOL);	//////// Ẩn thanh cuộn của cửa sổ
 	static void setConsoleTitle();					// Thiết lập tiêu đề cho cửa sổ
 	static void disableMaximize();					// Tắt chức năng toàn màn hình
 	static void showCursor(bool);					// Tất con trỏ
@@ -66,4 +67,4 @@ struct Control {
 	static void playSound(int);						// Chạy nhạc
 };
 
-int getRandomInt(int begin, int end);         
+int getRandomInt(int begin, int end);

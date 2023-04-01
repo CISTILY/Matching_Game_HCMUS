@@ -8,6 +8,7 @@ void Control::setUpConsole()
 	setFontInfo();
 	setAndCenterWindow();
 	hideScrollBars();
+	//ShowScrollbar(0);
 	setConsoleTitle();
 	disableMaximize();
 	showCursor(false);
@@ -42,6 +43,12 @@ void Control::hideScrollBars()
 {
 	ShowScrollBar(consoleWindow, SB_BOTH, 0);
 }
+
+//void Control::ShowScrollbar(BOOL Show)
+//{
+//	HWND hWnd = GetConsoleWindow();
+//	ShowScrollBar(hWnd, SB_BOTH, Show);
+//}
 
 void Control::setConsoleTitle()
 {

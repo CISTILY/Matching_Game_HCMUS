@@ -30,6 +30,7 @@ struct Board {
 	int getCAt(int, int);			//Lấy tọa độ C (column) tại tọa độ x y
 	char getCharacter(int, int);
 	int getCheck(int, int);
+	int getCheckAll(int, int);
 
 	void showBoard();
 	void renderBoard();
