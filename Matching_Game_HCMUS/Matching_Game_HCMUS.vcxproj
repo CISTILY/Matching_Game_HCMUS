@@ -130,6 +130,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Control.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Graphic.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Point.h" />
   </ItemGroup>
@@ -137,6 +138,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Point.cpp" />

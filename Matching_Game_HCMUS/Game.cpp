@@ -779,10 +779,10 @@ void Game::deleteBlock() {
 		cout << "Your score: " << score;
 		Control::playSound(WIN_SOUND);
 		board->unselectedBlock(_x, _y);
-		_x = board->getXAt(0, 0);
+		/*_x = board->getXAt(0, 0);
 		_y = board->getYAt(0, 0);
 		Control::gotoXY(_x, _y);
-		board->selectedBlock(_x, _y, WHITE);
+		board->selectedBlock(_x, _y, WHITE);*/
 		Sleep(7000);
 		return;
 	}

@@ -83,7 +83,7 @@ int Board::getCheck(int x, int y)
 	return pBoard[r][c].getCheck();
 }
 
-int Board::getCheckAll(int x, int y)
+int Board::getCheckLockAll(int x, int y)
 {
 	for (int i = -4; i <= 4; i += 4) {
 		for (int j = -8; j <= 8; j += 8) {
@@ -112,6 +112,56 @@ int Board::getCheckAll(int x, int y)
 	}
 	return 0;
 }
+
+int Board::getCheckUpperLeft(int x, int y)
+{
+	int j = -8, i = -4;
+
+	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, size - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(size - 1, 0))
+		&& (getCheck(x + j, y + i) == DEL && getCheck(x + j, y) == DEL && getCheck(x, y + i) == DEL) && getCheck(x, y) == DEL)
+		return 9;
+	else
+		return getCheckLockAll(x, y);
+}
+
+
+int Board::getCheckUpperRight(int x, int y)
+{
+	int j = +8, i = -4;
+
+	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, size - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(size - 1, 0))
+		&& (getCheck(x + j, y + i) == DEL && getCheck(x + j, y) == DEL && getCheck(x, y + i) == DEL) && getCheck(x, y) == DEL)
+		return 9;
+	else
+		return getCheckLockAll(x, y);
+}
+
+
+int Board::getCheckBottomLeft(int x, int y)
+{
+	int j = -8, i = +4;
+
+	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, size - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(size - 1, 0))
+		&& (getCheck(x + j, y + i) == DEL && getCheck(x + j, y) == DEL && getCheck(x, y + i) == DEL) && getCheck(x, y) == DEL)
+		return 9;
+	else
+		return getCheckLockAll(x, y);
+}
+
+
+
+int Board::getCheckBottomRight(int x, int y)
+{
+	int j = +8, i = +4;
+
+	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, size - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(size - 1, 0))
+		&& (getCheck(x + j, y + i) == DEL && getCheck(x + j, y) == DEL && getCheck(x, y + i) == DEL) && getCheck(x, y) == DEL)
+		return 9;
+	else
+		return getCheckLockAll(x, y);
+}
+
+
 
 /////////////////////////////////////////////////////////////////////
 
@@ -178,7 +228,7 @@ void Board::showBoard()
 		for (int j = 8; j < size * 8; j += 8)
 		{
 			Control::gotoXY(j + left + 1, i + top);
-			if (i % 4 != 0)	
+			if (i % 4 != 0)
 				putchar(179);
 			else
 				putchar(43);
@@ -258,22 +308,9 @@ void Board::buildBoardData() {
 }
 
 void Board::selectedBlock(int x, int y, int color) {
-
-	
 	Control::setConsoleColor(WHITE, color);
-	for (int i = y - 2; i <= y + 2; i += 4) {
-		for (int j = x - 4; j <= x + 4; j += 8) {
-			Control::gotoXY(j, i);
-			if (i == y - 2 && j == x - 4)
-				putchar(201);
-			if (i == y - 2 && j == x + 4)
-				putchar(187);
-			if (i == y + 2 && j == x - 4)
-				putchar(200);
-			if (i == y + 2 && j == x + 4)
-				putchar(188);
-		}
-	}
+	Graphic::printFrame(x, y);
+
 	/*if (getCheck(x, y) != DEL) {
 		Control::gotoXY(x, y);
 		putchar(getCharacter(x, y));
@@ -291,84 +328,19 @@ void Board::selectedBlock(int x, int y, int color) {
 }
 
 void Board::unselectedBlock(int x, int y) {
-	int r = getRAt(x, y);
-	int c = getCAt(x, y);
-	if (getCheck(x, y) != DEL)
+	if (getCheck(x, y) != DEL) {
+		int r = getRAt(x, y);
+		int c = getCAt(x, y);
 		pBoard[r][c].setCheck(NORMAL);
-
-	Control::setConsoleColor(WHITE, BLACK);
-	for (int i = y - 2; i <= y + 2; i += 4) {
-		for (int j = x - 4; j <= x + 4; j += 8) {
-			Control::gotoXY(j, i);
-			putchar(43);
-		}
-	}
-	int i, j;
-	Control::setConsoleColor(WHITE, LIGHT_RED);
-	switch (getCheckAll(x, y)) {
-	case 0:
-		break;
-	case 1:
-		i = -2;
-		j = -4;
-		Control::gotoXY(x + j , y + i);
-		putchar(188);
-		break;
-	case 2:
-		i = -2;
-		j = -4;
-		Control::gotoXY(x + j, y + i);
-		putchar(200);
-		Control::gotoXY(x + j + 8, y + i);
-		putchar(188);
-		break;
-	case 3:
-		i = -2;
-		j = 4;
-		Control::gotoXY(x + j, y + i);
-		putchar(200);
-		break;
-	case 4:
-		i = -2;
-		j = -4;
-		Control::gotoXY(x + j, y + i);
-		putchar(187);
-		Control::gotoXY(x + j, y + i + 4);
-		putchar(188);
-		break;
-	case 5:
-		i = -2;
-		j = 4;
-		Control::gotoXY(x + j, y + i);
-		putchar(201);
-		Control::gotoXY(x + j, y + i + 4);
-		putchar(200);
-		break;
-	case 6:
-		i = 2;
-		j = -4;
-		Control::gotoXY(x + j, y + i);
-		putchar(187);
-		break;
-	case 7:
-		i = 2;
-		j = -4;
-		Control::gotoXY(x + j, y + i);
-		putchar(201);
-		Control::gotoXY(x + j + 8, y + i);
-		putchar(187);
-		break;
-	case 8:
-		i = 2;
-		j = 4;
-		Control::gotoXY(x + j, y + i);
-		putchar(201);
-		break;
 	}
 
+	Graphic::backUpperLeft(x, y, getCheckUpperLeft(x, y));
+	Graphic::backUpperRight(x, y, getCheckUpperRight(x, y));
+	Graphic::backBottomLeft(x, y, getCheckBottomLeft(x, y));
+	Graphic::backBottomRight(x, y, getCheckBottomRight(x, y));
+
+	/*Graphic::backFrame(x, y);*/
 	Control::setConsoleColor(WHITE, BLACK);
-	
-	
 
 	/*if (getCheck(x, y) != DEL) {
 		Control::gotoXY(x, y);
@@ -393,19 +365,7 @@ void Board::lockBlock(int x, int y)
 	pBoard[r][c].setCheck(LOCK);
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);
-	for (int i = y - 2; i <= y + 2; i += 4) {
-		for (int j = x - 4; j <= x + 4; j += 8) {
-			Control::gotoXY(j, i);
-			if (i == y - 2 && j == x - 4)
-				putchar(201);
-			if (i == y - 2 && j == x + 4)
-				putchar(187);
-			if (i == y + 2 && j == x - 4)
-				putchar(200);
-			if (i == y + 2 && j == x + 4)
-				putchar(188);
-		}
-	}
+	Graphic::printFrame(x, y);
 }
 
 void Board::deleteBlock(int x, int y)
@@ -414,6 +374,7 @@ void Board::deleteBlock(int x, int y)
 	int c = getCAt(x, y);
 	pBoard[r][c].setCheck(DEL);
 
+	/*
 	//Delete cornors
 	Control::setConsoleColor(WHITE, BLACK);
 	for (int i = y - 2; i <= y + 2; i += 4) {
@@ -423,6 +384,7 @@ void Board::deleteBlock(int x, int y)
 		}
 	}
 
+		*/
 	Control::setConsoleColor(WHITE, BLACK);
 	for (int i = y - 1; i <= y + 1; i++) {
 		for (int j = x - 3; j <= x + 3; j++) {
@@ -433,10 +395,14 @@ void Board::deleteBlock(int x, int y)
 		}
 	}
 
+	unselectedBlock(x, y);
+
+	Control::setConsoleColor(WHITE, BLACK);
+
 	//Delete top border
 	Control::gotoXY(x, y);
 	if (y - 4 >= getYAt(0, 0) && getCheck(x, y - 4) == DEL) {
-		for (int i = x - 4; i <= x + 4; i++) {
+		for (int i = x - 3; i <= x + 3; i++) {
 			Control::gotoXY(i, y - 2);
 			//putchar(32);
 			putchar(background[y - 2 - top][i - left]);
@@ -445,7 +411,7 @@ void Board::deleteBlock(int x, int y)
 	}
 	//Delete bottom border
 	if (y + 4 <= getYAt(size - 1, size - 1) && getCheck(x, y + 4) == DEL) {
-		for (int i = x - 4; i <= x + 4; i++) {
+		for (int i = x - 3; i <= x + 3; i++) {
 			Control::gotoXY(i, y + 2);
 			//putchar(32);
 			putchar(background[y + 2 - top][i - left]);
@@ -453,7 +419,7 @@ void Board::deleteBlock(int x, int y)
 	}
 	//Delete left border
 	if (x - 8 >= getXAt(0, 0) && getCheck(x - 8, y) == DEL) {
-		for (int i = y - 2; i <= y + 2; i++) {
+		for (int i = y - 1; i <= y + 1; i++) {
 			Control::gotoXY(x - 4, i);
 			//putchar(32);
 			putchar(background[i - top][x - 4 - left]);
@@ -461,17 +427,18 @@ void Board::deleteBlock(int x, int y)
 	}
 	//Delete right border
 	if (x + 8 <= getXAt(size - 1, size - 1) && getCheck(x + 8, y) == DEL) {
-		for (int i = y - 2; i <= y + 2; i++) {
+		for (int i = y - 1; i <= y + 1; i++) {
 			Control::gotoXY(x + 4, i);
 			//putchar(32);
 			putchar(background[i - top][x + 4 - left]);
-
 		}
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////
+
 void Board::drawLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
-	Control::setConsoleColor(RED, WHITE);
+	Control::setConsoleColor(WHITE, BLACK);
 	if (firstBlock.first == secondBlock.first) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
 		putchar(30);
@@ -489,7 +456,7 @@ void Board::drawLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
 		putchar(17);
 		for (int i = firstBlock.first + 2; i <= secondBlock.first - 2; i++) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first - 1, secondBlock.second);
 		putchar(16);
@@ -525,7 +492,7 @@ void Board::deleteLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
 }
 
 void Board::drawLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Lcorner) {
-	Control::setConsoleColor(RED, WHITE);
+	Control::setConsoleColor(WHITE, BLACK);
 	// down-left corner
 	if (Lcorner.first < secondBlock.first && Lcorner.second > firstBlock.second) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
@@ -536,7 +503,7 @@ void Board::drawLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Lcorner.first; i <= secondBlock.first - 2; i++) {
 			Control::gotoXY(i, secondBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first - 1, secondBlock.second);
 		putchar(16);
@@ -553,7 +520,7 @@ void Board::drawLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Lcorner.first; i <= secondBlock.first - 2; i++) {
 			Control::gotoXY(i, secondBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first - 1, secondBlock.second);
 		putchar(16);
@@ -566,7 +533,7 @@ void Board::drawLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		putchar(17);
 		for (int i = firstBlock.first + 2; i <= Lcorner.first; i++) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Lcorner.second + 1; i <= secondBlock.second - 2; i++) {
 			Control::gotoXY(secondBlock.first, i);
@@ -583,7 +550,7 @@ void Board::drawLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		putchar(17);
 		for (int i = firstBlock.first + 2; i <= Lcorner.first; i++) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Lcorner.second - 1; i >= secondBlock.second + 2; i--) {
 			Control::gotoXY(secondBlock.first, i);
@@ -667,7 +634,7 @@ void Board::deleteLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 }
 
 void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Zcorner1, pair<int, int>Zcorner2) {
-	Control::setConsoleColor(RED, WHITE);
+	Control::setConsoleColor(WHITE, BLACK);
 	// down-left corner
 	if (Zcorner1.first < secondBlock.first && Zcorner1.second > firstBlock.second) {
 		Control::gotoXY(firstBlock.first, firstBlock.second + 1);
@@ -678,7 +645,7 @@ void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Zcorner1.first; i <= Zcorner2.first; i++) {
 			Control::gotoXY(i, Zcorner1.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Zcorner2.second + 1; i <= secondBlock.second - 2; i++) {
 			Control::gotoXY(secondBlock.first, i);
@@ -699,7 +666,7 @@ void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Zcorner1.first; i >= Zcorner2.first; i--) {
 			Control::gotoXY(i, Zcorner1.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Zcorner2.second + 1; i <= secondBlock.second - 2; i++) {
 			Control::gotoXY(secondBlock.first, i);
@@ -716,7 +683,7 @@ void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		putchar(17);
 		for (int i = firstBlock.first + 2; i <= Zcorner1.first; i++) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Zcorner1.second + 1; i <= Zcorner2.second - 1; i++) {
 			Control::gotoXY(Zcorner1.first, i);
@@ -724,7 +691,7 @@ void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Zcorner2.first; i <= secondBlock.first - 2; i++) {
 			Control::gotoXY(i, secondBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first - 1, secondBlock.second);
 		putchar(16);
@@ -737,7 +704,7 @@ void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		putchar(17);
 		for (int i = firstBlock.first + 2; i <= Zcorner1.first; i++) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Zcorner1.second - 1; i >= Zcorner2.second + 1; i--) {
 			Control::gotoXY(Zcorner1.first, i);
@@ -745,7 +712,7 @@ void Board::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Zcorner2.first; i <= secondBlock.first - 2; i++) {
 			Control::gotoXY(i, secondBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first - 1, secondBlock.second);
 		putchar(16);
@@ -841,12 +808,12 @@ void Board::deleteLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 }
 
 void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Ucorner1, pair<int, int>Ucorner2) {
-	Control::setConsoleColor(RED, WHITE);
+	Control::setConsoleColor(WHITE, BLACK);
 	//========================================================================//
 	if (Ucorner1.first < firstBlock.first && Ucorner1.second < secondBlock.second) {
 		for (int i = Ucorner1.first; i <= firstBlock.first - 2; i++) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(firstBlock.first - 1, firstBlock.second);
 		putchar(16);
@@ -856,7 +823,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Ucorner2.first; i <= secondBlock.first - 2; i++) {
 			Control::gotoXY(i, secondBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first - 1, secondBlock.second);
 		putchar(16);
@@ -865,7 +832,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 	if (Ucorner1.first < firstBlock.first && Ucorner1.second > secondBlock.second) {
 		for (int i = Ucorner1.first; i <= firstBlock.first - 2; i++) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(firstBlock.first - 1, firstBlock.second);
 		putchar(16);
@@ -875,7 +842,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Ucorner2.first; i <= secondBlock.first - 2; i++) {
 			Control::gotoXY(i, secondBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first - 1, secondBlock.second);
 		putchar(16);
@@ -885,7 +852,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 	if (Ucorner1.first > firstBlock.first && Ucorner1.second < secondBlock.second) {
 		for (int i = Ucorner1.first; i >= firstBlock.first + 2; i--) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(firstBlock.first + 1, firstBlock.second);
 		putchar(17);
@@ -895,7 +862,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		}
 		for (int i = Ucorner2.first; i >= secondBlock.first + 2; i--) {
 			Control::gotoXY(i, secondBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first + 1, secondBlock.second);
 		putchar(17);
@@ -904,17 +871,17 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 	if (Ucorner1.first > firstBlock.first && Ucorner1.second > secondBlock.second) {
 		for (int i = Ucorner1.first; i >= firstBlock.first + 2; i--) {
 			Control::gotoXY(i, firstBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(firstBlock.first + 1, firstBlock.second);
 		putchar(17);
-		for (int i = Ucorner1.second - 1; i >= Ucorner2.second + 1; i++) {
+		for (int i = Ucorner1.second - 1; i <= Ucorner2.second + 1; i++) {
 			Control::gotoXY(Ucorner1.first, i);
 			putchar(179);
 		}
 		for (int i = Ucorner2.first; i >= secondBlock.first + 2; i--) {
 			Control::gotoXY(i, secondBlock.second);
-			putchar(45);
+			putchar(196);
 		}
 		Control::gotoXY(secondBlock.first + 1, secondBlock.second);
 		putchar(17);
@@ -930,7 +897,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		putchar(31);
 		for (int i = Ucorner1.first; i <= Ucorner2.first; i++) {
 			Control::gotoXY(i, Ucorner1.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Ucorner2.second + 1; i <= secondBlock.second - 2; i++) {
 			Control::gotoXY(secondBlock.first, i);
@@ -949,7 +916,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		putchar(31);
 		for (int i = Ucorner1.first; i >= Ucorner2.first; i--) {
 			Control::gotoXY(i, Ucorner1.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Ucorner2.second + 1; i <= secondBlock.second - 2; i++) {
 			Control::gotoXY(secondBlock.first, i);
@@ -969,7 +936,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		putchar(30);
 		for (int i = Ucorner1.first; i <= Ucorner2.first; i++) {
 			Control::gotoXY(i, Ucorner1.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Ucorner2.second - 1; i >= secondBlock.second + 2; i--) {
 			Control::gotoXY(secondBlock.first, i);
@@ -988,7 +955,7 @@ void Board::drawLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<
 		putchar(30);
 		for (int i = Ucorner1.first; i >= Ucorner2.first; i--) {
 			Control::gotoXY(i, Ucorner1.second);
-			putchar(45);
+			putchar(196);
 		}
 		for (int i = Ucorner2.second - 1; i >= secondBlock.second + 2; i--) {
 			Control::gotoXY(secondBlock.first, i);
@@ -1068,7 +1035,7 @@ void Board::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 		}
 		Control::gotoXY(firstBlock.first + 1, firstBlock.second);
 		putchar(32);
-		for (int i = Ucorner1.second - 1; i >= Ucorner2.second + 1; i++) {
+		for (int i = Ucorner1.second - 1; i <= Ucorner2.second + 1; i++) {
 			Control::gotoXY(Ucorner1.first, i);
 			putchar(32);
 		}

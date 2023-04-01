@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Control.h"
 #include "Point.h"
+#include "Graphic.h"
 #include <iostream>
 #include <fstream> 
 #include <ctime>
@@ -30,7 +31,13 @@ struct Board {
 	int getCAt(int, int);			//Lấy tọa độ C (column) tại tọa độ x y
 	char getCharacter(int, int);
 	int getCheck(int, int);
-	int getCheckAll(int, int);
+	int getCheckLockAll(int, int);
+	int getCheckUpperLeft(int, int);
+	int getCheckUpperRight(int, int);
+	int getCheckBottomLeft(int, int);
+	int getCheckBottomRight(int, int);
+
+
 
 	void showBoard();
 	void renderBoard();
