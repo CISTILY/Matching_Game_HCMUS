@@ -47,7 +47,7 @@ void Control::setAndCenterWindow(int _row, int _col)
 	int width = (_col + 1) * 110 + 410;
 	int height = 820;
 	if (_row > 6)
-		height = 1000;
+		height = 1080;
 	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
 	int	posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 	MoveWindow(consoleWindow, posX, posY, width, height, TRUE);
