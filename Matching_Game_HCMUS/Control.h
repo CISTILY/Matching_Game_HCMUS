@@ -54,6 +54,7 @@ struct Control {
 	static void setUpConsole();						// Thiết lập cửa sổ game
 	static void gotoXY(int, int);					// Di chuyển đến toạ độ (x, y)
 	static void setAndCenterWindow();				// Thiết lập và canh giữa cửa sổ game
+	static void setAndCenterWindow(int, int);				// Thiết lập và canh giữa cửa sổ game
 	static void setConsoleColor(int, int);			// Thiết lập màu cho cửa sổ game
 	static void hideScrollBars();					// Ẩn thanh cuộn của cửa sổ
 	//static void ShowScrollbar(BOOL);	//////// Ẩn thanh cuộn của cửa sổ

@@ -7,15 +7,17 @@
 #include <string>
 #include <fstream>
 
-#define LEFT 7
+#define LEFT 6
 #define TOP 2
+#define DISTANCE 6
 
 using namespace std;
 
 struct Game {
 	Board* board;				// Create new board
 	char playerName[15] = "", mode[8] = "";
-	int _mode;
+	int _row;
+	int _col;
 	int _x, _y;
 	bool isPlaying;
 	int _lockedBlock;
@@ -31,7 +33,7 @@ struct Game {
 	bool checkUMatching(pair<int, int>, pair<int, int>, bool);
 	bool checkMatching(pair<int, int>, pair<int, int>, bool);
 
-	Game(int);
+	Game(int, int);
 	~Game();
 
 	void setupGame(int);

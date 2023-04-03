@@ -1,14 +1,15 @@
 #include "Game.h"
 
-Game::Game(int mode)
+Game::Game(int row, int col)
 {
-	_mode = mode;
+	_row = row;
+	_col = col;
 	_x = LEFT, _y = TOP;
-	board = new Board(_mode, LEFT, TOP);
+	board = new Board(_row, _col, LEFT, TOP);
 	isPlaying = true;
 	_lockedBlock = 0;
 	_lockedBlockPair.clear();
-	_remainBlocks = _mode * _mode;
+	_remainBlocks = _row * _col;
 	score = 0;
 }
 
@@ -22,7 +23,7 @@ void Game::startGame()
 	Control::clearConsole();
 	Control::playSound(GAMESTART_SOUND);
 	while (isPlaying) {
-		_remainBlocks = _mode * _mode;
+		_remainBlocks = _row * _col;
 		score = 0;
 		bool isPause = false;
 		printInterface();
@@ -34,12 +35,12 @@ void Game::startGame()
 		Control::gotoXY(_x, _y);
 		if (!isAvailableBlock(true)) {
 			Control::setConsoleColor(WHITE, RED);
-			Control::gotoXY(69, 18);
+			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 10, 19);
 			cout << "Game Announcement";
-			Control::gotoXY(64, 19);
+			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 5, 20);
 			cout << "There are no more ways left!";
 			Sleep(800);
-			Control::gotoXY(62, 21);
+			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 3, 22);
 			cout << "Auto reset the board. Have fun!";
 			Sleep(1000);
 			startGame();
@@ -86,10 +87,9 @@ void Game::startGame()
 	saveData();
 }
 
+
 void Game::setupGame(int current_option) {
-	Control::setConsoleColor(WHITE, YELLOW);
 	Control::clearConsole();
-	Control::gotoXY(0, 0);
 	Menu::printLogo();
 
 	Control::setConsoleColor(WHITE, RED);
@@ -108,7 +108,7 @@ void Game::setupGame(int current_option) {
 
 
 	Menu::chooseMode(0, 1, current_option);
-	
+
 	while (loop)
 	{
 		switch (Control::getConsoleInput())
@@ -125,7 +125,7 @@ void Game::setupGame(int current_option) {
 				Control::playSound(ENTER_SOUND);
 				Control::showCursor(true);
 
-				khongCoKiTu:
+			khongCoKiTu:
 				Control::gotoXY(49, 20);
 				cout << ">> ";
 				cin.getline(playerName, 15);
@@ -138,7 +138,7 @@ void Game::setupGame(int current_option) {
 			else
 			{
 				srand((unsigned)time(0));
-				
+
 				for (int i = 0; i < 10; ++i)
 					playerName[i] = rand() % 58 + 65;
 				loop = 0;
@@ -150,10 +150,13 @@ void Game::setupGame(int current_option) {
 		}
 	}
 
+
 	if (_mode == 4)
 		strcpy_s(mode, "EASY");
 	else
 		strcpy_s(mode, "MEDIUM");
+	else
+		strcpy_s(mode, "EASY");
 
 	Control::showCursor(false);
 }
@@ -166,7 +169,7 @@ void Game::saveData() {
 
 void Game::moveRight()
 {
-	if (_x < board->getXAt(board->getSize() - 1, board->getSize() - 1))
+	if (_x < board->getXAt(board->getSizeRow() - 1, board->getSizeCol() - 1))
 	{
 		Control::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != LOCK) {
@@ -213,7 +216,7 @@ void Game::moveLeft()
 
 void Game::moveDown()
 {
-	if (_y < board->getYAt(board->getSize() - 1, board->getSize() - 1))
+	if (_y < board->getYAt(board->getSizeRow() - 1, board->getSizeCol() - 1))
 	{
 		Control::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != LOCK) {
@@ -259,50 +262,53 @@ void Game::moveUp()
 
 void Game::printInterface()
 {
+	//if ((_row != 4 && _col != 4) && (_row != 6 && _col != 6))
+		Control::setAndCenterWindow(_row, _col);
+
 	board->createBackground();
 	board->showBoard();
 	board->buildBoardData();
 	board->renderBoard();
 
 	Control::setConsoleColor(WHITE, BLACK);
-	Menu::printRectangle(59, 1, 33, 10);
-	Menu::printRectangle(59, 12, 33, 10);
+	Graphic::printRectangleSpecial(_col * 8 + LEFT + DISTANCE, 2, 33, 10);
+	Graphic::printRectangleSpecial(_col * 8 + LEFT + DISTANCE, 13, 33, 10);
 
-	Menu::printRectangle(60, 2, 31, 2);
+	Graphic::printRectangleNormal(_col * 8 + LEFT + DISTANCE + 1, 3, 31, 2);
 	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(67, 3);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 8, 4);
 	cout << "PLAYER'S INFORMATION";
 
 	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(65, 5);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 6, 6);
 	cout << "Player's name: " << playerName;
 
 	Control::setConsoleColor(WHITE, BLACK);
-	Menu::printRectangle(60, 13, 31, 2);
+	Graphic::printRectangleNormal(_col * 8 + LEFT + DISTANCE + 1, 14, 31, 2);
 	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(69, 14);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 10, 15);
 	cout << "GAME INFORMATION";
 	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(65, 16);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 6, 17);
 	cout << "Moves:";
-	Control::gotoXY(65, 17);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 6, 18);
 	cout << "Current score:";
-	Control::gotoXY(80, 17);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 	cout << score;
 
 	Control::setConsoleColor(WHITE, BLACK);
-	Menu::printRectangle(59, 24, 33, 2);
-	Menu::printRectangle(59, 27, 14, 2);
-	Menu::printRectangle(78, 27, 14, 2);
+	Graphic::printRectangleNormal(_col * 8 + LEFT + DISTANCE, 25, 33, 2);
+	Graphic::printRectangleNormal(_col * 8 + LEFT + DISTANCE, 28, 14, 2);
+	Graphic::printRectangleNormal(_col * 8 + LEFT + DISTANCE + 19, 28, 14, 2);
 
 	Control::setConsoleColor(WHITE, PURPLE);
-	Control::gotoXY(67, 25);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 8, 26);
 	cout << "M : Move suggestion";
 	Control::setConsoleColor(WHITE, GREEN);
-	Control::gotoXY(63, 28);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 4, 29);
 	cout << "H : Help";
 	Control::setConsoleColor(WHITE, YELLOW);
-	Control::gotoXY(81, 28);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 22, 29);
 	cout << "Esc : Exit";
 }
 
@@ -481,7 +487,8 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 {
 	pair<int, int> Ucorner1;
 	pair<int, int> Ucorner2;
-	const int size = board->getSize();
+	const int sizeRow = board->getSizeRow();
+	const int sizeCol = board->getSizeCol();
 	const int x = board->getXAt(0, 0);
 	const int y = board->getYAt(0, 0);
 
@@ -530,16 +537,16 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 	// U ngang phai
 	if (firstBlock.first < secondBlock.first)
 		swap(firstBlock, secondBlock);
-	for (int i = firstBlock.first + 8; i <= x + size * 8; i += 8) {
+	for (int i = firstBlock.first + 8; i <= x + sizeCol * 8; i += 8) {
 		Ucorner1.first = i;
 		Ucorner1.second = firstBlock.second;
 		Ucorner2.first = i;
 		Ucorner2.second = secondBlock.second;
 
-		if (i == x + size * 8) {
-			Ucorner1.first = x + size * 8 - 8;
+		if (i == x + sizeCol * 8) {
+			Ucorner1.first = x + sizeCol * 8 - 8;
 			Ucorner1.second = firstBlock.second;
-			Ucorner2.first = x + size * 8 - 8;
+			Ucorner2.first = x + sizeCol * 8 - 8;
 			Ucorner2.second = secondBlock.second;
 
 			if (Ucorner1.first == firstBlock.first && Ucorner2.first == secondBlock.first)
@@ -614,17 +621,17 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 	// U doc duoi
 	if (firstBlock.second < secondBlock.second)
 		swap(firstBlock, secondBlock);
-	for (int i = firstBlock.second + 4; i <= y + size * 4; i += 4) {
+	for (int i = firstBlock.second + 4; i <= y + sizeRow * 4; i += 4) {
 		Ucorner1.first = firstBlock.first;
 		Ucorner1.second = i;
 		Ucorner2.first = secondBlock.first;
 		Ucorner2.second = i;
 
-		if (i == y + size * 4) {
+		if (i == y + sizeRow * 4) {
 			Ucorner2.first = secondBlock.first;
-			Ucorner2.second = y + size * 4 - 4;
+			Ucorner2.second = y + sizeRow * 4 - 4;
 			Ucorner1.first = firstBlock.first;
-			Ucorner1.second = y + size * 4 - 4;
+			Ucorner1.second = y + sizeRow * 4 - 4;
 
 			if (Ucorner1.second == firstBlock.second && Ucorner2.second == secondBlock.second)
 				return 1;
@@ -658,16 +665,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 	if (!checkMatchedPokemons(firstBlock, secondBlock)) {
 		if (isChecking == false) {
 			Control::setConsoleColor(WHITE, BLUE);
-			Control::gotoXY(72, 16);
+			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 13, 17);
 			cout << "Not Matched";
 			score -= 2;
 			Control::setConsoleColor(WHITE, RED);
 			if (score >= 0) {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC ";
 			}
 			else {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC";
 			}
 		}
@@ -676,16 +683,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 	if (checkIMatching(firstBlock, secondBlock, isChecking)) {
 		if (isChecking == false) {
 			Control::setConsoleColor(WHITE, BLUE);
-			Control::gotoXY(72, 16);
+			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 13, 17);
 			cout << "I Matching.";
 			score += 1;
 			Control::setConsoleColor(WHITE, GREEN);
 			if (score >= 0) {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC ";
 			}
 			else {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC";
 			}
 		}
@@ -694,16 +701,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 	if (checkLMatching(firstBlock, secondBlock, isChecking)) {
 		if (isChecking == false) {
 			Control::setConsoleColor(WHITE, BLUE);
-			Control::gotoXY(72, 16);
+			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 13, 17);
 			cout << "L Matching.";
 			score += 2;
 			Control::setConsoleColor(WHITE, GREEN);
 			if (score >= 0) {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC ";
 			}
 			else {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC";
 			}
 		}
@@ -712,16 +719,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 	if (checkZMatching(firstBlock, secondBlock, isChecking)) {
 		if (isChecking == false) {
 			Control::setConsoleColor(WHITE, BLUE);
-			Control::gotoXY(72, 16);
+			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 13, 17);
 			cout << "Z Matching.";
 			score += 3;
 			Control::setConsoleColor(WHITE, GREEN);
 			if (score >= 0) {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC ";
 			}
 			else {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC";
 			}
 		}
@@ -730,16 +737,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 	if (checkUMatching(firstBlock, secondBlock, isChecking)) {
 		if (isChecking == false) {
 			Control::setConsoleColor(WHITE, BLUE);
-			Control::gotoXY(72, 16);
+			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 13, 17);
 			cout << "U Matching.";
 			score += 4;
 			Control::setConsoleColor(WHITE, GREEN);
 			if (score >= 0) {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC ";
 			}
 			else {
-				Control::gotoXY(80, 17);
+				Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 				cout << score << " BTC";
 			}
 		}
@@ -766,15 +773,15 @@ void Game::deleteBlock() {
 	_remainBlocks -= 2;
 	if (_remainBlocks == 0) {
 		Control::setConsoleColor(WHITE, RED);
-		Control::gotoXY(69, 18);
+		Control::gotoXY(_col * 8 + LEFT + DISTANCE + 10, 19);
 		cout << "Game Announcement";
 		Control::setConsoleColor(WHITE, BLUE);
-		Control::gotoXY(67, 19);
+		Control::gotoXY(_col * 8 + LEFT + DISTANCE + 8, 20);
 		cout << "You have won the game.";
 		Control::setConsoleColor(WHITE, BLUE);
-		Control::gotoXY(69, 20);
+		Control::gotoXY(_col * 8 + LEFT + DISTANCE + 10, 21);
 		cout << "CONGRATULATIONS!";
-		Control::gotoXY(70, 21);
+		Control::gotoXY(_col * 8 + LEFT + DISTANCE + 11, 22);
 		cout << "Your score: " << score;
 		Control::playSound(WIN_SOUND);
 		board->unselectedBlock(_x, _y);
@@ -788,13 +795,13 @@ void Game::deleteBlock() {
 	isChecking = true;
 	if (!isAvailableBlock(isChecking)) {
 		Control::setConsoleColor(WHITE, RED);
-		Control::gotoXY(69, 18);
+		Control::gotoXY(_col * 8 + LEFT + DISTANCE + 10, 19);
 		cout << "Game Announcement";
-		Control::gotoXY(64, 19);
+		Control::gotoXY(_col * 8 + LEFT + DISTANCE + 5, 20);
 		cout << "There are no more ways left!";
 		//Control::playSound(EFFECT_SOUND);
 		Sleep(1000);
-		Control::gotoXY(62, 21);
+		Control::gotoXY(_col * 8 + LEFT + DISTANCE + 3, 22);
 		cout << "Auto reset the board. Have fun!";
 		Sleep(4000);
 		startGame();
@@ -802,18 +809,19 @@ void Game::deleteBlock() {
 }
 
 bool Game::isAvailableBlock(bool isChecking) {
-	int size = board->getSize();
+	int sizeRow = board->getSizeRow();
+	int sizeCol = board->getSizeCol();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
+	for (int i = 0; i < sizeRow; i++) {
+		for (int j = 0; j < sizeCol; j++) {
 			firstBlock.first = board->getXAt(i, j);
 			firstBlock.second = board->getYAt(i, j);
 			if (board->getCheck(firstBlock.first, firstBlock.second) == DEL) {
 				continue;
 			}
-			for (int m = i; m < size; m++) {
-				for (int n = 0; n < size; n++) {
+			for (int m = i; m < sizeRow; m++) {
+				for (int n = 0; n < sizeCol; n++) {
 					if (i == m && n <= j) continue;
 					secondBlock.first = board->getXAt(m, n);
 					secondBlock.second = board->getYAt(m, n);
@@ -830,16 +838,17 @@ bool Game::isAvailableBlock(bool isChecking) {
 }
 
 void Game::askContinue()
-{
+{	
+	Control::setAndCenterWindow();
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
 	Control::gotoXY(0, 0);
 	Control::setConsoleColor(WHITE, RED);
 	Menu::printLogo();
 	Control::setConsoleColor(WHITE, BLACK);
-	Menu::printRectangle(34, 17, 35, 8);
-	Menu::printRectangle(37, 21, 7, 2);
-	Menu::printRectangle(60, 21, 6, 2);
+	Graphic::printRectangleSpecial(34, 17, 35, 8);
+	Graphic::printRectangleNormal(37, 21, 7, 2);
+	Graphic::printRectangleNormal(60, 21, 6, 2);
 	Control::gotoXY(36, 19);
 	Control::setConsoleColor(WHITE, GREEN);
 	cout << "Do you want to play another round?";
@@ -881,18 +890,19 @@ void Game::askContinue()
 
 void Game::moveSuggestion() {
 	bool isHelp = true;
-	int size = board->getSize();
+	int sizeRow = board->getSizeRow();
+	int sizeCol = board->getSizeCol();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
+	for (int i = 0; i < sizeRow; i++) {
+		for (int j = 0; j < sizeCol; j++) {
 			firstBlock.first = board->getXAt(i, j);
 			firstBlock.second = board->getYAt(i, j);
 			if (board->getCheck(firstBlock.first, firstBlock.second) == DEL) {
 				continue;
 			}
-			for (int m = i; m < size; m++) {
-				for (int n = 0; n < size; n++) {
+			for (int m = i; m < sizeRow; m++) {
+				for (int n = 0; n < sizeCol; n++) {
 					if (i == m && n <= j) continue;
 					secondBlock.first = board->getXAt(m, n);
 					secondBlock.second = board->getYAt(m, n);
@@ -908,11 +918,11 @@ void Game::moveSuggestion() {
 							score -= 2;
 							Control::setConsoleColor(WHITE, RED);
 							if (score >= 0) {
-								Control::gotoXY(80, 17);
+								Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 								cout << score << " BTC ";
 							}
 							else {
-								Control::gotoXY(80, 17);
+								Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 								cout << score << " BTC";
 							}
 							return;
@@ -923,8 +933,3 @@ void Game::moveSuggestion() {
 		}
 	}
 }
-
-
-
-
-

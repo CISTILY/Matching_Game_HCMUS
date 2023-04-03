@@ -21,19 +21,33 @@ void Control::setFontInfo()
 	CONSOLE_FONT_INFOEX info;
 	info.cbSize = sizeof(info);
 	GetCurrentConsoleFontEx(consoleOutput, FALSE, &info);
-	info.dwFontSize.X = 12;	
+	info.dwFontSize.X = 12;
 	info.dwFontSize.Y = 24;
 	wcscpy_s(info.FaceName, L"Consolas");
 	SetCurrentConsoleFontEx(consoleOutput, FALSE, &info);
 }
 
 void Control::setAndCenterWindow()
-{
+{	//1220 - 768
 	RECT rectOfClient, rectOfWindow;
 	GetClientRect(consoleWindow, &rectOfClient);
 	GetWindowRect(consoleWindow, &rectOfWindow);
 	int width = 1220;
-	int height = 768;
+	int height = 820;
+	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
+	int	posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
+	MoveWindow(consoleWindow, posX, posY, width, height, TRUE);
+}
+
+void Control::setAndCenterWindow(int _row, int _col)
+{	
+	RECT rectOfClient, rectOfWindow;
+	GetClientRect(consoleWindow, &rectOfClient);
+	GetWindowRect(consoleWindow, &rectOfWindow);
+	int width = (_col + 1) * 110 + 410;
+	int height = 820;
+	if (_row > 6)
+		height = 1000;
 	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
 	int	posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 	MoveWindow(consoleWindow, posX, posY, width, height, TRUE);
@@ -128,7 +142,7 @@ int Control::getConsoleInput()
 		else if (c == 77 || c == 109)		// Nút M, m
 			return 8;
 		else                                // Nút khác
-			return 0;						
+			return 0;
 	}
 }
 
@@ -136,7 +150,7 @@ void Control::playSound(int i)
 {
 	static vector<const wchar_t*> soundFile{ L"Error.wav", L"Enter.wav", L"EnterMenu.wav", L"GameStart.wav", L"Win.wav",  L"Move.wav", L"GetPoint.wav" };
 	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
-} 
+}
 
 int getRandomInt(int begin, int end)
 {
