@@ -628,6 +628,7 @@ void Menu::playCustom()
 		putchar(32);
 	}
 	Control::playSound(ENTER_SOUND);
+	Control::showCursor(false);
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);
 	Control::gotoXY(xInput - 3, yInput - 1 + 3);
@@ -646,8 +647,6 @@ void Menu::playCustom()
 	Control::gotoXY(xInput, yInput + 3);
 	cout << _COL;
 
-	Control::showCursor(false);
-	//SetConsoleOutputCP(CP_UTF8);
 	Control::setConsoleColor(WHITE, GRAY);
 	for (int i = 0; i < 3; ++i)
 	{

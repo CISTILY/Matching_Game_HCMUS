@@ -260,8 +260,7 @@ void Game::moveUp()
 
 void Game::printInterface()
 {
-	//if ((_row != 4 && _col != 4) && (_row != 6 && _col != 6))
-		Control::setAndCenterWindow(_row, _col);
+	Control::setAndCenterWindow(_row, _col);
 
 	board->createBackground();
 	board->showBoard();
@@ -910,7 +909,7 @@ void Game::moveSuggestion() {
 						if (isHelp) {
 							board->selectedBlock(firstBlock.first, firstBlock.second, PURPLE);
 							board->selectedBlock(secondBlock.first, secondBlock.second, PURPLE);
-							Sleep(200);
+							Sleep(500);
 							board->unselectedBlock(firstBlock.first, firstBlock.second);
 							board->unselectedBlock(secondBlock.first, secondBlock.second);
 							score -= 2;

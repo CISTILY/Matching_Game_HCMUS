@@ -144,6 +144,7 @@
     <ClCompile Include="Point.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="custom.txt" />
     <Text Include="easy.txt" />
     <Text Include="medium.txt" />
     <Text Include="start.txt" />

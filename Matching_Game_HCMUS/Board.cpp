@@ -10,7 +10,10 @@ Board::Board(int psizeRow, int psizeCol, int pX, int pY) : sizeRow(psizeRow), si
 	for (int i = 0; i < sizeRow; i++)
 		pBoard[i] = new Point[sizeCol];
 
-	background = new string[sizeRow * 10];
+	if (sizeRow >= sizeCol)
+		background = new string[sizeRow * 10];
+	else
+		background = new string[sizeCol * 10];
 }
 
 Board::~Board()
@@ -1141,10 +1144,12 @@ void Board::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 //notice
 void Board::createBackground() {
 	ifstream bg;
-	if (sizeRow == 6 && sizeCol == 6)
+	if (sizeRow == 4 && sizeCol == 4)
+		bg.open("easy.txt");
+	else if (sizeRow == 6 && sizeCol == 6)
 		bg.open("medium.txt");
 	else
-		bg.open("easy.txt");
+		bg.open("custom.txt");
 	int i = 0;
 	while (!bg.eof()) {
 		getline(bg, background[i]);
