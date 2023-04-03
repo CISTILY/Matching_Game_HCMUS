@@ -357,7 +357,7 @@ void Menu::helpScreen()
 	Control::clearConsole();
 	int left = 5, top = 2, width = 85, height = 23;
 	int line1 = 6, line2 = 19, line3 = 20, line4 = 15;
-	printRectangle(left, top, width, height);
+	Graphic::printRectangleSpecial(left, top, width, height);
 	Control::gotoXY(left + 1, line1);
 	for (int i = 0; i < width; i++)
 	{
@@ -381,6 +381,8 @@ void Menu::helpScreen()
 	Control::gotoXY(line3, line1);
 	putchar(197);
 	Control::gotoXY(line3, line2);
+	putchar(197);
+	Control::gotoXY(line3, line4);
 	putchar(197);
 
 	Control::setConsoleColor(WHITE, BLUE);
@@ -441,7 +443,7 @@ void Menu::helpScreen()
 	cout << "Dev 2: Vu Thai Phuc (22127337)";
 
 	Control::setConsoleColor(WHITE, BLACK);
-	printRectangle(45, 27, 8, 2);
+	Graphic::printRectangleNormal(45, 27, 8, 2);
 	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(43, 28);
 	putchar(175);
@@ -455,39 +457,15 @@ void Menu::helpScreen()
 	}
 }
 
-void Menu::printRectangle(int left, int top, int width, int height)
-{
-	Control::gotoXY(left, top);
-	putchar(218);
-	for (int i = 0; i < width; i++)
-		putchar(196);
-	putchar(191);
-
-	int i = 0;
-	for (; i < height; i++)
-	{
-		Control::gotoXY(left, top + i + 1);
-		putchar(179);
-		Control::gotoXY(left + width + 1, top + i + 1);
-		putchar(179);
-	}
-
-	Control::gotoXY(left, top + i);
-	putchar(192);
-	for (i = 0; i < width; i++)
-		putchar(196);
-	putchar(217);
-}
-
 void Menu::exitScreen()
 {
 	Control::showCursor(false);
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
 	Control::setConsoleColor(WHITE, BLACK);
-	Menu::printRectangle(34, 17, 35, 6);
-	Menu::printRectangle(37, 20, 7, 2);
-	Menu::printRectangle(60, 20, 6, 2);
+	Graphic::printRectangleSpecial(34, 17, 35, 6);
+	Graphic::printRectangleNormal(37, 20, 7, 2);
+	Graphic::printRectangleNormal(60, 20, 6, 2);
 	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(0, 0);
 	printLogo();
@@ -613,11 +591,12 @@ void Menu::playCustom()
 	}
 
 	Control::showCursor(true);
-	while (_ROW % 2 != 0 || _ROW <= 2)
+	while (_ROW % 2 != 0 || _ROW <= 2 || _ROW >= 12)
 	{
 		Control::gotoXY(xInput, yInput);
 		cin >> _ROW;
 		Control::gotoXY(xInput, yInput);
+		putchar(32);
 		putchar(32);
 	}
 	Control::playSound(ENTER_SOUND);
@@ -640,11 +619,12 @@ void Menu::playCustom()
 	cout << _ROW;
 
 	Control::setConsoleColor(WHITE, BLACK);
-	while (_COL % 2 != 0 || _COL <= 2)
+	while (_COL % 2 != 0 || _COL <= 2 || _COL >= 12)
 	{
 		Control::gotoXY(xInput, yInput + 3);
 		cin >> _COL;
 		Control::gotoXY(xInput, yInput + 3);
+		putchar(32);
 		putchar(32);
 	}
 	Control::playSound(ENTER_SOUND);
@@ -711,7 +691,7 @@ void Menu::leaderBoard()
 	 |______|______/_/    \_\_____/|______|_|  \_\____/ \____/_/    \_\_|  \_\_____/                                                                 
 	)";
 	Control::setConsoleColor(WHITE, BLACK);
-	printRectangle(5, 8, 85, 17);
+	Graphic::printRectangleNormal(5, 8, 85, 17);
 
 	Control::setConsoleColor(WHITE, BLUE);
 	Control::gotoXY(8, 9);
@@ -833,7 +813,7 @@ void Menu::leaderBoard()
 	}
 
 	Control::setConsoleColor(WHITE, BLACK);
-	printRectangle(45, 27, 8, 2);
+	Graphic::printRectangleNormal(45, 27, 8, 2);
 	Control::setConsoleColor(WHITE, RED);
 	Control::gotoXY(43, 28);
 	putchar(175);

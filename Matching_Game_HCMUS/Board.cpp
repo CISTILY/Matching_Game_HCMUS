@@ -267,6 +267,13 @@ void Board::renderBoard() {
 			int r = pBoard[i][j].getX();
 			int c = pBoard[i][j].getY();
 
+			if (pBoard[i][j].getCharacter() % 16 != 7 && pBoard[i][j].getCharacter() % 16 != 11 
+				&& pBoard[i][j].getCharacter() % 16 != 14 && pBoard[i][j].getCharacter() % 16 != 15)
+				Control::setConsoleColor(WHITE, pBoard[i][j].getCharacter() % 16);
+			else
+				Control::setConsoleColor(WHITE, (pBoard[i][j].getCharacter() + 2 )% 16 );
+
+			
 			Control::gotoXY(r, c);
 			putchar(pBoard[i][j].getCharacter());
 		}

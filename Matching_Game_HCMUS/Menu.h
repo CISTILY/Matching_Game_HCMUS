@@ -30,7 +30,6 @@ struct Menu
 	static void printLogo();								// In ra logo
 	static void printOptionsBoard();						// In ra các bảng lựa chọn
 	//static void printAnimation();							// In hiệu ứng mở đầu
-	static void printRectangle(int, int, int, int);			// Vẽ hình chữ nhật
 	static void changeOption(bool, bool);					// Thay đổi lựa chọn
 	static void chooseMode(bool, bool, int&);
 	static void enterUsername();

@@ -9,6 +9,7 @@
 
 #define LEFT 6
 #define TOP 2
+#define DISTANCE 6
 
 using namespace std;
 
