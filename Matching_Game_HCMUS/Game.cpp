@@ -1,14 +1,15 @@
 #include "Game.h"
 
-Game::Game(int mode)
+Game::Game(int row, int col)
 {
-	_mode = mode;
+	_row = row;
+	_col = col;
 	_x = LEFT, _y = TOP;
-	board = new Board(_mode, LEFT, TOP);
+	board = new Board(_row, _col, LEFT, TOP);
 	isPlaying = true;
 	_lockedBlock = 0;
 	_lockedBlockPair.clear();
-	_remainBlocks = _mode * _mode;
+	_remainBlocks = _row * _col;
 	score = 0;
 }
 
@@ -22,7 +23,7 @@ void Game::startGame()
 	Control::clearConsole();
 	Control::playSound(GAMESTART_SOUND);
 	while (isPlaying) {
-		_remainBlocks = _mode * _mode;
+		_remainBlocks = _row * _col;
 		score = 0;
 		bool isPause = false;
 		printInterface();
@@ -86,10 +87,9 @@ void Game::startGame()
 	saveData();
 }
 
+
 void Game::setupGame(int current_option) {
-	Control::setConsoleColor(WHITE, YELLOW);
 	Control::clearConsole();
-	Control::gotoXY(0, 0);
 	Menu::printLogo();
 
 	Control::setConsoleColor(WHITE, RED);
@@ -108,7 +108,7 @@ void Game::setupGame(int current_option) {
 
 
 	Menu::chooseMode(0, 1, current_option);
-	
+
 	while (loop)
 	{
 		switch (Control::getConsoleInput())
@@ -125,7 +125,7 @@ void Game::setupGame(int current_option) {
 				Control::playSound(ENTER_SOUND);
 				Control::showCursor(true);
 
-				khongCoKiTu:
+			khongCoKiTu:
 				Control::gotoXY(49, 20);
 				cout << ">> ";
 				cin.getline(playerName, 15);
@@ -138,7 +138,7 @@ void Game::setupGame(int current_option) {
 			else
 			{
 				srand((unsigned)time(0));
-				
+
 				for (int i = 0; i < 10; ++i)
 					playerName[i] = rand() % 58 + 65;
 				loop = 0;
@@ -150,11 +150,11 @@ void Game::setupGame(int current_option) {
 		}
 	}
 
-
-	if (_mode == 4)
-		strcpy_s(mode, "EASY");
-	else
+	//notice
+	if (_row == 6 && _col == 6)
 		strcpy_s(mode, "MEDIUM");
+	else
+		strcpy_s(mode, "EASY");
 
 	Control::showCursor(false);
 }
@@ -167,7 +167,7 @@ void Game::saveData() {
 
 void Game::moveRight()
 {
-	if (_x < board->getXAt(board->getSize() - 1, board->getSize() - 1))
+	if (_x < board->getXAt(board->getSizeRow() - 1, board->getSizeCol() - 1))
 	{
 		Control::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != LOCK) {
@@ -214,7 +214,7 @@ void Game::moveLeft()
 
 void Game::moveDown()
 {
-	if (_y < board->getYAt(board->getSize() - 1, board->getSize() - 1))
+	if (_y < board->getYAt(board->getSizeRow() - 1, board->getSizeCol() - 1))
 	{
 		Control::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != LOCK) {
@@ -482,7 +482,8 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 {
 	pair<int, int> Ucorner1;
 	pair<int, int> Ucorner2;
-	const int size = board->getSize();
+	const int sizeRow = board->getSizeRow();
+	const int sizeCol = board->getSizeCol();
 	const int x = board->getXAt(0, 0);
 	const int y = board->getYAt(0, 0);
 
@@ -531,16 +532,16 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 	// U ngang phai
 	if (firstBlock.first < secondBlock.first)
 		swap(firstBlock, secondBlock);
-	for (int i = firstBlock.first + 8; i <= x + size * 8; i += 8) {
+	for (int i = firstBlock.first + 8; i <= x + sizeCol * 8; i += 8) {
 		Ucorner1.first = i;
 		Ucorner1.second = firstBlock.second;
 		Ucorner2.first = i;
 		Ucorner2.second = secondBlock.second;
 
-		if (i == x + size * 8) {
-			Ucorner1.first = x + size * 8 - 8;
+		if (i == x + sizeCol * 8) {
+			Ucorner1.first = x + sizeCol * 8 - 8;
 			Ucorner1.second = firstBlock.second;
-			Ucorner2.first = x + size * 8 - 8;
+			Ucorner2.first = x + sizeCol * 8 - 8;
 			Ucorner2.second = secondBlock.second;
 
 			if (Ucorner1.first == firstBlock.first && Ucorner2.first == secondBlock.first)
@@ -615,17 +616,17 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 	// U doc duoi
 	if (firstBlock.second < secondBlock.second)
 		swap(firstBlock, secondBlock);
-	for (int i = firstBlock.second + 4; i <= y + size * 4; i += 4) {
+	for (int i = firstBlock.second + 4; i <= y + sizeRow * 4; i += 4) {
 		Ucorner1.first = firstBlock.first;
 		Ucorner1.second = i;
 		Ucorner2.first = secondBlock.first;
 		Ucorner2.second = i;
 
-		if (i == y + size * 4) {
+		if (i == y + sizeRow * 4) {
 			Ucorner2.first = secondBlock.first;
-			Ucorner2.second = y + size * 4 - 4;
+			Ucorner2.second = y + sizeRow * 4 - 4;
 			Ucorner1.first = firstBlock.first;
-			Ucorner1.second = y + size * 4 - 4;
+			Ucorner1.second = y + sizeRow * 4 - 4;
 
 			if (Ucorner1.second == firstBlock.second && Ucorner2.second == secondBlock.second)
 				return 1;
@@ -803,18 +804,19 @@ void Game::deleteBlock() {
 }
 
 bool Game::isAvailableBlock(bool isChecking) {
-	int size = board->getSize();
+	int sizeRow = board->getSizeRow();
+	int sizeCol = board->getSizeCol();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
+	for (int i = 0; i < sizeRow; i++) {
+		for (int j = 0; j < sizeCol; j++) {
 			firstBlock.first = board->getXAt(i, j);
 			firstBlock.second = board->getYAt(i, j);
 			if (board->getCheck(firstBlock.first, firstBlock.second) == DEL) {
 				continue;
 			}
-			for (int m = i; m < size; m++) {
-				for (int n = 0; n < size; n++) {
+			for (int m = i; m < sizeRow; m++) {
+				for (int n = 0; n < sizeCol; n++) {
 					if (i == m && n <= j) continue;
 					secondBlock.first = board->getXAt(m, n);
 					secondBlock.second = board->getYAt(m, n);
@@ -882,18 +884,19 @@ void Game::askContinue()
 
 void Game::moveSuggestion() {
 	bool isHelp = true;
-	int size = board->getSize();
+	int sizeRow = board->getSizeRow();
+	int sizeCol = board->getSizeCol();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
+	for (int i = 0; i < sizeRow; i++) {
+		for (int j = 0; j < sizeCol; j++) {
 			firstBlock.first = board->getXAt(i, j);
 			firstBlock.second = board->getYAt(i, j);
 			if (board->getCheck(firstBlock.first, firstBlock.second) == DEL) {
 				continue;
 			}
-			for (int m = i; m < size; m++) {
-				for (int n = 0; n < size; n++) {
+			for (int m = i; m < sizeRow; m++) {
+				for (int n = 0; n < sizeCol; n++) {
 					if (i == m && n <= j) continue;
 					secondBlock.first = board->getXAt(m, n);
 					secondBlock.second = board->getYAt(m, n);
@@ -924,8 +927,3 @@ void Game::moveSuggestion() {
 		}
 	}
 }
-
-
-
-
-

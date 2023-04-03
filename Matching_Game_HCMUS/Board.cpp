@@ -1,22 +1,21 @@
 #include "Board.h"
 
-Board::Board(int psize, int pX, int pY) : size(psize), left(pX), top(pY)
+Board::Board(int psizeRow, int psizeCol, int pX, int pY) : sizeRow(psizeRow), sizeCol(psizeCol), left(pX), top(pY)
 {
-	character = new int* [size];
-	for (int i = 0; i < psize; i++)
-		character[i] = new int[size];
+	character = new int* [sizeRow];
+	for (int i = 0; i < sizeRow; i++)
+		character[i] = new int[sizeCol];
 
-	pBoard = new Point * [psize];
+	pBoard = new Point * [sizeRow];
+	for (int i = 0; i < sizeRow; i++)
+		pBoard[i] = new Point[sizeCol];
 
-	for (int i = 0; i < psize; i++)
-		pBoard[i] = new Point[psize];
-
-	background = new string[psize * 10];
+	background = new string[sizeRow * 10];
 }
 
 Board::~Board()
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < sizeRow; i++)
 		delete[] pBoard[i];
 	delete[] pBoard,
 		pBoard = nullptr;
@@ -24,9 +23,14 @@ Board::~Board()
 	background = nullptr;
 }
 
-int Board::getSize()
+int Board::getSizeRow()
 {
-	return size;
+	return sizeRow;
+}
+
+int Board::getSizeCol()
+{
+	return sizeCol;
 }
 
 int Board::getLeft()
@@ -66,9 +70,9 @@ char Board::getCharacter(int x, int y)
 
 int Board::getCheckAtXY(int pX, int pY)
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < sizeRow; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < sizeCol; j++)
 		{
 			if (pBoard[i][j].getX() == pX && pBoard[i][j].getY() == pY)
 				return pBoard[i][j].getCheck();
@@ -87,7 +91,7 @@ int Board::getCheckLockAll(int x, int y)
 {
 	for (int i = -4; i <= 4; i += 4) {
 		for (int j = -8; j <= 8; j += 8) {
-			if (x + j < getXAt(0, 0) || x + j > getXAt(0, size - 1) || y + i < getYAt(0, 0) || y + i > getYAt(size - 1, 0) || i == j)
+			if (x + j < getXAt(0, 0) || x + j > getXAt(0, sizeCol - 1) || y + i < getYAt(0, 0) || y + i > getYAt(sizeRow - 1, 0) || i == j)
 				continue;
 			if (getCheck(x + j, y + i) == LOCK)
 			{
@@ -117,7 +121,7 @@ int Board::getCheckUpperLeft(int x, int y)
 {
 	int j = -8, i = -4;
 
-	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, size - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(size - 1, 0))
+	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, sizeCol - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(sizeRow - 1, 0))
 		&& (getCheck(x + j, y + i) == DEL && getCheck(x + j, y) == DEL && getCheck(x, y + i) == DEL) && getCheck(x, y) == DEL)
 		return 9;
 	else
@@ -129,7 +133,7 @@ int Board::getCheckUpperRight(int x, int y)
 {
 	int j = +8, i = -4;
 
-	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, size - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(size - 1, 0))
+	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, sizeCol - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(sizeRow - 1, 0))
 		&& (getCheck(x + j, y + i) == DEL && getCheck(x + j, y) == DEL && getCheck(x, y + i) == DEL) && getCheck(x, y) == DEL)
 		return 9;
 	else
@@ -141,7 +145,7 @@ int Board::getCheckBottomLeft(int x, int y)
 {
 	int j = -8, i = +4;
 
-	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, size - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(size - 1, 0))
+	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, sizeCol - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(sizeRow - 1, 0))
 		&& (getCheck(x + j, y + i) == DEL && getCheck(x + j, y) == DEL && getCheck(x, y + i) == DEL) && getCheck(x, y) == DEL)
 		return 9;
 	else
@@ -154,7 +158,7 @@ int Board::getCheckBottomRight(int x, int y)
 {
 	int j = +8, i = +4;
 
-	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, size - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(size - 1, 0))
+	if ((x + j >= getXAt(0, 0) && x + j <= getXAt(0, sizeCol - 1) && y + i >= getYAt(0, 0) && y + i <= getYAt(sizeRow - 1, 0))
 		&& (getCheck(x + j, y + i) == DEL && getCheck(x + j, y) == DEL && getCheck(x, y + i) == DEL) && getCheck(x, y) == DEL)
 		return 9;
 	else
@@ -175,7 +179,7 @@ void Board::showBoard()
 	// Draw top line
 	Control::gotoXY(left + 1, top);
 	putchar(43);
-	for (int i = 1; i < size * 8; i++)
+	for (int i = 1; i < sizeCol * 8; i++)
 	{
 		Sleep(5);
 		if (i % 8 == 0)
@@ -186,36 +190,36 @@ void Board::showBoard()
 	putchar(43);
 
 	// Draw right line
-	for (int i = 1; i < size * 4; i++)
+	for (int i = 1; i < sizeRow * 4; i++)
 	{
 		Sleep(10);
-		Control::gotoXY(size * 8 + left + 1, i + top);
+		Control::gotoXY(sizeCol * 8 + left + 1, i + top);
 		if (i % 4 != 0)
 			putchar(179);
 		else
 			putchar(43);
 	}
-	Control::gotoXY(size * 8 + left + 1, size * 4 + top);
+	Control::gotoXY(sizeCol * 8 + left + 1, sizeRow * 4 + top);
 	putchar(43);
 
 	// Draw bottom line
-	for (int i = 1; i < size * 8; i++)
+	for (int i = 1; i < sizeCol * 8; i++)
 	{
-		Control::gotoXY(size * 8 + left - i + 1, size * 4 + top);
+		Control::gotoXY(sizeCol * 8 + left - i + 1, sizeRow * 4 + top);
 		Sleep(5);
 		if (i % 8 == 0)
 			putchar(43);
 		else
 			putchar(45);
 	}
-	Control::gotoXY(left + 1, size * 4 + top);
+	Control::gotoXY(left + 1, sizeRow * 4 + top);
 	putchar(43);
 
 	// Draw left line
-	for (int i = 1; i < size * 4; i++)
+	for (int i = 1; i < sizeRow * 4; i++)
 	{
 		Sleep(10);
-		Control::gotoXY(left + 1, size * 4 + top - i);
+		Control::gotoXY(left + 1, sizeRow * 4 + top - i);
 		if (i % 4 != 0)
 			putchar(179);
 		else
@@ -223,9 +227,9 @@ void Board::showBoard()
 	}
 
 	// Draw vertical lines
-	for (int i = 1; i < size * 4; i++)
+	for (int i = 1; i < sizeRow * 4; i++)
 	{
-		for (int j = 8; j < size * 8; j += 8)
+		for (int j = 8; j < sizeCol * 8; j += 8)
 		{
 			Control::gotoXY(j + left + 1, i + top);
 			if (i % 4 != 0)
@@ -237,9 +241,9 @@ void Board::showBoard()
 	}
 
 	// Draw horizontal lines
-	for (int i = 1; i < size * 8; i++)
+	for (int i = 1; i < sizeCol * 8; i++)
 	{
-		for (int j = 4; j < size * 4; j += 4)
+		for (int j = 4; j < sizeRow * 4; j += 4)
 		{
 			Control::gotoXY(i + left + 1, j + top);
 			if (i % 8 == 0)
@@ -252,9 +256,9 @@ void Board::showBoard()
 }
 
 void Board::renderBoard() {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < sizeRow; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < sizeCol; j++)
 		{
 			pBoard[i][j].setX(8 * j + left + 5); // x-value of boardgame
 			pBoard[i][j].setY(4 * i + top + 2); // y-value of boardgame
@@ -272,33 +276,33 @@ void Board::renderBoard() {
 void Board::buildBoardData() {
 	srand((unsigned int)time(NULL));
 
-	bool* checkDuplicate = new bool[size * size];
-	int* pos = new int[size * size];
+	bool* checkDuplicate = new bool[sizeRow * sizeCol];
+	int* pos = new int[sizeRow * sizeCol];
 
 	// Random pokemons
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j += 2) {
+	for (int i = 0; i < sizeRow; i++) {
+		for (int j = 0; j < sizeCol; j += 2) {
 			character[i][j] = character[i][j + 1] = rand() % 26 + 'A';
 		}
 	}
 
 	// Random pokemons position 
-	for (int i = 0; i < size * size; i++)
+	for (int i = 0; i < sizeRow * sizeCol; i++)
 		checkDuplicate[i] = 0;
-	for (int i = 0; i < size * size; i++) {
+	for (int i = 0; i < sizeRow * sizeCol; i++) {
 		int tmp = 0;
 		do {
-			tmp = rand() % (size * size);
+			tmp = rand() % (sizeRow * sizeCol);
 		} while (checkDuplicate[tmp]);
 		checkDuplicate[tmp] = 1;
 		pos[i] = tmp;
 	}
-
+	Control::gotoXY(0, 0);
 	// Construct pokemons matrix
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
-			int r = pos[size * i + j] / size;
-			int c = pos[size * i + j] % size;
+	for (int i = 0; i < sizeRow; i++) {
+		for (int j = 0; j < sizeCol; j++) {
+			int r = pos[sizeCol * i + j] / sizeCol;
+			int c = pos[sizeCol * i + j] % sizeCol;
 			pBoard[i][j].setCharacter(character[r][c]);
 		}
 	}
@@ -410,7 +414,7 @@ void Board::deleteBlock(int x, int y)
 		}
 	}
 	//Delete bottom border
-	if (y + 4 <= getYAt(size - 1, size - 1) && getCheck(x, y + 4) == DEL) {
+	if (y + 4 <= getYAt(sizeRow - 1, sizeCol - 1) && getCheck(x, y + 4) == DEL) {
 		for (int i = x - 3; i <= x + 3; i++) {
 			Control::gotoXY(i, y + 2);
 			//putchar(32);
@@ -426,7 +430,7 @@ void Board::deleteBlock(int x, int y)
 		}
 	}
 	//Delete right border
-	if (x + 8 <= getXAt(size - 1, size - 1) && getCheck(x + 8, y) == DEL) {
+	if (x + 8 <= getXAt(sizeRow - 1, sizeCol - 1) && getCheck(x + 8, y) == DEL) {
 		for (int i = y - 1; i <= y + 1; i++) {
 			Control::gotoXY(x + 4, i);
 			//putchar(32);
@@ -1127,12 +1131,13 @@ void Board::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 	}
 }
 
+//notice
 void Board::createBackground() {
 	ifstream bg;
-	if (size == 4)
-		bg.open("easy.txt");
-	else
+	if (sizeRow == 6 && sizeCol == 6)
 		bg.open("medium.txt");
+	else
+		bg.open("easy.txt");
 	int i = 0;
 	while (!bg.eof()) {
 		getline(bg, background[i]);

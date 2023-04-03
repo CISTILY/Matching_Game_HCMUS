@@ -1,6 +1,6 @@
 ﻿#include "Menu.h"
 int Menu::current_option;
-const string Menu::options[10] = { "Play", "LeaderBoard", "Help", "Exit", "Easy", "  Medium   ", "Back", "Exit", "Username:            ", "Guest Mode" };
+const string Menu::options[10] = { "Play", "LeaderBoard", "Help", "Exit", "Easy", "  Medium   ", "Custom", "Exit", "Username:            ", "Guest Mode" };
 
 void Menu::mainScreen()
 {
@@ -11,7 +11,7 @@ void Menu::mainScreen()
 		{options[3], exitScreen},
 		{options[4], playEasy},
 		{options[5], playMedium},
-		{options[6], goBack},
+		{options[6], playCustom},
 		{options[7], exitScreen},
 		{options[8], enterUsername},
 		{options[9], playGuestMode}
@@ -89,7 +89,7 @@ void Menu::printLogo()
 
 
 
-
+	SetConsoleOutputCP(CP_UTF8);
 
 	unsigned char logo[] = u8R"(
 
@@ -240,11 +240,11 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 	}
 }
 
-void Menu::chooseMode(bool direction, bool flag, int &current_option) //0: lên, 1: xuống
+void Menu::chooseMode(bool direction, bool flag, int& current_option) //0: lên, 1: xuống
 {
 	int leftRec = 38, topRec = 19;
 	int top = 20;
-	
+
 	if ((direction == 0 && current_option == 8)
 		|| (direction == 1 && current_option == 9))
 	{
@@ -254,7 +254,7 @@ void Menu::chooseMode(bool direction, bool flag, int &current_option) //0: lên,
 
 	Control::setConsoleColor(WHITE, LIGHT_BLUE);
 
-	Control::gotoXY(leftRec, topRec +  (current_option - 8) % 2 * 3);
+	Control::gotoXY(leftRec, topRec + (current_option - 8) % 2 * 3);
 	putchar(201);
 	for (int i = 1; i < 25; i++)
 	{
@@ -543,7 +543,7 @@ void Menu::playEasy()
 {
 	current_option = 9;
 
-	Game g(_EASY);
+	Game g(_EASY, _EASY);
 	g.setupGame(current_option);
 	g.startGame();
 }
@@ -552,7 +552,146 @@ void Menu::playMedium()
 {
 	current_option = 9;
 
-	Game g(_MEDIUM);
+	Game g(_MEDIUM, _MEDIUM);
+	g.setupGame(current_option);
+	g.startGame();
+}
+
+void Menu::playCustom()
+{
+	Control::playSound(ENTER_SOUND);
+
+	int _ROW = 1, _COL = 1;
+
+	Control::clearConsole();
+	printLogo();
+
+	int leftRec = 37, topRec = 17;
+	int widthRec = 30, heightRec = 10;
+	int leftCha = 47, topCha = 18;
+	int xInput = leftCha + 11, yInput = topCha + 4;
+
+	Control::setConsoleColor(WHITE, GRAY);
+	for (int j = leftRec; j < leftRec + widthRec; ++j)
+	{
+		Control::gotoXY(j, topRec);
+		putchar(45);
+	}
+	for (int j = leftRec; j <= leftRec + widthRec; ++j)
+	{
+		Control::gotoXY(j, topRec + heightRec);
+		putchar(45);
+	}
+
+	Control::setConsoleColor(WHITE, RED);
+	Control::gotoXY(leftCha, topCha);
+	cout << "SIZE BOARD";
+	Control::setConsoleColor(WHITE, GRAY);
+	Control::gotoXY(leftCha - 12, topCha + 2);
+	cout << "Input even numbers between 2 and 12";
+
+	Control::setConsoleColor(WHITE, BLACK);
+	Control::gotoXY(leftCha - 5, topCha + 4);
+	cout << "Rows: ";
+	Control::gotoXY(leftCha - 5, topCha + 7);
+	cout << "Cols: ";
+
+	for (int i = 0; i <= 3; i += 3)
+	{
+		Control::gotoXY(xInput - 3, yInput - 1 + i);
+		putchar(201);
+		Control::gotoXY(xInput + 3, yInput - 1 + i);
+		putchar(187);
+		Control::gotoXY(xInput - 3, yInput + 1 + i);
+		putchar(200);
+		Control::gotoXY(xInput + 3, yInput + 1 + i);
+		putchar(188);
+		Control::gotoXY(xInput - 3, yInput + i);
+		putchar(186);
+		Control::gotoXY(xInput + 3, yInput + i);
+		putchar(186);
+	}
+
+	Control::showCursor(true);
+	while (_ROW % 2 != 0 || _ROW <= 2)
+	{
+		Control::gotoXY(xInput, yInput);
+		cin >> _ROW;
+		Control::gotoXY(xInput, yInput);
+		putchar(32);
+	}
+	Control::playSound(ENTER_SOUND);
+
+	Control::setConsoleColor(WHITE, LIGHT_RED);
+	Control::gotoXY(xInput - 3, yInput - 1);
+	putchar(201);
+	Control::gotoXY(xInput + 3, yInput - 1);
+	putchar(187);
+	Control::gotoXY(xInput - 3, yInput + 1);
+	putchar(200);
+	Control::gotoXY(xInput + 3, yInput + 1);
+	putchar(188);
+	Control::gotoXY(xInput - 3, yInput);
+	putchar(186);
+	Control::gotoXY(xInput + 3, yInput);
+	putchar(186);
+
+	Control::gotoXY(xInput, yInput);
+	cout << _ROW;
+
+	Control::setConsoleColor(WHITE, BLACK);
+	while (_COL % 2 != 0 || _COL <= 2)
+	{
+		Control::gotoXY(xInput, yInput + 3);
+		cin >> _COL;
+		Control::gotoXY(xInput, yInput + 3);
+		putchar(32);
+	}
+	Control::playSound(ENTER_SOUND);
+
+	Control::setConsoleColor(WHITE, LIGHT_RED);
+	Control::gotoXY(xInput - 3, yInput - 1 + 3);
+	putchar(201);
+	Control::gotoXY(xInput + 3, yInput - 1 + 3);
+	putchar(187);
+	Control::gotoXY(xInput - 3, yInput + 1 + 3);
+	putchar(200);
+	Control::gotoXY(xInput + 3, yInput + 1 + 3);
+	putchar(188);
+	Control::gotoXY(xInput - 3, yInput + 3);
+	putchar(186);
+	Control::gotoXY(xInput + 3, yInput + 3);
+	putchar(186);
+
+	Control::gotoXY(xInput, yInput + 3);
+	cout << _COL;
+
+	Control::showCursor(false);
+	//SetConsoleOutputCP(CP_UTF8);
+	Control::setConsoleColor(WHITE, GRAY);
+	for (int i = 0; i < 3; ++i)
+	{
+		Control::gotoXY(leftCha - 5, topCha + 1);
+		cout << "Generating board ";
+		Control::gotoXY(leftCha + 12, topCha + 1);
+		putchar(16);
+		Sleep(500);
+		Control::gotoXY(leftCha + 13, topCha + 1);
+		putchar(16);
+		Sleep(500);
+		Control::gotoXY(leftCha + 14, topCha + 1);
+		putchar(16);
+		Sleep(500);
+		Control::gotoXY(leftCha + 12, topCha + 1);
+		putchar(32);
+		putchar(32);
+		putchar(32);
+		Sleep(200);
+	}
+
+	current_option = 9;
+
+	Game g(_ROW, _COL);
 	g.setupGame(current_option);
 	g.startGame();
 }

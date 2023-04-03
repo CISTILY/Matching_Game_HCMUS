@@ -12,16 +12,17 @@
 using namespace std;
 
 struct Board {
-	int size;						// Kích thước bàn cờ
+	int sizeRow, sizeCol;			// Kích thước bàn cờ					
 	int left, top;					// tọa độ góc trên bàn cờ
 	Point** pBoard;					// Mảng tọa độ ô cờ
 	int** character;
 	string* background;
 
-	Board(int, int, int);
+	Board(int, int, int, int);
 	~Board();
 
-	int getSize();					//Lấy kích cỡ
+	int getSizeRow();					//Lấy kích cỡ
+	int getSizeCol();					//Lấy kích cỡ
 	int getLeft();					//Lấy tọa độ trái bắt đầu bàn cờ
 	int getTop();					//Lấy tọa độ trên bắt đầu bàn cờ
 	int getXAt(int, int);			//Lấy tọa độ x tại ô

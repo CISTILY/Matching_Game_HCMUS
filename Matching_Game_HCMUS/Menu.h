@@ -26,8 +26,8 @@ struct Menu
 	static void exitScreen();								// Màn hình thoát
 	static void playEasy();									// Chế độ easy
 	static void playMedium();								// Chế độ medium
+	static void playCustom();								// Chế độ custom
 	static void printLogo();								// In ra logo
-	static void goBack() {};								// Trở về menu
 	static void printOptionsBoard();						// In ra các bảng lựa chọn
 	//static void printAnimation();							// In hiệu ứng mở đầu
 	static void printRectangle(int, int, int, int);			// Vẽ hình chữ nhật
