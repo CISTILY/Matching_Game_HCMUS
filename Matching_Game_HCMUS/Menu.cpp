@@ -89,6 +89,7 @@ void Menu::printLogo()
 
 
 
+	SetConsoleOutputCP(CP_UTF8);
 
 	unsigned char logo[] = u8R"(
 
@@ -119,7 +120,7 @@ void Menu::printLogo()
 void Menu::printOptionsBoard()
 {
 	Control::setConsoleColor(WHITE, BLACK);
-	int left = 48; //48
+	int left = 47; //48
 	int top = 19;
 
 	Control::gotoXY(left, top);
