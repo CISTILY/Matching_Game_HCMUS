@@ -1,0 +1,24 @@
+phuc
+CUSTOM 4 x 6
+24
+phuc12345
+CUSTOM 4 x 6
+22
+phuc
+EASY
+18
+phuc
+MEDIUM 
+23
+phuc
+CUSTOM 10 x 10
+30
+phuc
+CUSTOM 10 x 6
+8
+phuc
+CUSTOM 4 x 6
+-6
+phuc
+CUSTOM 4 x 6
+15

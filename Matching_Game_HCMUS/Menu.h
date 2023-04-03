@@ -32,13 +32,11 @@ struct Menu
 	//static void printAnimation();							// In hiệu ứng mở đầu
 	static void changeOption(bool, bool);					// Thay đổi lựa chọn
 	static void chooseMode(bool, bool, int&);
-	static void enterUsername();
+	static void playUserMode();
 	static void playGuestMode();
 };
 struct Player {
 	string playerName;
-	string playerID;
-	string className;
 	int score;
 	string mode;
 };

@@ -146,6 +146,7 @@
   <ItemGroup>
     <Text Include="custom.txt" />
     <Text Include="easy.txt" />
+    <Text Include="leaderboard.txt" />
     <Text Include="medium.txt" />
     <Text Include="start.txt" />
   </ItemGroup>

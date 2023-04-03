@@ -1,6 +1,6 @@
 ﻿#include "Menu.h"
 int Menu::current_option;
-const string Menu::options[10] = { "Play", "LeaderBoard", "Help", "Exit", "Easy", "  Medium   ", "Custom", "Exit", "Username:            ", "Guest Mode" };
+const string Menu::options[10] = { "Play", "Leader Board", "Help", "Exit", "Easy", "   Medium   ", "Custom", "Exit", "User Mode", "Guest Mode" };
 
 void Menu::mainScreen()
 {
@@ -13,7 +13,7 @@ void Menu::mainScreen()
 		{options[5], playMedium},
 		{options[6], playCustom},
 		{options[7], exitScreen},
-		{options[8], enterUsername},
+		{options[8], playUserMode},
 		{options[9], playGuestMode}
 	};
 	//Control::playSound(BACKGROUND_SOUND);
@@ -103,8 +103,8 @@ void Menu::printLogo()
 
 		           ███████─╮       ███─╮      ████─╮  ████─╮  ████████─╮
 		          ██ ╭─────╯      ██ ██╰╮     ██ ██╰╮██ ██ │  ██ ╭─────╯
-		          ██ │  ████─╮   ██ ╭╯██╰╮    ██ │████ ╭██ │  ████████─╮
-		          ██ │   ██ ╭╯  █████████╰╮   ██ │ ╰───╯██ │  ██ ╭─────╯
+		          ██ │  ████─╮   ██ ╭╯██╰╮    ██ │████ ╭██ │  ███████─╮
+		          ██ │   ██ ╭╯  █████████╰╮   ██ │ ╰───╯██ │  ██ ╭────╯
 		           ███████ ╭╯  ██ ╭─────██╰╮  ██ │      ██ │  ████████─╮
 		           ╰───────╯   ╰──╯     ╰──╯  ╰──╯      ╰──╯  ╰────────╯
 
@@ -120,46 +120,23 @@ void Menu::printLogo()
 void Menu::printOptionsBoard()
 {
 	Control::setConsoleColor(WHITE, BLACK);
-	int left = 47; //48
+	int left = 46; //48
 	int top = 19;
 
-	Control::gotoXY(left, top);
-
-	putchar(201);
-	for (int i = 1; i < 12; i++)
+	Graphic::printRectangleNormal(left, top + 2, 12, 2);
+	Graphic::printRectangleNormal(left, top + 4, 12, 2);
+	Graphic::printRectangleSpecial(left, top, 12, 8);
+	
+	for (int i = top + 2; i < top + 7; i += 2)
 	{
-		putchar(205);
-
+		Control::gotoXY(left, i);
+		putchar(199);
 	}
-	putchar(187);
-
-
-	for (int i = 1; i < 8; i++)
+	for (int i = top + 2; i < top + 7; i += 2)
 	{
-		Control::gotoXY(left, top + i);
-		if (i % 2 != 0)
-		{
-			putchar(186);
-			Control::gotoXY(left + 12, top + i);
-			putchar(186);
-		}
-		else
-		{
-			putchar(199);
-			for (int i = 1; i < 12; i++)
-			{
-				putchar(196);
-			}
-			putchar(182);
-		}
+		Control::gotoXY(left + 13, i);
+		putchar(182);
 	}
-	Control::gotoXY(left, top + 8);
-	putchar(200);
-	for (int i = 1; i < 12; i++)
-	{
-		putchar(205);
-	}
-	putchar(188);
 }
 //
 //void Menu::printAnimation()
@@ -218,7 +195,7 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 	{
 		Control::gotoXY(43, top + current_option % 4 * 2);
 		putchar(32);
-		Control::gotoXY(63, top + current_option % 4 * 2);
+		Control::gotoXY(62, top + current_option % 4 * 2);
 		putchar(32);
 	}
 
@@ -235,15 +212,15 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 		putchar(175);
 		Control::gotoXY(53 - (int)options[current_option].length() / 2, top + current_option % 4 * 2);
 		cout << options[current_option];
-		Control::gotoXY(63, top + current_option % 4 * 2);
+		Control::gotoXY(62, top + current_option % 4 * 2);
 		putchar(174);
 	}
 }
 
 void Menu::chooseMode(bool direction, bool flag, int& current_option) //0: lên, 1: xuống
 {
-	int leftRec = 38, topRec = 19;
-	int top = 20;
+	int leftRec = 38, topRec = 20;
+	int top = 21;
 
 	if ((direction == 0 && current_option == 8)
 		|| (direction == 1 && current_option == 9))
@@ -679,109 +656,93 @@ void Menu::leaderBoard()
 {
 	current_option = 0;
 	Control::clearConsole();
+
 	Player p[100];
+	int leftRec = 24, topRec = 9;
+	
 	Control::setConsoleColor(WHITE, RED);
 	cout << R"(
-	  _      ______          _____  ______ _____  ____   ____          _____  _____  
-	 | |    |  ____|   /\   |  __ \|  ____|  __ \|  _ \ / __ \   /\   |  __ \|  __ \ 
-	 | |    | |__     /  \  | |  | | |__  | |__) | |_) | |  | | /  \  | |__) | |  | |
-	 | |    |  __|   / /\ \ | |  | |  __| |  _  /|  _ <| |  | |/ /\ \ |  _  /| |  | |
-	 | |____| |____ / ____ \| |__| | |____| | \ \| |_) | |__| / ____ \| | \ \| |__| |
-	 |______|______/_/    \_\_____/|______|_|  \_\____/ \____/_/    \_\_|  \_\_____/                                                                 
+	    _      ______          _____  ______ _____       ____   ____          _____  _____  
+	   | |    |  ____|   /\   |  __ \|  ____|  __ \     |  _ \ / __ \   /\   |  __ \|  __ \ 
+	   | |    | |__     /  \  | |  | | |__  | |__) |    | |_) | |  | | /  \  | |__) | |  | |
+	   | |    |  __|   / /\ \ | |  | |  __| |  _  /     |  _ <| |  | |/ /\ \ |  _  /| |  | |
+	   | |____| |____ / ____ \| |__| | |____| | \ \     | |_) | |__| / ____ \| | \ \| |__| |
+	   |______|______/_/    \_\_____/|______|_|  \_\    |____/ \____/_/    \_\_|  \_\_____/ 
+                                                                                                                                                                                                         
 	)";
+
 	Control::setConsoleColor(WHITE, BLACK);
-	Graphic::printRectangleNormal(5, 8, 85, 17);
+	Graphic::printRectangleNormal(leftRec, topRec, 56, 17);
 
 	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(8, 9);
+	Control::gotoXY(leftRec + 3, topRec + 1);
 	cout << "STT";
 	Control::setConsoleColor(WHITE, BLACK);
 	for (int i = 1; i < 17; i++)
 	{
-		Control::gotoXY(13, 8 + i);
+		Control::gotoXY(leftRec + 8, topRec + i);
 		putchar(179);
 	}
-	for (int i = 6; i < 13; i++)
+	for (int i = 1; i < 8; i++)
 	{
-		Control::gotoXY(i, 10);
+		Control::gotoXY(leftRec + i, topRec + 2);
 		putchar(196);
 	}
 	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(18, 9);
-	cout << "Name";
+	Control::gotoXY(leftRec + 15, topRec + 1);
+	cout << "NAME";
 	Control::setConsoleColor(WHITE, BLACK);
 	for (int i = 1; i < 17; i++)
 	{
-		Control::gotoXY(30, 8 + i);
+		Control::gotoXY(leftRec + 25, topRec + i);
 		putchar(179);
 	}
-	for (int i = 14; i < 30; i++)
+	for (int i = 9; i < 25; i++)
 	{
-		Control::gotoXY(i, 10);
+		Control::gotoXY(leftRec + i, topRec + 2);
 		putchar(196);
 	}
 	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(36, 9);
-	cout << "ID";
+	Control::gotoXY(leftRec + 33, topRec + 1);
+	cout << "MODE";
 	Control::setConsoleColor(WHITE, BLACK);
 	for (int i = 1; i < 17; i++)
 	{
-		Control::gotoXY(45, 8 + i);
+		Control::gotoXY(leftRec + 44, topRec + i);
 		putchar(179);
 	}
-	for (int i = 31; i < 45; i++)
+	for (int i = 26; i < 44; i++)
 	{
-		Control::gotoXY(i, 10);
+		Control::gotoXY(leftRec + i, topRec + 2);
 		putchar(196);
 	}
 	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(52, 9);
-	cout << "Class";
+	Control::gotoXY(leftRec + 48, topRec + 1);
+	cout << "SCORE";
 	Control::setConsoleColor(WHITE, BLACK);
-	for (int i = 1; i < 17; i++)
-	{
-		Control::gotoXY(62, 8 + i);
-		putchar(179);
-	}
-	for (int i = 46; i < 62; i++)
-	{
-		Control::gotoXY(i, 10);
-		putchar(196);
-	}
-	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(68, 9);
-	cout << "Mode";
-	Control::setConsoleColor(WHITE, BLACK);
-	for (int i = 1; i < 17; i++)
-	{
-		Control::gotoXY(78, 8 + i);
-		putchar(179);
-	}
-	for (int i = 63; i < 78; i++)
-	{
-		Control::gotoXY(i, 10);
-		putchar(196);
-	}
 
-	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(82, 9);
-	cout << "Score";
-	Control::setConsoleColor(WHITE, BLACK);
-	for (int i = 79; i < 91; i++)
+	/*for (int i = 1; i < 17; i++)
 	{
-		Control::gotoXY(i, 10);
+		Control::gotoXY(leftRec + 57, topRec + i);
+		putchar(179);
+	}*/
+
+	for (int i = 45; i < 57; i++)
+	{
+		Control::gotoXY(leftRec + i, topRec + 2);
 		putchar(196);
 	}
-	int y = 11;
+	
+
+
+	int y = topRec + 3;
 	int lines = 8;
 	int n = 0;
 	string tmp;
-	fstream fs("rank\\leaderboard.txt", ios::in);
+	fstream fs("leaderboard.txt", ios::in);
 
 	while (!fs.eof()) {
 		getline(fs, p[n].playerName);
-		getline(fs, p[n].playerID);
-		getline(fs, p[n].className);
 		getline(fs, p[n].mode);
 		fs >> p[n].score;
 		fs.ignore();
@@ -796,29 +757,25 @@ void Menu::leaderBoard()
 		}
 	}
 	for (int i = 1; i < lines; i++) {
-		Control::gotoXY(9, y);
+		Control::gotoXY(leftRec + 4, y);
 		cout << i;
-		Control::gotoXY(16, y);
+		Control::gotoXY(leftRec + 11, y);
 		cout << p[i - 1].playerName;
-		Control::gotoXY(33, y);
-		cout << p[i - 1].playerID;
-		Control::gotoXY(50, y);
-		cout << p[i - 1].className;
-		Control::gotoXY(68, y);
+		Control::gotoXY(leftRec + 28, y);
 		cout << p[i - 1].mode;
-		Control::gotoXY(84, y);
+		Control::gotoXY(leftRec + 50, y);
 		cout << p[i - 1].score;
 		y += 2;
 	}
 
 	Control::setConsoleColor(WHITE, BLACK);
-	Graphic::printRectangleNormal(45, 27, 8, 2);
+	Graphic::printRectangleSpecial(48, 27, 8, 2);
 	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(43, 28);
+	Control::gotoXY(46, 28);
 	putchar(175);
-	Control::gotoXY(48, 28);
+	Control::gotoXY(51, 28);
 	cout << "Back";
-	Control::gotoXY(56, 28);
+	Control::gotoXY(59, 28);
 	putchar(174);
 	while (Control::getConsoleInput() != 6)
 	{
@@ -826,7 +783,7 @@ void Menu::leaderBoard()
 	}
 }
 
-void Menu::enterUsername()
+void Menu::playUserMode()
 {
 
 }

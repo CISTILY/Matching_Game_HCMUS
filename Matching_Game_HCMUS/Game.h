@@ -15,7 +15,7 @@ using namespace std;
 
 struct Game {
 	Board* board;				// Create new board
-	char playerName[15] = "", mode[8] = "";
+	char playerName[15] = "", mode[15] = "";
 	int _row;
 	int _col;
 	int _x, _y;

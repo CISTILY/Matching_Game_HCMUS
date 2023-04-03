@@ -42,7 +42,7 @@ void Game::startGame()
 			Sleep(800);
 			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 3, 22);
 			cout << "Auto reset the board. Have fun!";
-			Sleep(1000);
+			Sleep(800);
 			startGame();
 		}
 		while (_remainBlocks && !isPause) {
@@ -93,8 +93,8 @@ void Game::setupGame(int current_option) {
 	Menu::printLogo();
 
 	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(25, 17);
-	cout << "Please enter your name shortly, under 10 characters!";
+	/*Control::gotoXY(25, 18);
+	cout << "Please enter your name shortly, under 10 characters!";*/
 
 	int loop = 1;
 
@@ -126,7 +126,7 @@ void Game::setupGame(int current_option) {
 				Control::showCursor(true);
 
 			khongCoKiTu:
-				Control::gotoXY(49, 20);
+				Control::gotoXY(49, 21);
 				cout << ">> ";
 				cin.getline(playerName, 15);
 
@@ -151,16 +151,23 @@ void Game::setupGame(int current_option) {
 	}
 
 	//notice
-	if (_row == 6 && _col == 6)
+	if (_row == 4 && _col == 4)
+		strcpy_s(mode, "EASY");
+	else if (_row == 6 && _col == 6)
 		strcpy_s(mode, "MEDIUM");
 	else
-		strcpy_s(mode, "EASY");
+	{
+		strcpy_s(mode, "CUSTOM ");
+		strcat_s(mode, to_string(_row).c_str());
+		strcat_s(mode, " x ");
+		strcat_s(mode, to_string(_col).c_str());
+	}
 
 	Control::showCursor(false);
 }
 
 void Game::saveData() {
-	fstream fs("rank\\leaderboard.txt", ios::app);
+	fstream fs("leaderboard.txt", ios::app);
 	fs << playerName << '\n' << mode << '\n' << score << '\n';
 	fs.close();
 }
