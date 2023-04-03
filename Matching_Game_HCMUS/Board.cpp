@@ -11,7 +11,7 @@ Board::Board(int psize, int pX, int pY) : size(psize), left(pX), top(pY)
 	for (int i = 0; i < psize; i++)
 		pBoard[i] = new Point[psize];
 
-	background = new string[psize * 10];
+	background = new string[psize * 1000];
 }
 
 Board::~Board()
