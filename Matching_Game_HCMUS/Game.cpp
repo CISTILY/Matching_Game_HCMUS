@@ -150,8 +150,10 @@ void Game::setupGame(int current_option) {
 		}
 	}
 
-	//notice
-	if (_row == 6 && _col == 6)
+
+	if (_mode == 4)
+		strcpy_s(mode, "EASY");
+	else
 		strcpy_s(mode, "MEDIUM");
 	else
 		strcpy_s(mode, "EASY");
