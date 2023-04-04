@@ -330,15 +330,17 @@ void Board::selectedBlock(int x, int y, int color) {
 		putchar(getCharacter(x, y));
 		Control::gotoXY(x, y);
 	}*/
-	if (getCheck(x, y) == DEL) {
-		for (int i = y - 1; i <= y + 1; i++) {
-			for (int j = x - 3; j <= x + 3; j++) {
-				Control::gotoXY(j, i);
-				//putchar(32);
-				putchar(background[i - top][j - left]);
-			}
-		}
-	}
+
+
+	//if (getCheck(x, y) == DEL) {
+	//	for (int i = y - 1; i <= y + 1; i++) {
+	//		for (int j = x - 3; j <= x + 3; j++) {
+	//			Control::gotoXY(j, i);
+	//			//putchar(32);
+	//			putchar(background[i - top][j - left]);
+	//		}
+	//	}
+	//}
 }
 
 void Board::unselectedBlock(int x, int y) {
@@ -348,10 +350,10 @@ void Board::unselectedBlock(int x, int y) {
 		pBoard[r][c].setCheck(NORMAL);
 	}
 
-	Graphic::backUpperLeft(x, y, getCheckUpperLeft(x, y));
-	Graphic::backUpperRight(x, y, getCheckUpperRight(x, y));
-	Graphic::backBottomLeft(x, y, getCheckBottomLeft(x, y));
-	Graphic::backBottomRight(x, y, getCheckBottomRight(x, y));
+	Graphic::backUpperLeft(x, y, getCheckUpperLeft(x, y), background);
+	Graphic::backUpperRight(x, y, getCheckUpperRight(x, y), background);
+	Graphic::backBottomLeft(x, y, getCheckBottomLeft(x, y), background);
+	Graphic::backBottomRight(x, y, getCheckBottomRight(x, y), background);
 
 	/*Graphic::backFrame(x, y);*/
 	Control::setConsoleColor(WHITE, BLACK);
@@ -361,15 +363,17 @@ void Board::unselectedBlock(int x, int y) {
 		putchar(getCharacter(x, y));
 		Control::gotoXY(x, y);
 	}*/
-	if (getCheck(x, y) == DEL) {
-		for (int i = y - 1; i <= y + 1; i++) {
-			for (int j = x - 3; j <= x + 3; j++) {
-				Control::gotoXY(j, i);
-				//putchar(32);
-				putchar(background[i - top][j - left]);
-			}
-		}
-	}
+
+
+	//if (getCheck(x, y) == DEL) {
+	//	for (int i = y - 1; i <= y + 1; i++) {
+	//		for (int j = x - 3; j <= x + 3; j++) {
+	//			Control::gotoXY(j, i);
+	//			//putchar(32);
+	//			putchar(background[i - top][j - left]);
+	//		}
+	//	}
+	//}
 }
 
 void Board::lockBlock(int x, int y)
@@ -403,7 +407,6 @@ void Board::deleteBlock(int x, int y)
 	for (int i = y - 1; i <= y + 1; i++) {
 		for (int j = x - 3; j <= x + 3; j++) {
 			Control::gotoXY(j, i);
-			// putchar(32);
 			putchar(background[i - top][j - left]);
 
 		}
@@ -414,15 +417,13 @@ void Board::deleteBlock(int x, int y)
 	Control::setConsoleColor(WHITE, BLACK);
 
 	//Delete top border
-	Control::gotoXY(x, y);
-	if (y - 4 >= getYAt(0, 0) && getCheck(x, y - 4) == DEL) {
+	if (y - 4 >= Board::getYAt(0, 0) && Board::getCheck(x, y - 4) == DEL) {
 		for (int i = x - 3; i <= x + 3; i++) {
 			Control::gotoXY(i, y - 2);
-			//putchar(32);
-			putchar(background[y - 2 - top][i - left]);
-
+			putchar(background[y - 2 - Top][i - Left]);
 		}
 	}
+	
 	//Delete bottom border
 	if (y + 4 <= getYAt(sizeRow - 1, sizeCol - 1) && getCheck(x, y + 4) == DEL) {
 		for (int i = x - 3; i <= x + 3; i++) {
@@ -448,6 +449,15 @@ void Board::deleteBlock(int x, int y)
 		}
 	}
 }
+
+void Board::deleteArrow()
+{
+	for (int i = getYAt(0, 0); i <= getYAt(sizeRow - 1, 0); i += 4)
+		for (int j = getXAt(0, 0); j <= getXAt(0, sizeCol - 1); j += 8)
+			if (Board::getCheck(j, i) == DEL)
+				Board::deleteBlock(j, i);
+}
+
 
 //////////////////////////////////////////////////////////////////////////////
 

@@ -125,14 +125,13 @@ void Game::setupGame(int current_option) {
 				Control::playSound(ENTER_SOUND);
 				Control::showCursor(true);
 
-			khongCoKiTu:
 				Control::gotoXY(49, 21);
 				cout << ">> ";
-				cin.getline(playerName, 15);
-
-				if (playerName[0] == 0)
-					goto khongCoKiTu;
-
+				while (strlen(playerName) == 0 || playerName[0] == 0)
+				{
+					Control::gotoXY(52, 21);
+					cin.getline(playerName, 15);
+				}
 				loop = 0;
 			}
 			else
@@ -773,6 +772,9 @@ void Game::deleteBlock() {
 	for (auto block : _lockedBlockPair)
 		board->deleteBlock(block.first, block.second);
 	_lockedBlockPair.clear();
+
+	board->deleteArrow();
+
 	board->selectedBlock(_x, _y, GREEN);
 	_remainBlocks -= 2;
 	if (_remainBlocks == 0) {

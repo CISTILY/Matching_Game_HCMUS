@@ -60,7 +60,7 @@ void Graphic::printFrame(int x, int y)
 	putchar(188);
 }
 
-void Graphic::backUpperLeft(int x, int y, int situation)
+void Graphic::backUpperLeft(int x, int y, int situation, string* background)
 {
 	Control::gotoXY(x - 4, y - 2);
 	switch (situation) {
@@ -78,8 +78,7 @@ void Graphic::backUpperLeft(int x, int y, int situation)
 		break;
 	case 9:
 		Control::setConsoleColor(WHITE, BLACK);
-		//putchar(background[y - top][x - left]);
-		putchar(32);
+		putchar(background[y - 2 - Top][x - 4 - Left]);
 		break;
 	default:
 		Control::setConsoleColor(WHITE, BLACK);
@@ -88,7 +87,7 @@ void Graphic::backUpperLeft(int x, int y, int situation)
 	}
 }
 
-void Graphic::backUpperRight(int x, int y, int situation)
+void Graphic::backUpperRight(int x, int y, int situation, string* background)
 {
 	Control::gotoXY(x + 4, y - 2);
 	switch (situation) {
@@ -106,8 +105,7 @@ void Graphic::backUpperRight(int x, int y, int situation)
 		break;
 	case 9:
 		Control::setConsoleColor(WHITE, BLACK);
-		//putchar(background[y - top][x - left]);
-		putchar(32);
+		putchar(background[y - 2 - Top][x + 4 - Left]);
 		break;
 	default:
 		Control::setConsoleColor(WHITE, BLACK);
@@ -116,7 +114,7 @@ void Graphic::backUpperRight(int x, int y, int situation)
 	}
 }
 
-void Graphic::backBottomLeft(int x, int y, int situation)
+void Graphic::backBottomLeft(int x, int y, int situation, string* background)
 {
 	Control::gotoXY(x - 4, y + 2);
 	switch (situation) {
@@ -134,8 +132,7 @@ void Graphic::backBottomLeft(int x, int y, int situation)
 		break;
 	case 9:
 		Control::setConsoleColor(WHITE, BLACK);
-		//putchar(background[y - top][x - left]);
-		putchar(32);
+		putchar(background[y + 2 - Top][x - 4 - Left]);
 		break;
 	default:
 		Control::setConsoleColor(WHITE, BLACK);
@@ -144,7 +141,7 @@ void Graphic::backBottomLeft(int x, int y, int situation)
 	}
 }
 
-void Graphic::backBottomRight(int x, int y, int situation)
+void Graphic::backBottomRight(int x, int y, int situation, string* background)
 {
 	Control::gotoXY(x + 4, y + 2);
 	switch (situation) {
@@ -162,8 +159,7 @@ void Graphic::backBottomRight(int x, int y, int situation)
 		break;
 	case 9:
 		Control::setConsoleColor(WHITE, BLACK);
-		//putchar(background[y - top][x - left]);
-		putchar(32);
+		putchar(background[y + 2 - Top][x + 4 - Left]);
 		break;
 	default:
 		Control::setConsoleColor(WHITE, BLACK);

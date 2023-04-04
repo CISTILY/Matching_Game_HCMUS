@@ -1,6 +1,6 @@
 ﻿#include "Menu.h"
 int Menu::current_option;
-const string Menu::options[10] = { "Play", "Leader Board", "Help", "Exit", "Easy", "   Medium   ", "Custom", "Exit", "User Mode", "Guest Mode" };
+const string Menu::options[10] = { "Play", "Leader Board", "Help", "Exit", "Easy", "   Medium   ", "Custom", "Exit", "Username:            ", "Guest Mode" };
 
 void Menu::mainScreen()
 {

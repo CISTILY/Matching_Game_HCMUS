@@ -49,6 +49,7 @@ struct Board {
 
 	void lockBlock(int, int);
 	void deleteBlock(int, int);
+	void deleteArrow();
 
 	void drawLineI(pair<int, int>, pair<int, int>);
 	void deleteLineI(pair<int, int>, pair<int, int>);
