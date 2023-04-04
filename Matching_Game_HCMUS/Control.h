@@ -63,6 +63,7 @@ struct Control {
 	static void showCursor(bool);					// Tất con trỏ
 	static void setFontInfo();						// Thiết lập font chữ
 	static void clearConsole();						// Xoá cửa sổ
+	static void clearArea(int, int, int, int);		// Xoá vùng
 	static void disableMouseInput();				// Tắt đầu vào từ chuột
 	static int getConsoleInput();					// Lấy đầu vào từ bàn phím
 	static void playSound(int);						// Chạy nhạc

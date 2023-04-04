@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(int row, int col)
+Game::Game(char accountplayerName[], char accountpassword[], int row, int col, int curent_option)
 {
 	_row = row;
 	_col = col;
@@ -11,6 +11,21 @@ Game::Game(int row, int col)
 	_lockedBlockPair.clear();
 	_remainBlocks = _row * _col;
 	score = 0;
+
+	strcpy_s(playerName, accountplayerName);
+	strcpy_s(password, accountpassword);
+
+	if (curent_option == 8)
+		strcpy_s(mode, "EASY");
+	else if (curent_option == 9)
+		strcpy_s(mode, "MEDIUM");
+	else
+	{
+		strcpy_s(mode, "CUSTOM ");
+		strcat_s(mode, to_string(_row).c_str());
+		strcat_s(mode, " x ");
+		strcat_s(mode, to_string(_col).c_str());
+	}
 }
 
 Game::~Game() {
@@ -107,67 +122,57 @@ void Game::setupGame(int current_option) {
 	cout << "GUEST MODE";*/
 
 
-	Menu::chooseMode(0, 1, current_option);
+	//Menu::chooseMode(0, 1, current_option);
 
-	while (loop)
-	{
-		switch (Control::getConsoleInput())
-		{
-		case 2:
-			Menu::chooseMode(0, 1, current_option);
-			break;
-		case 5:
-			Menu::chooseMode(1, 1, current_option);
-			break;
-		case 6:
-			if (current_option == 8)
-			{
-				Control::playSound(ENTER_SOUND);
-				Control::showCursor(true);
+	//while (loop)
+	//{
+	//	switch (Control::getConsoleInput())
+	//	{
+	//	case 2:
+	//		Menu::chooseMode(0, 1, current_option);
+	//		break;
+	//	case 5:
+	//		Menu::chooseMode(1, 1, current_option);
+	//		break;
+	//	case 6:
+	//		if (current_option == 8)
+	//		{
+	//			Control::playSound(ENTER_SOUND);
+	//			Control::showCursor(true);
 
-				Control::gotoXY(49, 21);
-				cout << ">> ";
-				while (strlen(playerName) == 0 || playerName[0] == 0)
-				{
-					Control::gotoXY(52, 21);
-					cin.getline(playerName, 15);
-				}
-				loop = 0;
-			}
-			else
-			{
-				srand((unsigned)time(0));
+	//			Control::gotoXY(49, 21);
+	//			cout << ">> ";
+	//			while (strlen(playerName) == 0 || playerName[0] == 0)
+	//			{
+	//				Control::gotoXY(52, 21);
+	//				cin.getline(playerName, 15);
+	//			}
+	//			loop = 0;
+	//		}
+	//		else
+	//		{
+	//			srand((unsigned)time(0));
 
-				for (int i = 0; i < 10; ++i)
-					playerName[i] = rand() % 58 + 65;
-				loop = 0;
-				//function_map[options[current_option]]();
-			}
-			break;
-		default:
-			Control::playSound(ERROR_SOUND);
-		}
-	}
+	//			for (int i = 0; i < 10; ++i)
+	//				playerName[i] = rand() % 58 + 65;
+	//			loop = 0;
+	//			//function_map[options[current_option]]();
+	//		}
+	//		break;
+	//	default:
+	//		Control::playSound(ERROR_SOUND);
+	//	}
+	//}
 
 	//notice
-	if (_row == 4 && _col == 4)
-		strcpy_s(mode, "EASY");
-	else if (_row == 6 && _col == 6)
-		strcpy_s(mode, "MEDIUM");
-	else
-	{
-		strcpy_s(mode, "CUSTOM ");
-		strcat_s(mode, to_string(_row).c_str());
-		strcat_s(mode, " x ");
-		strcat_s(mode, to_string(_col).c_str());
-	}
+
 
 	Control::showCursor(false);
 }
 
 void Game::saveData() {
 	fstream fs("leaderboard.txt", ios::app);
-	fs << playerName << '\n' << mode << '\n' << score << '\n';
+	fs << endl << playerName << endl << mode << endl << score;
 	fs.close();
 }
 
@@ -283,7 +288,7 @@ void Game::printInterface()
 	cout << "PLAYER'S INFORMATION";
 
 	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 6, 6);
+	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 4, 6);
 	cout << "Player's name: " << playerName;
 
 	Control::setConsoleColor(WHITE, BLACK);
@@ -844,7 +849,7 @@ bool Game::isAvailableBlock(bool isChecking) {
 }
 
 void Game::askContinue()
-{	
+{
 	Control::setAndCenterWindow();
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();

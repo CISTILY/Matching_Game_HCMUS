@@ -40,7 +40,7 @@ void Control::setAndCenterWindow()
 }
 
 void Control::setAndCenterWindow(int _row, int _col)
-{	
+{
 	RECT rectOfClient, rectOfWindow;
 	GetClientRect(consoleWindow, &rectOfClient);
 	GetWindowRect(consoleWindow, &rectOfWindow);
@@ -88,6 +88,16 @@ void Control::showCursor(bool show)
 void Control::clearConsole()
 {
 	system("cls");
+}
+
+void Control::clearArea(int left, int top, int width, int height)
+{
+	for (int i = top; i <= top + height; ++i)
+		for (int j = left; j <= left + width; ++j)
+		{
+			gotoXY(j, i);
+			putchar(32);
+		}
 }
 
 void Control::disableMouseInput()

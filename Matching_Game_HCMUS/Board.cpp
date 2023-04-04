@@ -1,4 +1,4 @@
-#include "Board.h"
+﻿#include "Board.h"
 
 Board::Board(int psizeRow, int psizeCol, int pX, int pY) : sizeRow(psizeRow), sizeCol(psizeCol), left(pX), top(pY)
 {
@@ -270,13 +270,13 @@ void Board::renderBoard() {
 			int r = pBoard[i][j].getX();
 			int c = pBoard[i][j].getY();
 
-			if (pBoard[i][j].getCharacter() % 16 != 7 && pBoard[i][j].getCharacter() % 16 != 11 
+			if (pBoard[i][j].getCharacter() % 16 != 7 && pBoard[i][j].getCharacter() % 16 != 11
 				&& pBoard[i][j].getCharacter() % 16 != 14 && pBoard[i][j].getCharacter() % 16 != 15)
 				Control::setConsoleColor(WHITE, pBoard[i][j].getCharacter() % 16);
 			else
-				Control::setConsoleColor(WHITE, (pBoard[i][j].getCharacter() + 2 )% 16 );
+				Control::setConsoleColor(WHITE, (pBoard[i][j].getCharacter() + 2) % 16);
 
-			
+
 			Control::gotoXY(r, c);
 			putchar(pBoard[i][j].getCharacter());
 		}
@@ -423,7 +423,7 @@ void Board::deleteBlock(int x, int y)
 			putchar(background[y - 2 - Top][i - Left]);
 		}
 	}
-	
+
 	//Delete bottom border
 	if (y + 4 <= getYAt(sizeRow - 1, sizeCol - 1) && getCheck(x, y + 4) == DEL) {
 		for (int i = x - 3; i <= x + 3; i++) {

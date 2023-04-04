@@ -1,6 +1,3 @@
-phuc
-CUSTOM 4 x 6
-24
 phuc12345
 CUSTOM 4 x 6
 22
@@ -21,7 +18,8 @@ CUSTOM 4 x 6
 -6
 phuc
 CUSTOM 4 x 6
-15j
+5
+asdfg
 CUSTOM 10 x 4
 17
 xnAXDygEur
@@ -33,3 +31,15 @@ CUSTOM 10 x 10
 stEeGXrLXz
 CUSTOM 8 x 8
 64
+phuc
+MEDIUM
+0
+phuc
+EASY
+16
+phuc
+EASY
+14
+phuc
+EASY
+15
