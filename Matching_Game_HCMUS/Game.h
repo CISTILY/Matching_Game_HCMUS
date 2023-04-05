@@ -10,12 +10,14 @@
 #define LEFT 6
 #define TOP 2
 #define DISTANCE 6
+#define NAMESIZE 15
+#define PASSSIZE 15
 
 using namespace std;
 
 struct Game {
 	Board* board;				// Create new board
-	char playerName[15] = "", mode[15] = "";
+	char playerName[NAMESIZE] = "", password[PASSSIZE] = "", mode[15] = "";
 	int _row;
 	int _col;
 	int _x, _y;
@@ -33,7 +35,7 @@ struct Game {
 	bool checkUMatching(pair<int, int>, pair<int, int>, bool);
 	bool checkMatching(pair<int, int>, pair<int, int>, bool);
 
-	Game(int, int);
+	Game(char[], char[], int, int, int);
 	~Game();
 
 	void setupGame(int);
