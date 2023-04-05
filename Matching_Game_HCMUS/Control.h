@@ -43,6 +43,7 @@
 #define WIN_SOUND 4
 #define MOVE_SOUND 5
 #define GETPOINT_SOUND 6
+#define WRONG_SOUND 7
 
 using namespace std;
 

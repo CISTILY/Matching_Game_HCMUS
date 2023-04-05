@@ -667,6 +667,7 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 {
 	if (!checkMatchedPokemons(firstBlock, secondBlock)) {
 		if (isChecking == false) {
+			Control::playSound(WRONG_SOUND);
 			Control::setConsoleColor(WHITE, BLUE);
 			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 13, 17);
 			cout << "Not Matched";
