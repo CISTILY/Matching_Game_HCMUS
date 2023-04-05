@@ -906,6 +906,7 @@ void Game::moveSuggestion() {
 	int sizeCol = board->getSizeCol();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
+	Control::playSound(MOVE_SUGGESTION_SOUND);
 	for (int i = 0; i < sizeRow; i++) {
 		for (int j = 0; j < sizeCol; j++) {
 			firstBlock.first = board->getXAt(i, j);

@@ -44,6 +44,7 @@
 #define MOVE_SOUND 5
 #define GETPOINT_SOUND 6
 #define WRONG_SOUND 7
+#define MOVE_SUGGESTION_SOUND 8
 
 using namespace std;
 
