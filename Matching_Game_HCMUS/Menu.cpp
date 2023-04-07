@@ -120,6 +120,7 @@ void Menu::printLogo()
 	)";
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);
+	Control::gotoXY(0, 0);
 	cout << logo;
 
 	SetConsoleOutputCP(437);
@@ -321,11 +322,12 @@ void Menu::playMenu()
 
 void Menu::helpScreen()
 {
+	Control::setAndCenterWindow();
 	Control::showCursor(false);
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
-	int left = 5, top = 2, width = 85, height = 23;
-	int line1 = 6, line2 = 19, line3 = 20, line4 = 15;
+	int left = 9, top = 2, width = 85, height = 23;
+	int line1 = 6, line2 = 19, line3 = 24, line4 = 15;
 	Graphic::printRectangleSpecial(left, top, width, height);
 	Control::gotoXY(left + 1, line1);
 	for (int i = 0; i < width; i++)
@@ -412,13 +414,13 @@ void Menu::helpScreen()
 	cout << "Dev 2: Vu Thai Phuc (22127337)";
 
 	Control::setConsoleColor(WHITE, BLACK);
-	Graphic::printRectangleNormal(45, 27, 8, 2);
+	Graphic::printRectangleNormal(49, 27, 8, 2);
 	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(43, 28);
+	Control::gotoXY(47, 28);
 	putchar(175);
-	Control::gotoXY(48, 28);
+	Control::gotoXY(52, 28);
 	cout << "Back";
-	Control::gotoXY(56, 28);
+	Control::gotoXY(60, 28);
 	putchar(174);
 	while (Control::getConsoleInput() != 6)
 	{
@@ -913,6 +915,9 @@ void Menu::enterAccount()
 
 	Control::gotoXY(xInput - 6, yInput + 4);
 	cout << account.password;
+
+	Control::setConsoleColor(WHITE, WHITE);
+	Control::clearArea(30, 28, 40, 1);
 }
 
 bool Menu::rightAccount(char accounts_game[][50])

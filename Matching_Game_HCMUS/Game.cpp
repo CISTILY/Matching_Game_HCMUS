@@ -935,7 +935,7 @@ void Game::moveSuggestion() {
 						if (isHelp) {
 							board->selectedBlock(firstBlock.first, firstBlock.second, PURPLE);
 							board->selectedBlock(secondBlock.first, secondBlock.second, PURPLE);
-							Sleep(500);
+							Sleep(1000);
 							board->unselectedBlock(firstBlock.first, firstBlock.second);
 							board->unselectedBlock(secondBlock.first, secondBlock.second);
 							score -= 2;
