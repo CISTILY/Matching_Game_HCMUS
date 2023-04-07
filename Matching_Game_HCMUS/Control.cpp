@@ -93,7 +93,7 @@ void Control::clearConsole()
 void Control::clearArea(int left, int top, int width, int height)
 {
 	for (int i = top; i <= top + height; ++i)
-		for (int j = left; j <= left + width; ++j)
+		for (int j = left; j <= left + width + 1; ++j)
 		{
 			gotoXY(j, i);
 			putchar(32);

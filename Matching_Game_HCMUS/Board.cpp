@@ -1,6 +1,6 @@
 ﻿#include "Board.h"
 
-Board::Board(int psizeRow, int psizeCol, int pX, int pY) : sizeRow(psizeRow), sizeCol(psizeCol), left(pX), top(pY)
+Board::Board(int psizeRow, int psizeCol, int pX, int pY, char mode[]) : sizeRow(psizeRow), sizeCol(psizeCol), left(pX), top(pY)
 {
 	character = new int* [sizeRow];
 	for (int i = 0; i < sizeRow; i++)
@@ -10,10 +10,10 @@ Board::Board(int psizeRow, int psizeCol, int pX, int pY) : sizeRow(psizeRow), si
 	for (int i = 0; i < sizeRow; i++)
 		pBoard[i] = new Point[sizeCol];
 
-	if (sizeRow >= sizeCol)
-		background = new string[sizeRow * 10];
+	if (strcmp(mode, "EASY") == 0 || strcmp(mode, "MEDIUM") == 0)
+		background = new string[sizeRow * 4 + 1];
 	else
-		background = new string[sizeCol * 10];
+		background = new string[10 * 4 + 1];
 }
 
 Board::~Board()
@@ -1152,14 +1152,14 @@ void Board::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 }
 
 //notice
-void Board::createBackground() {
+void Board::createBackground(char mode[]) {
 	ifstream bg;
-	if (sizeRow == 4 && sizeCol == 4)
-		bg.open("easy.txt");
-	else if (sizeRow == 6 && sizeCol == 6)
-		bg.open("medium.txt");
+	if (strcmp(mode, "EASY") == 0)
+		bg.open("background\\easy.txt");
+	else if (strcmp(mode, "MEDIUM") == 0)
+		bg.open("background\\medium.txt");
 	else
-		bg.open("custom.txt");
+		bg.open("background\\custom.txt");
 	int i = 0;
 	while (!bg.eof()) {
 		getline(bg, background[i]);

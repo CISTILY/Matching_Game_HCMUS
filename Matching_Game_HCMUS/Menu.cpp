@@ -119,7 +119,6 @@ void Menu::printLogo()
 
 	)";
 
-	Control::gotoXY(0, 0);
 	Control::setConsoleColor(WHITE, LIGHT_RED);
 	cout << logo;
 
@@ -433,20 +432,20 @@ void Menu::exitScreen()
 	Control::showCursor(false);
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
-	Control::setConsoleColor(WHITE, BLACK);
-	Graphic::printRectangleSpecial(34, 17, 35, 6);
-	Graphic::printRectangleNormal(37, 20, 7, 2);
-	Graphic::printRectangleNormal(60, 20, 6, 2);
+	Graphic::printRectangleBlock(34, 18, 35, 8);
+	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::clearArea(35, 19, 34, 6);
+	Graphic::printRectangleNormal(38, 22, 7, 2);
+	Graphic::printRectangleNormal(59, 22, 6, 2);
 	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(0, 0);
 	printLogo();
 
 
-	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(42, 18);
+	Control::setConsoleColor(BRIGHT_WHITE, RED);
+	Control::gotoXY(42, 20);
 	cout << "Do you want to exit?";
 	string str[2] = { "Yes", "No" };
-	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, RED }, top = 21;
+	int left[] = { 36,41,48,57,62,68 }, word[] = { 32,32,175,174 }, color[] = { BLACK, RED }, top = 23;
 	bool choice = 0;
 	bool loop = 1;
 	auto print1 = [&]()
@@ -455,7 +454,7 @@ void Menu::exitScreen()
 		while (i < 2)
 		{
 			Control::playSound(MOVE_SOUND);
-			Control::setConsoleColor(WHITE, color[i]);
+			Control::setConsoleColor(BRIGHT_WHITE, color[i]);
 			Control::gotoXY(left[choice * 3], top);        putchar(word[i * 2]);
 			Control::gotoXY(left[choice * 3 + 1], top);    cout << str[choice];
 			Control::gotoXY(left[choice * 3 + 2], top);    putchar(word[i * 2 + 1]);
@@ -724,10 +723,10 @@ void Menu::leaderBoard()
 	int lines = 8;
 	int n = 0;
 	string tmp;
-	fstream fs("leaderboard.txt", ios::in);
+	fstream fs("file\\leaderboard.txt", ios::in);
 
 	while (!fs.eof()) {
-		fs.getline(p[n].playerName, 50);
+		fs.getline(p[n].playerName, NAMESIZE + 1);
 		fs.getline(p[n].mode, 15);
 		fs >> p[n].score;
 		fs.ignore();
@@ -807,7 +806,7 @@ void Menu::guestMode()
 	strcpy_s(account.password, "123");
 
 	ofstream Create;
-	Create.open("accounts.txt", ios::app);
+	Create.open("file\\accounts.txt", ios::app);
 	Create << endl << account.playerName << endl << account.password;
 	Create.close();
 
@@ -867,7 +866,6 @@ void Menu::enterAccount()
 	{
 		Control::gotoXY(xInput - 6, yInput);
 		cin.getline(account.playerName, NAMESIZE + 1);
-		Control::gotoXY(xInput - 6, yInput);
 	}
 
 	Control::playSound(ENTER_SOUND);
@@ -894,7 +892,6 @@ void Menu::enterAccount()
 	{
 		Control::gotoXY(xInput - 6, yInput + 4);
 		cin.getline(account.password, PASSSIZE + 1);
-		Control::gotoXY(xInput - 6, yInput + 4);
 	}
 
 	Control::playSound(ENTER_SOUND);
@@ -1005,7 +1002,7 @@ void Menu::signIn()
 {
 	ifstream Acc;
 	char accounts_game[200][50];
-	Acc.open("accounts.txt");
+	Acc.open("file\\accounts.txt");
 	readFileAccounts(Acc, accounts_game);
 	Acc.close();
 
@@ -1020,7 +1017,7 @@ void Menu::signUp()
 {
 	ifstream Acc;
 	char accounts_game[200][50];
-	Acc.open("accounts.txt");
+	Acc.open("file\\accounts.txt");
 	readFileAccounts(Acc, accounts_game);
 	Acc.close();
 
@@ -1029,7 +1026,7 @@ void Menu::signUp()
 	} while (!appropriateAccount(accounts_game));
 
 	ofstream Create;
-	Create.open("accounts.txt", ios::app);
+	Create.open("file\\accounts.txt", ios::app);
 	Create << endl << account.playerName << endl << account.password;
 	Create.close();
 

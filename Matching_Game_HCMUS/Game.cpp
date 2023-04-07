@@ -5,7 +5,7 @@ Game::Game(char accountplayerName[], char accountpassword[], int row, int col, i
 	_row = row;
 	_col = col;
 	_x = LEFT, _y = TOP;
-	board = new Board(_row, _col, LEFT, TOP);
+	
 	isPlaying = true;
 	_lockedBlock = 0;
 	_lockedBlockPair.clear();
@@ -26,6 +26,8 @@ Game::Game(char accountplayerName[], char accountpassword[], int row, int col, i
 		strcat_s(mode, " x ");
 		strcat_s(mode, to_string(_col).c_str());
 	}
+
+	board = new Board(_row, _col, LEFT, TOP, mode);
 }
 
 Game::~Game() {
@@ -171,7 +173,7 @@ void Game::setupGame(int current_option) {
 }
 
 void Game::saveData() {
-	fstream fs("leaderboard.txt", ios::app);
+	fstream fs("file\\leaderboard.txt", ios::app);
 	fs << endl << playerName << endl << mode << endl << score;
 	fs.close();
 }
@@ -273,7 +275,7 @@ void Game::printInterface()
 {
 	Control::setAndCenterWindow(_row, _col);
 
-	board->createBackground();
+	board->createBackground(mode);
 	board->showBoard();
 	board->buildBoardData();
 	board->renderBoard();
@@ -303,7 +305,7 @@ void Game::printInterface()
 	cout << "Current score:";
 	Control::gotoXY(_col * 8 + LEFT + DISTANCE + 21, 18);
 	cout << score;
-
+	
 	Control::setConsoleColor(WHITE, BLACK);
 	Graphic::printRectangleNormal(_col * 8 + LEFT + DISTANCE, 25, 33, 2);
 	Graphic::printRectangleNormal(_col * 8 + LEFT + DISTANCE, 28, 14, 2);
@@ -765,16 +767,21 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 }
 
 void Game::deleteBlock() {
-	Control::playSound(GETPOINT_SOUND);
+	
 	_lockedBlock = 0;
 	bool isChecking = false;
 	if (!checkMatching(_lockedBlockPair[0], _lockedBlockPair[1], isChecking)) {
+		Control::playSound(WRONG_SOUND);
+
 		for (auto block : _lockedBlockPair)
 			board->unselectedBlock(block.first, block.second);
 		_lockedBlockPair.clear();
 		board->selectedBlock(_x, _y, GREEN);
 		return;
 	}
+
+	Control::playSound(GETPOINT_SOUND);
+
 	for (auto block : _lockedBlockPair)
 		board->deleteBlock(block.first, block.second);
 	_lockedBlockPair.clear();
@@ -854,18 +861,21 @@ void Game::askContinue()
 	Control::setAndCenterWindow();
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearConsole();
-	Control::gotoXY(0, 0);
-	Control::setConsoleColor(WHITE, RED);
+
 	Menu::printLogo();
 	Control::setConsoleColor(WHITE, BLACK);
-	Graphic::printRectangleSpecial(34, 17, 35, 8);
-	Graphic::printRectangleNormal(37, 21, 7, 2);
-	Graphic::printRectangleNormal(60, 21, 6, 2);
-	Control::gotoXY(36, 19);
-	Control::setConsoleColor(WHITE, GREEN);
+	Graphic::printRectangleBlock(34, 18, 35, 8);
+	Control::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Control::clearArea(35, 19, 34, 6);
+	Graphic::printRectangleNormal(38, 22, 7, 2);
+	Graphic::printRectangleNormal(59, 22, 6, 2);
+
+
+	Control::gotoXY(36, 20);
+	Control::setConsoleColor(BRIGHT_WHITE, GREEN);
 	cout << "Do you want to play another round?";
 	string str[2] = { "Yes", "No" };
-	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, GREEN }, top = 22;
+	int left[] = { 36,41,48,57,62,68 }, word[] = { 32,32,175,174 }, color[] = { BLACK, GREEN }, top = 23;
 	bool choice = 1;
 	auto print1 = [&]()
 	{
@@ -873,7 +883,7 @@ void Game::askContinue()
 		while (i < 2)
 		{
 			Control::playSound(MOVE_SOUND);
-			Control::setConsoleColor(WHITE, color[i]);
+			Control::setConsoleColor(BRIGHT_WHITE, color[i]);
 			Control::gotoXY(left[choice * 3], top);        putchar(word[i * 2]);
 			Control::gotoXY(left[choice * 3 + 1], top);    cout << str[choice];
 			Control::gotoXY(left[choice * 3 + 2], top);    putchar(word[i * 2 + 1]);

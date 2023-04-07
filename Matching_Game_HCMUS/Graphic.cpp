@@ -48,6 +48,30 @@ void Graphic::printRectangleNormal(int left, int top, int width, int height)
 	putchar(217);
 }
 
+void Graphic::printRectangleBlock(int left, int top, int width, int height)
+{
+	Control::gotoXY(left, top);
+	putchar(220);
+	for (int i = 0; i < width; i++)
+		putchar(220);
+	putchar(220);
+
+	int i = 0;
+	for (; i < height; i++)
+	{
+		Control::gotoXY(left, top + i + 1);
+		putchar(219);
+		Control::gotoXY(left + width + 1, top + i + 1);
+		putchar(219);
+	}
+
+	Control::gotoXY(left, top + i);
+	putchar(223);
+	for (i = 0; i < width; i++)
+		putchar(223);
+	putchar(223);
+}
+
 void Graphic::printFrame(int x, int y)
 {
 	Control::gotoXY(x - 4, y - 2);

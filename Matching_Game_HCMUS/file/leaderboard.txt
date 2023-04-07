@@ -31,7 +31,6 @@ CUSTOM 10 x 10
 stEeGXrLXz
 CUSTOM 8 x 8
 64
-
 Th…nh
 CUSTOM 4 x 4
 4
@@ -44,3 +43,15 @@ MEDIUM
 Th…nh
 MEDIUM
 4
+phuc
+EASY
+1
+phuc
+EASY
+0
+phuc
+EASY
+0
+phuc
+EASY
+0
