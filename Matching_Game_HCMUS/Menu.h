@@ -11,8 +11,8 @@
 #define _EASY 4
 #define _MEDIUM 6
 
-#define NAMESIZE 15
-#define PASSSIZE 15
+#define NAMESIZE 50
+#define PASSSIZE 50
 
 using namespace std;
 

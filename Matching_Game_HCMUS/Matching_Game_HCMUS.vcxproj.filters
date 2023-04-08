@@ -58,22 +58,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="easy.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="medium.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="start.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="custom.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="leaderboard.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="accounts.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

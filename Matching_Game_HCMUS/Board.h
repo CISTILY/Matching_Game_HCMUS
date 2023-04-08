@@ -18,7 +18,7 @@ struct Board {
 	int** character;
 	string* background;
 
-	Board(int, int, int, int);
+	Board(int, int, int, int, char[]);
 	~Board();
 
 	int getSizeRow();							//Lấy kích cỡ
@@ -60,5 +60,5 @@ struct Board {
 	void drawLineU(pair<int, int>, pair<int, int>, pair<int, int>, pair<int, int>);
 	void deleteLineU(pair<int, int>, pair<int, int>, pair<int, int>, pair<int, int>);
 
-	void createBackground();
+	void createBackground(char[]);
 };

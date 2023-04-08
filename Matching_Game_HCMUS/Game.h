@@ -10,8 +10,9 @@
 #define LEFT 6
 #define TOP 2
 #define DISTANCE 6
-#define NAMESIZE 15
-#define PASSSIZE 15
+
+#define NAMESIZE 50
+#define PASSSIZE 50
 
 using namespace std;
 
