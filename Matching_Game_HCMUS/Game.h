@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Board.h"
 #include "Point.h"
 #include "Menu.h"
@@ -38,23 +38,23 @@ struct Game {
 	Game(char[], char[], int, int, int);
 	~Game();
 
-	void setupGame(int);
-	void startGame();
-	void printInterface();
-	void saveData();
+	void setupGame(int);						//Khởi tạo board mới
+	void startGame();							//Bắt đầu game
+	void printInterface();						//In giao diện
+	void saveData();							//Lưu dữ liệu
 
-	void moveRight();
-	void moveLeft();
-	void moveUp();
-	void moveDown();
+	void moveRight();							//Di chuyển qua phải
+	void moveLeft();							//Di chuyển qua trái	
+	void moveUp();								//Di chuyển qua lên
+	void moveDown();							//Di chuyển qua xuống
 
-	char getCharacter(int x, int y);
+	char getCharacter(int x, int y);			//Lấy toạ độ của chữ
 
-	void lockBlock();
-	void deleteBlock();
-	bool isAvailableBlock(bool);
+	void lockBlock();							//Khoá ô 
+	void deleteBlock();							//Xoá ô
+	bool isAvailableBlock(bool);				//Ô vẫn còn
 
-	void askContinue();
-	void moveSuggestion();
+	void askContinue();							//Chơi tiếp
+	void moveSuggestion();						//Gợi ý
 };
 

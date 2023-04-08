@@ -60,44 +60,7 @@ void Menu::mainScreen()
 }
 
 void Menu::printLogo()
-{/*
-
-		██─╮  ██─╮      █─╮    ███████─╮      █████─╮  █─╮  █─╮  █─╮  ██─╮  █─╮   █████─╮
-		█ █╰╮█ █ │     █ █╰╮   ╰──█ ╭──╯     █╭─────╯  █ │  █ │  █ │  █ █╰╮ █ │  █ ╭────╯
-		█ │██ ╭█ │    █ ╭╯█╰╮     █ │        █│        ██████ │  █ │  █ │█╰╮█ │  █ │ ███─╮
-		█ │╰──╯█ │   ███████╰╮    █ │        █│        █ ╭──█ │  █ │  █ │ █╰█ │  █ │   █ │
-		█ │    █ │  █ ╭─────█╰╮   █ │         █████─╮  █ │  █ │  █ │  █ │  ██ │   █████ ╭╯
-		╰─╯    ╰─╯  ╰─╯     ╰─╯   ╰─╯         ╰─────╯  ╰─╯  ╰─╯  ╰─╯  ╰─╯  ╰──╯   ╰─────╯
-
-
-
-
-
-
-
-		*/
-		/*string startback[50];
-		ifstream ip;
-
-		ip.open("start");
-
-		int i = 0;
-		while (!ip.eof()) {
-			getline(ip, startback[i]);
-			i++;
-		}
-		ip.close();*/
-
-		/*for (int n = 0; n < i; n++)
-			cout << startback[i] << endl;*/
-
-			//cout << startback[1];
-
-	/*for (int i = 0; i < 100; ++i)
-		cout << i << endl;*/
-
-
-
+{
 	SetConsoleOutputCP(CP_UTF8);
 
 	unsigned char logo[] = u8R"(
