@@ -379,7 +379,7 @@ void Board::unselectedBlock(int x, int y) {
 void Board::lockBlock(int x, int y)
 {
 	int r = getRAt(x, y);
-	int c = getCAt(x, y);
+	int c = getCAt(x, y);	
 	pBoard[r][c].setCheck(LOCK);
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);

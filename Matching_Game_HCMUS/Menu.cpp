@@ -1,7 +1,7 @@
 ﻿#include "Menu.h"
 int Menu::current_option;
 Player Menu::account;
-const string Menu::options[12] = { "Play", "Leader Board", "Help", "Exit", "User Mode", " Guest Mode", "Sign in", "Sign up", "Easy", "   Medium   ", "Custom", "Exit" };
+const string Menu::options[12] = { "Play", "LeaderBoard", "Help", "Exit", "User Mode", " Guest Mode", "Sign in", "Sign up", "Easy", "   Medium   ", "Custom", "Exit" };
 
 void Menu::mainScreen()
 {
@@ -240,7 +240,7 @@ void Menu::chooseMode(bool direction, bool flag, int count) //0: lên, 1: xuốn
 		Control::gotoXY(70, top + (current_option - count) % 2 * 3);
 		putchar(174);
 	}
-}
+}	
 
 void Menu::mainMenu()
 {
@@ -799,8 +799,6 @@ void Menu::enterAccount()
 	Control::gotoXY(22, 18);
 	cout << "Please enter Username and Password shortly, under 12 characters!";
 
-	int leftRec = 37, topRec = 16;
-	int widthRec = 31, heightRec = 12;
 	int leftCha = 45, topCha = 17;
 	int xInput = leftCha + 14, yInput = topCha + 4;
 
@@ -909,7 +907,7 @@ bool Menu::rightAccount(char accounts_game[][50])
 			Sleep(1200);
 			return true;
 		}
-	}
+	}	
 
 	Control::gotoXY(40, 28);
 	Control::setConsoleColor(WHITE, RED);
