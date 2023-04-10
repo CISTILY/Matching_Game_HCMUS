@@ -1,7 +1,7 @@
 ﻿#include "Menu.h"
 int Menu::current_option;
 Player Menu::account;
-const string Menu::options[12] = { "Play", "Leader Board", "Help", "Exit", "User Mode", " Guest Mode", "Sign in", "Sign up", "Easy", "   Medium   ", "Custom", "Load Game" };
+const string Menu::options[12] = { "Play", "Leader Board", "Help", "Exit", "User Mode", " Guest Mode", "Sign in", "Sign up", "Easy", "   Medium   ", "Custom", "Load Games" };
 
 void Menu::mainScreen()
 {
@@ -21,7 +21,7 @@ void Menu::mainScreen()
 	};
 	//Control::playSound(BACKGROUND_SOUND);
 	//printAnimation();
-
+	
 	bool loadMenu = 1;
 	while (true)
 	{
