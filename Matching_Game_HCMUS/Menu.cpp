@@ -60,44 +60,7 @@ void Menu::mainScreen()
 }
 
 void Menu::printLogo()
-{/*
-
-		██─╮  ██─╮      █─╮    ███████─╮      █████─╮  █─╮  █─╮  █─╮  ██─╮  █─╮   █████─╮
-		█ █╰╮█ █ │     █ █╰╮   ╰──█ ╭──╯     █╭─────╯  █ │  █ │  █ │  █ █╰╮ █ │  █ ╭────╯
-		█ │██ ╭█ │    █ ╭╯█╰╮     █ │        █│        ██████ │  █ │  █ │█╰╮█ │  █ │ ███─╮
-		█ │╰──╯█ │   ███████╰╮    █ │        █│        █ ╭──█ │  █ │  █ │ █╰█ │  █ │   █ │
-		█ │    █ │  █ ╭─────█╰╮   █ │         █████─╮  █ │  █ │  █ │  █ │  ██ │   █████ ╭╯
-		╰─╯    ╰─╯  ╰─╯     ╰─╯   ╰─╯         ╰─────╯  ╰─╯  ╰─╯  ╰─╯  ╰─╯  ╰──╯   ╰─────╯
-
-
-
-
-
-
-
-		*/
-		/*string startback[50];
-		ifstream ip;
-
-		ip.open("start");
-
-		int i = 0;
-		while (!ip.eof()) {
-			getline(ip, startback[i]);
-			i++;
-		}
-		ip.close();*/
-
-		/*for (int n = 0; n < i; n++)
-			cout << startback[i] << endl;*/
-
-			//cout << startback[1];
-
-	/*for (int i = 0; i < 100; ++i)
-		cout << i << endl;*/
-
-
-
+{
 	SetConsoleOutputCP(CP_UTF8);
 
 	unsigned char logo[] = u8R"(
@@ -277,7 +240,7 @@ void Menu::chooseMode(bool direction, bool flag, int count) //0: lên, 1: xuốn
 		Control::gotoXY(70, top + (current_option - count) % 2 * 3);
 		putchar(174);
 	}
-}
+}	
 
 void Menu::mainMenu()
 {
@@ -748,8 +711,6 @@ void Menu::enterAccount()
 	Control::gotoXY(22, 18);
 	cout << "Please enter Username and Password shortly, under 12 characters!";
 
-	int leftRec = 37, topRec = 16;
-	int widthRec = 31, heightRec = 12;
 	int leftCha = 45, topCha = 17;
 	int xInput = leftCha + 14, yInput = topCha + 4;
 
@@ -858,7 +819,7 @@ bool Menu::rightAccount(char accounts_game[][50])
 			Sleep(1200);
 			return true;
 		}
-	}
+	}	
 
 	Control::gotoXY(40, 28);
 	Control::setConsoleColor(WHITE, RED);

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Board.h"
 #include "Point.h"
 #include "Menu.h"
@@ -76,26 +76,26 @@ struct Game {
 	void saveData();
 	void saveGame();
 
-	void moveRight();
-	void moveLeft();
-	void moveUp();
-	void moveDown();
+	void moveRight();							//Di chuyển qua phải
+	void moveLeft();							//Di chuyển qua trái	
+	void moveUp();								//Di chuyển qua lên
+	void moveDown();							//Di chuyển qua xuống
 
-	char getCharacter(int x, int y);
+	char getCharacter(int x, int y);			//Lấy toạ độ của chữ
 
 	void lockBlock();
 	void deleteBlock();
 	bool isAvailableBlock(bool, Board*);
 
-	void askContinue();
-	void moveSuggestion();
+	void askContinue();							//Chơi tiếp
+	void moveSuggestion();						//Gợi ý
 };
 
 struct State { //Representing a board state
 	int p, q; // Size of the board game
 	int p_, q_; // Current cursor position
 	char board[BOARDSIZE]; // Current board state
-	char file_background[URLSIZE]; // Link to background file. This variable�s value is NULL if there is no current background
+	char file_background[URLSIZE]; // Link to background file. This variable’s value is NULL if there is no current background
 
 	// 500 byte NULL
 };
