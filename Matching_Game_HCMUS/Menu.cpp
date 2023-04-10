@@ -1,7 +1,7 @@
 ﻿#include "Menu.h"
 int Menu::current_option;
 Player Menu::account;
-const string Menu::options[12] = { "Play", "LeaderBoard", "Help", "Exit", "User Mode", " Guest Mode", "Sign in", "Sign up", "Easy", "   Medium   ", "Custom", "Exit" };
+const string Menu::options[12] = { "Play", "Leader Board", "Help", "Exit", "User Mode", " Guest Mode", "Sign in", "Sign up", "Easy", "   Medium   ", "Custom", "Load Games" };
 
 void Menu::mainScreen()
 {
@@ -17,11 +17,11 @@ void Menu::mainScreen()
 		{options[8], playEasy},
 		{options[9], playMedium},
 		{options[10], playCustom},
-		{options[11], exitScreen}
+		{options[11], loadGame}
 	};
 	//Control::playSound(BACKGROUND_SOUND);
 	//printAnimation();
-
+	
 	bool loadMenu = 1;
 	while (true)
 	{
@@ -262,17 +262,17 @@ void Menu::playMenu()
 	Control::setConsoleColor(WHITE, BLACK);
 	Control::clearArea(30, 19, 40, 8);
 
-	Menu::chooseMode(0, 1, 4);
+	chooseMode(0, 1, 4);
 
 	while (loop)
 	{
 		switch (Control::getConsoleInput())
 		{
 		case 2:
-			Menu::chooseMode(0, 1, 4);
+			chooseMode(0, 1, 4);
 			break;
 		case 5:
-			Menu::chooseMode(1, 1, 4);
+			chooseMode(1, 1, 4);
 			break;
 		case 6:
 			loop = 0;
@@ -280,114 +280,6 @@ void Menu::playMenu()
 		default:
 			Control::playSound(ERROR_SOUND);
 		}
-	}
-}
-
-void Menu::helpScreen()
-{
-	Control::setAndCenterWindow();
-	Control::showCursor(false);
-	Control::setConsoleColor(WHITE, BLACK);
-	Control::clearConsole();
-	int left = 9, top = 2, width = 85, height = 23;
-	int line1 = 6, line2 = 19, line3 = 24, line4 = 15;
-	Graphic::printRectangleSpecial(left, top, width, height);
-	Control::gotoXY(left + 1, line1);
-	for (int i = 0; i < width; i++)
-	{
-		putchar(196);
-	}
-	Control::gotoXY(left + 1, line2);
-	for (int i = 0; i < width; i++)
-	{
-		putchar(196);
-	}
-	Control::gotoXY(left + 1, line4);
-	for (int i = 0; i < width; i++)
-	{
-		putchar(196);
-	}
-	for (int i = 1; i < height; i++)
-	{
-		Control::gotoXY(line3, top + i);
-		putchar(179);
-	}
-	Control::gotoXY(line3, line1);
-	putchar(197);
-	Control::gotoXY(line3, line2);
-	putchar(197);
-	Control::gotoXY(line3, line4);
-	putchar(197);
-
-	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(left + 3, top + 2);
-	cout << "Moves:";
-	Control::gotoXY(left + 20, top + 1);
-	putchar(249); cout << "Up:    W, up arrow";
-	Control::gotoXY(left + 52, top + 1);
-	putchar(249); cout << "Down:  S, down arrow";
-	Control::gotoXY(left + 20, top + 3);
-	putchar(249); cout << "Left:  A, left arrow";
-	Control::gotoXY(left + 52, top + 3);
-	putchar(249); cout << "Right: D, right arrow";
-
-
-	Control::gotoXY(left + 3, top + 8);
-	cout << "Rules:";
-	Control::gotoXY(left + 17, top + 5);
-	int left1 = left + 17;
-	putchar(249); cout << " The Matching Game (commonly known as the Pikachu Puzzle Game)";
-	Control::gotoXY(left1, top + 6);
-	cout << " includes a board of multiple cells, each of which presents a figure.";
-	Control::gotoXY(left1, top + 8);
-	putchar(249); cout << " The player finds and matches a pair of cells that contain the same";
-	Control::gotoXY(left1, top + 9);
-	cout << " figure and connect each other in some particular pattern.";
-	Control::gotoXY(left1, top + 11);
-	putchar(249); cout << " A legal match will make the two cells disappear. The game ends when";
-	Control::gotoXY(left1, top + 12);
-	cout << " all matching pairs are found.";
-
-	Control::gotoXY(left + 3, top + 15);
-	cout << "Scoring:";
-	Control::setConsoleColor(WHITE, GREEN);
-	Control::gotoXY(left1 + 10, top + 14);
-	putchar(249); cout << " I Matching: +1 BTC";
-	Control::setConsoleColor(WHITE, GREEN);
-	Control::gotoXY(left1 + 40, top + 14);
-	putchar(249); cout << " L Matching: +2 BTC";
-	Control::setConsoleColor(WHITE, GREEN);
-	Control::gotoXY(left1 + 10, top + 15);
-	putchar(249); cout << " Z Matching: +3 BTC";
-	Control::gotoXY(left1 + 40, top + 15);
-	putchar(249); cout << " U Matching: +4 BTC";
-	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(left1 + 10, top + 16);
-	putchar(249); cout << " Not Matched: -2 BTC";
-	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(left1 + 40, top + 16);
-	putchar(249); cout << " Move suggestion: -2 BTC";
-
-	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(left + 3, top + 20);
-	cout << "Developers:";
-	Control::gotoXY(left + 31, top + 19);
-	cout << "Dev 1: Nguyen Van Le Ba Thanh (22127390)";
-	Control::gotoXY(left + 31, top + 21);
-	cout << "Dev 2: Vu Thai Phuc (22127337)";
-
-	Control::setConsoleColor(WHITE, BLACK);
-	Graphic::printRectangleNormal(49, 27, 8, 2);
-	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(47, 28);
-	putchar(175);
-	Control::gotoXY(52, 28);
-	cout << "Back";
-	Control::gotoXY(60, 28);
-	putchar(174);
-	while (Control::getConsoleInput() != 6)
-	{
-		Control::playSound(ERROR_SOUND);
 	}
 }
 
@@ -601,135 +493,155 @@ void Menu::playCustom()
 	g.startGame();
 }
 
-void Menu::leaderBoard()
+
+void Menu::changeFile(int direction, bool flag, int& current_file) //0: lên, 1: xuống, 2: trái, 3: phải 
 {
-	current_option = 0;
-	Control::clearConsole();
+	int leftFile = 26, topFile = 7, xDistance = 22, yDistance = 10;
 
-	Player p[200];
-	int leftRec = 24, topRec = 9;
-
-	Control::setConsoleColor(WHITE, RED);
-	cout << R"(
-	    _      ______          _____  ______ _____       ____   ____          _____  _____  
-	   | |    |  ____|   /\   |  __ \|  ____|  __ \     |  _ \ / __ \   /\   |  __ \|  __ \ 
-	   | |    | |__     /  \  | |  | | |__  | |__) |    | |_) | |  | | /  \  | |__) | |  | |
-	   | |    |  __|   / /\ \ | |  | |  __| |  _  /     |  _ <| |  | |/ /\ \ |  _  /| |  | |
-	   | |____| |____ / ____ \| |__| | |____| | \ \     | |_) | |__| / ____ \| | \ \| |__| |
-	   |______|______/_/    \_\_____/|______|_|  \_\    |____/ \____/_/    \_\_|  \_\_____/ 
-                                                                                                                                                                                                         
-	)";
-
-	Control::setConsoleColor(WHITE, BLACK);
-	Graphic::printRectangleNormal(leftRec, topRec, 56, 17);
-
-	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(leftRec + 3, topRec + 1);
-	cout << "STT";
-	Control::setConsoleColor(WHITE, BLACK);
-	for (int i = 1; i < 17; i++)
-	{
-		Control::gotoXY(leftRec + 8, topRec + i);
-		putchar(179);
-	}
-	for (int i = 1; i < 8; i++)
-	{
-		Control::gotoXY(leftRec + i, topRec + 2);
-		putchar(196);
-	}
-	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(leftRec + 15, topRec + 1);
-	cout << "NAME";
-	Control::setConsoleColor(WHITE, BLACK);
-	for (int i = 1; i < 17; i++)
-	{
-		Control::gotoXY(leftRec + 25, topRec + i);
-		putchar(179);
-	}
-	for (int i = 9; i < 25; i++)
-	{
-		Control::gotoXY(leftRec + i, topRec + 2);
-		putchar(196);
-	}
-	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(leftRec + 33, topRec + 1);
-	cout << "MODE";
-	Control::setConsoleColor(WHITE, BLACK);
-	for (int i = 1; i < 17; i++)
-	{
-		Control::gotoXY(leftRec + 44, topRec + i);
-		putchar(179);
-	}
-	for (int i = 26; i < 44; i++)
-	{
-		Control::gotoXY(leftRec + i, topRec + 2);
-		putchar(196);
-	}
-	Control::setConsoleColor(WHITE, BLUE);
-	Control::gotoXY(leftRec + 48, topRec + 1);
-	cout << "SCORE";
-	Control::setConsoleColor(WHITE, BLACK);
-
-	/*for (int i = 1; i < 17; i++)
-	{
-		Control::gotoXY(leftRec + 57, topRec + i);
-		putchar(179);
-	}*/
-
-	for (int i = 45; i < 57; i++)
-	{
-		Control::gotoXY(leftRec + i, topRec + 2);
-		putchar(196);
-	}
-
-
-
-	int y = topRec + 3;
-	int lines = 8;
-	int n = 0;
-	string tmp;
-	fstream fs("file\\leaderboard.txt", ios::in);
-
-	while (!fs.eof()) {
-		fs.getline(p[n].playerName, NAMESIZE + 1);
-		fs.getline(p[n].mode, 15);
-		fs >> p[n].score;
-		fs.ignore();
-		n++;
-	}
-	fs.close();
-	for (int i = 0; i < n; i++) {
-		for (int j = i + 1; j < n; j++) {
-			if (p[j].score > p[i].score) {
-				swap(p[i], p[j]);
-			}
-		}
-	}
-	for (int i = 1; i < lines; i++) {
-		Control::gotoXY(leftRec + 4, y);
-		cout << i;
-		Control::gotoXY(leftRec + 11, y);
-		cout << p[i - 1].playerName;
-		Control::gotoXY(leftRec + 28, y);
-		cout << p[i - 1].mode;
-		Control::gotoXY(leftRec + 50, y);
-		cout << p[i - 1].score;
-		y += 2;
-	}
-
-	Control::setConsoleColor(WHITE, BLACK);
-	Graphic::printRectangleSpecial(48, 27, 8, 2);
-	Control::setConsoleColor(WHITE, RED);
-	Control::gotoXY(46, 28);
-	putchar(175);
-	Control::gotoXY(51, 28);
-	cout << "Back";
-	Control::gotoXY(59, 28);
-	putchar(174);
-	while (Control::getConsoleInput() != 6)
+	if (((direction == 0) && (current_file == 0 || current_file == 1 || current_file == 2))
+		|| ((direction == 1) && (current_file == 3 || current_file == 4))
+		|| (direction == 2 && current_file == 0)
+		|| (direction == 3 && current_file == 4))
 	{
 		Control::playSound(ERROR_SOUND);
+		return;
 	}
+
+	Control::setConsoleColor(WHITE, GRAY);
+	if (current_file < 3)
+		Graphic::printFileBlock(leftFile + current_file * xDistance, topFile, 8, 4);
+	else
+		Graphic::printFileBlock(leftFile + (current_file - 2.5) * xDistance, topFile + yDistance, 8, 4);
+
+	if ((current_file == 0 || current_file == 1) && direction == 1)
+		current_file = 3;
+	else if (current_file == 2 && direction == 1)
+		current_file = 4;
+	else if (current_file == 3 && direction == 0)
+		current_file = 0;
+	else if (current_file == 4 && direction == 0)
+		current_file = 2;
+	else if (direction == 3)
+		++current_file;
+	else if (direction == 2)
+		--current_file;
+
+	if (flag)
+	{
+		Control::playSound(ENTER_SOUND);
+		Control::setConsoleColor(WHITE, GREEN);
+
+		if (current_file < 3)
+			Graphic::printFileBlock(leftFile + current_file * xDistance, topFile, 8, 4);
+		else
+			Graphic::printFileBlock(leftFile + (current_file - 2.5) * xDistance, topFile + yDistance, 8, 4);
+	}
+}
+
+void Menu::chooseFile(int& current_file)
+{
+	Control::clearConsole();
+	Control::setAndCenterWindow();
+
+	int loop = 1;
+
+
+	changeFile(2, 0, current_file);
+	changeFile(2, 0, current_file);
+	changeFile(2, 0, current_file);
+	changeFile(2, 1, current_file);
+
+	while (loop)
+	{
+		switch (Control::getConsoleInput())
+		{
+		case 2:
+			changeFile(0, 1, current_file);
+			break;
+		case 3:
+			changeFile(2, 1, current_file);
+			break;
+		case 4:
+			changeFile(3, 1, current_file);
+			break;
+		case 5:
+			changeFile(1, 1, current_file);
+			break;
+		case 6:
+			loop = 0;
+			break;
+		default:
+			Control::playSound(ERROR_SOUND);
+		}
+	}
+}
+
+void Menu::readFileGame()
+{
+	int current_file = 4;
+	chooseFile(current_file);
+
+	ifstream load;
+	load.open("save.txt");
+	load >> account.playerName >> account.password >> account.mode >> account.score;
+	load >> account.day >> account.month >> account.year >> account.minuteplay >> account.secondplay;
+	load >> account.xcursor >> account.ycursor >> account.rowplay >> account.colplay;
+
+	account.pokemon = new char* [account.rowplay];
+	account.status = new int* [account.rowplay];
+
+	for (int i = 0; i < account.rowplay; ++i)
+	{
+		account.pokemon[i] = new char[account.colplay];
+		account.status[i] = new int[account.colplay];
+	}
+
+	for (int i = 0; i < account.rowplay; ++i)
+		for (int j = 0; j < account.colplay; ++j)
+			load >> account.pokemon[i][j];
+
+	for (int i = 0; i < account.rowplay; ++i)
+		for (int j = 0; j < account.colplay; ++j)
+			load >> account.status[i][j];
+	load.close();
+
+
+	/*Control::gotoXY(0, 0);
+	cout << account.playerName << " " << account.password << endl << account.mode << " " << account.score << endl;
+	cout << account.day << " " << account.month << " " << account.year << endl << account.minuteplay << " " << account.secondplay << endl;
+	cout << account.xcursor << " " << account.ycursor << endl << account.rowplay << " " << account.colplay << endl;
+
+	for (int i = 0; i < account.rowplay; ++i)
+	{
+		for (int j = 0; j < account.colplay; ++j)
+			cout << account.pokemon[i][j] << " ";
+		cout << endl;
+	}
+
+
+	for (int i = 0; i < account.rowplay; ++i)
+	{
+		for (int j = 0; j < account.colplay; ++j)
+			cout << account.status[i][j] << " ";
+		cout << endl;
+	}*/
+}
+
+void Menu::loadGame()
+{
+	readFileGame();
+
+	Game g(account.playerName, account.password, account.mode, account.score, account.minuteplay, account.secondplay,
+		account.rowplay, account.colplay, account.status);
+	g.startGameForLoad(account.pokemon, account.status, account.xcursor, account.ycursor);
+
+	for (int i = 0; i < account.rowplay; ++i)
+	{
+		delete[] account.pokemon[i];
+		delete[] account.status[i];
+	}
+	delete[] account.pokemon;
+	delete[] account.status;
 }
 
 void Menu::UserMode()
@@ -999,3 +911,269 @@ void Menu::signUp()
 	printMode();
 }
 
+void Menu::leaderBoard()
+{
+	current_option = 0;
+	Control::clearConsole();
+
+	Player p[200]{};
+	int leftRec = 12, topRec = 9;
+
+	Control::setConsoleColor(WHITE, RED);
+	cout << R"(
+	    _      ______          _____  ______ _____       ____   ____          _____  _____  
+	   | |    |  ____|   /\   |  __ \|  ____|  __ \     |  _ \ / __ \   /\   |  __ \|  __ \ 
+	   | |    | |__     /  \  | |  | | |__  | |__) |    | |_) | |  | | /  \  | |__) | |  | |
+	   | |    |  __|   / /\ \ | |  | |  __| |  _  /     |  _ <| |  | |/ /\ \ |  _  /| |  | |
+	   | |____| |____ / ____ \| |__| | |____| | \ \     | |_) | |__| / ____ \| | \ \| |__| |
+	   |______|______/_/    \_\_____/|______|_|  \_\    |____/ \____/_/    \_\_|  \_\_____/ 
+                                                                                                                                                                                                         
+	)";
+
+	Control::setConsoleColor(WHITE, BLACK);
+	Graphic::printRectangleNormal(leftRec, topRec, 81, 17);
+
+	Control::setConsoleColor(WHITE, BLUE);
+	Control::gotoXY(leftRec + 3, topRec + 1);
+	cout << "STT";
+
+	Control::setConsoleColor(WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Control::gotoXY(leftRec + 8, topRec + i);
+		putchar(179);
+	}
+	for (int i = 1; i < 8; i++)
+	{
+		Control::gotoXY(leftRec + i, topRec + 2);
+		putchar(196);
+	}
+
+	Control::setConsoleColor(WHITE, BLUE);
+	Control::gotoXY(leftRec + 15, topRec + 1);
+	cout << "NAME";
+
+	Control::setConsoleColor(WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Control::gotoXY(leftRec + 25, topRec + i);
+		putchar(179);
+	}
+	for (int i = 9; i < 25; i++)
+	{
+		Control::gotoXY(leftRec + i, topRec + 2);
+		putchar(196);
+	}
+
+	Control::setConsoleColor(WHITE, BLUE);
+	Control::gotoXY(leftRec + 33, topRec + 1);
+	cout << "MODE";
+
+	Control::setConsoleColor(WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Control::gotoXY(leftRec + 44, topRec + i);
+		putchar(179);
+	}
+	for (int i = 26; i < 44; i++)
+	{
+		Control::gotoXY(leftRec + i, topRec + 2);
+		putchar(196);
+	}
+
+	Control::setConsoleColor(WHITE, BLUE);
+	Control::gotoXY(leftRec + 48, topRec + 1);
+	cout << "SCORE";
+
+	Control::setConsoleColor(WHITE, BLACK);
+	for (int i = 45; i < 57; i++)
+	{
+		Control::gotoXY(leftRec + i, topRec + 2);
+		putchar(196);
+	}
+
+	Control::setConsoleColor(WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Control::gotoXY(leftRec + 57, topRec + i);
+		putchar(179);
+	}
+
+	Control::setConsoleColor(WHITE, BLUE);
+	Control::gotoXY(leftRec + 65, topRec + 1);
+	cout << "PLAY TIME";
+
+	Control::setConsoleColor(WHITE, BLACK);
+	for (int i = 58; i < 82; i++)
+	{
+		Control::gotoXY(leftRec + i, topRec + 2);
+		putchar(196);
+	}
+
+
+	int y = topRec + 3;
+	int lines = 8;
+	int n = 0;
+	string tmp;
+	ifstream fs("file\\leaderboard.txt");
+
+	while (!fs.eof()) {
+		fs.getline(p[n].playerName, NAMESIZE + 1);
+		fs.getline(p[n].mode, 15);
+		fs >> p[n].score;
+		fs >> p[n].minuteplay >> p[n].secondplay;
+		fs >> p[n].day >> p[n].month >> p[n].year;
+		fs.ignore();
+		n++;
+	}
+	fs.close();
+
+	for (int i = 0; i < n; i++) {
+		for (int j = i + 1; j < n; j++) {
+			if (p[j].score > p[i].score) {
+				swap(p[i], p[j]);
+			}
+			if (p[j].score == p[i].score)
+				if (p[j].minuteplay * 60 + p[j].secondplay < p[i].minuteplay * 60 + p[i].secondplay)
+					swap(p[i], p[j]);
+		}
+	}
+
+	for (int i = 1; i < lines; i++) {
+		Control::gotoXY(leftRec + 4, y);
+		cout << i;
+		Control::gotoXY(leftRec + 11, y);
+		cout << p[i - 1].playerName;
+		Control::gotoXY(leftRec + 28, y);
+		cout << p[i - 1].mode;
+		Control::gotoXY(leftRec + 50, y);
+		cout << p[i - 1].score;
+		Control::gotoXY(leftRec + 60, y);
+		cout << setw(2) << setfill('0') << p[i - 1].minuteplay << " : " << setw(2) << setfill('0') << p[i - 1].secondplay;
+		Control::gotoXY(leftRec + 71, y);
+		cout << p[i - 1].day << "/" << p[i - 1].month << "/" << p[i - 1].year;
+		y += 2;
+	}
+
+	Control::setConsoleColor(WHITE, BLACK);
+	Graphic::printRectangleSpecial(48, 27, 8, 2);
+	Control::setConsoleColor(WHITE, RED);
+	Control::gotoXY(46, 28);
+	putchar(175);
+	Control::gotoXY(51, 28);
+	cout << "Back";
+	Control::gotoXY(59, 28);
+	putchar(174);
+	while (Control::getConsoleInput() != 6)
+	{
+		Control::playSound(ERROR_SOUND);
+	}
+}
+
+void Menu::helpScreen()
+{
+	Control::setAndCenterWindow();
+	Control::showCursor(false);
+	Control::setConsoleColor(WHITE, BLACK);
+	Control::clearConsole();
+	int left = 9, top = 2, width = 85, height = 23;
+	int line1 = 6, line2 = 19, line3 = 24, line4 = 15;
+	Graphic::printRectangleSpecial(left, top, width, height);
+	Control::gotoXY(left + 1, line1);
+	for (int i = 0; i < width; i++)
+	{
+		putchar(196);
+	}
+	Control::gotoXY(left + 1, line2);
+	for (int i = 0; i < width; i++)
+	{
+		putchar(196);
+	}
+	Control::gotoXY(left + 1, line4);
+	for (int i = 0; i < width; i++)
+	{
+		putchar(196);
+	}
+	for (int i = 1; i < height; i++)
+	{
+		Control::gotoXY(line3, top + i);
+		putchar(179);
+	}
+	Control::gotoXY(line3, line1);
+	putchar(197);
+	Control::gotoXY(line3, line2);
+	putchar(197);
+	Control::gotoXY(line3, line4);
+	putchar(197);
+
+	Control::setConsoleColor(WHITE, BLUE);
+	Control::gotoXY(left + 3, top + 2);
+	cout << "Moves:";
+	Control::gotoXY(left + 20, top + 1);
+	putchar(249); cout << "Up:    W, up arrow";
+	Control::gotoXY(left + 52, top + 1);
+	putchar(249); cout << "Down:  S, down arrow";
+	Control::gotoXY(left + 20, top + 3);
+	putchar(249); cout << "Left:  A, left arrow";
+	Control::gotoXY(left + 52, top + 3);
+	putchar(249); cout << "Right: D, right arrow";
+
+
+	Control::gotoXY(left + 3, top + 8);
+	cout << "Rules:";
+	Control::gotoXY(left + 17, top + 5);
+	int left1 = left + 17;
+	putchar(249); cout << " The Matching Game (commonly known as the Pikachu Puzzle Game)";
+	Control::gotoXY(left1, top + 6);
+	cout << " includes a board of multiple cells, each of which presents a figure.";
+	Control::gotoXY(left1, top + 8);
+	putchar(249); cout << " The player finds and matches a pair of cells that contain the same";
+	Control::gotoXY(left1, top + 9);
+	cout << " figure and connect each other in some particular pattern.";
+	Control::gotoXY(left1, top + 11);
+	putchar(249); cout << " A legal match will make the two cells disappear. The game ends when";
+	Control::gotoXY(left1, top + 12);
+	cout << " all matching pairs are found.";
+
+	Control::gotoXY(left + 3, top + 15);
+	cout << "Scoring:";
+	Control::setConsoleColor(WHITE, GREEN);
+	Control::gotoXY(left1 + 10, top + 14);
+	putchar(249); cout << " I Matching: +1 BTC";
+	Control::setConsoleColor(WHITE, GREEN);
+	Control::gotoXY(left1 + 40, top + 14);
+	putchar(249); cout << " L Matching: +2 BTC";
+	Control::setConsoleColor(WHITE, GREEN);
+	Control::gotoXY(left1 + 10, top + 15);
+	putchar(249); cout << " Z Matching: +3 BTC";
+	Control::gotoXY(left1 + 40, top + 15);
+	putchar(249); cout << " U Matching: +4 BTC";
+	Control::setConsoleColor(WHITE, RED);
+	Control::gotoXY(left1 + 10, top + 16);
+	putchar(249); cout << " Not Matched: -2 BTC";
+	Control::setConsoleColor(WHITE, RED);
+	Control::gotoXY(left1 + 40, top + 16);
+	putchar(249); cout << " Move suggestion: -2 BTC";
+
+	Control::setConsoleColor(WHITE, BLUE);
+	Control::gotoXY(left + 3, top + 20);
+	cout << "Developers:";
+	Control::gotoXY(left + 31, top + 19);
+	cout << "Dev 1: Nguyen Van Le Ba Thanh (22127390)";
+	Control::gotoXY(left + 31, top + 21);
+	cout << "Dev 2: Vu Thai Phuc (22127337)";
+
+	Control::setConsoleColor(WHITE, BLACK);
+	Graphic::printRectangleNormal(49, 27, 8, 2);
+	Control::setConsoleColor(WHITE, RED);
+	Control::gotoXY(47, 28);
+	putchar(175);
+	Control::gotoXY(52, 28);
+	cout << "Back";
+	Control::gotoXY(60, 28);
+	putchar(174);
+	while (Control::getConsoleInput() != 6)
+	{
+		Control::playSound(ERROR_SOUND);
+	}
+}

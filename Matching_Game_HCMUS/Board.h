@@ -17,6 +17,7 @@ struct Board {
 	Point** pBoard;					// Mảng tọa độ ô cờ
 	int** character;
 	string* background;
+	int stop = 1;
 
 	Board(int, int, int, int, char[]);
 	~Board();
@@ -42,14 +43,16 @@ struct Board {
 
 	void showBoard();
 	void renderBoard();
+	void renderBoardForLoad(int**);
 	void buildBoardData();
+	void buildBoardDataForLoad(char**);
 
 	void selectedBlock(int, int, int);
 	void unselectedBlock(int, int);
 
 	void lockBlock(int, int);
 	void deleteBlock(int, int);
-	void deleteArrow();
+	void updateBackground();
 
 	void drawLineI(pair<int, int>, pair<int, int>);
 	void deleteLineI(pair<int, int>, pair<int, int>);

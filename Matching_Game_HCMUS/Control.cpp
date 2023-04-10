@@ -44,7 +44,7 @@ void Control::setAndCenterWindow(int _row, int _col)
 	RECT rectOfClient, rectOfWindow;
 	GetClientRect(consoleWindow, &rectOfClient);
 	GetWindowRect(consoleWindow, &rectOfWindow);
-	int width = (_col + 1) * 110 + 410;
+	int width = (_col + 1) * 110 + 500;
 	int height = 820;
 	if (_row > 6)
 		height = 1080;
@@ -151,6 +151,8 @@ int Control::getConsoleInput()
 			return 7;
 		else if (c == 77 || c == 109)		// Nút M, m
 			return 8;
+		else if (c == 71 || c == 103)		// Nút G, g
+			return 9;
 		else                                // Nút khác
 			return 0;
 	}
@@ -158,7 +160,7 @@ int Control::getConsoleInput()
 
 void Control::playSound(int i)
 {
-	static vector<const wchar_t*> soundFile{ L"Error.wav", L"Enter.wav", L"EnterMenu.wav", L"GameStart.wav", L"Win.wav",  L"Move.wav", L"GetPoint.wav", L"Wrong.wav", L"MoveSuggestion.wav"};
+	static vector<const wchar_t*> soundFile{ L"Error.wav", L"Enter.wav", L"EnterMenu.wav", L"GameStart.wav", L"Win.wav",  L"Move.wav", L"GetPoint.wav", L"Wrong.wav", L"MoveSuggestion.wav" };
 	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
 }
 

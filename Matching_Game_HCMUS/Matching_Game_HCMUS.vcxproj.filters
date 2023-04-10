@@ -61,5 +61,8 @@
     <Text Include="start.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="save.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

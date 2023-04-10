@@ -22,6 +22,12 @@ Board::~Board()
 		delete[] pBoard[i];
 	delete[] pBoard,
 		pBoard = nullptr;
+
+	for (int i = 0; i < sizeRow; i++)
+		delete[] character[i];
+	delete[] character,
+		character = nullptr;
+
 	delete[] background;
 	background = nullptr;
 }
@@ -283,6 +289,38 @@ void Board::renderBoard() {
 	}
 }
 
+void Board::renderBoardForLoad(int** status) {
+	for (int i = 0; i < sizeRow; i++)
+	{
+		for (int j = 0; j < sizeCol; j++)
+		{
+			pBoard[i][j].setX(8 * j + left + 5); // x-value of boardgame
+			pBoard[i][j].setY(4 * i + top + 2); // y-value of boardgame
+			pBoard[i][j].setCheck(status[i][j]);
+
+			if (pBoard[i][j].getCheck() == 1)
+				pBoard[i][j].setCheck(0);
+
+			int r = pBoard[i][j].getX();
+			int c = pBoard[i][j].getY();
+
+			if (pBoard[i][j].getCheck() != -1)
+			{
+				if (pBoard[i][j].getCharacter() % 16 != 7 && pBoard[i][j].getCharacter() % 16 != 11
+					&& pBoard[i][j].getCharacter() % 16 != 14 && pBoard[i][j].getCharacter() % 16 != 15)
+					Control::setConsoleColor(WHITE, pBoard[i][j].getCharacter() % 16);
+				else
+					Control::setConsoleColor(WHITE, (pBoard[i][j].getCharacter() + 2) % 16);
+
+
+				Control::gotoXY(r, c);
+				putchar(pBoard[i][j].getCharacter());
+			}
+
+		}
+	}
+}
+
 void Board::buildBoardData() {
 	srand((unsigned int)time(NULL));
 
@@ -308,7 +346,7 @@ void Board::buildBoardData() {
 		pos[i] = tmp;
 	}
 	Control::gotoXY(0, 0);
-	// Construct characters matrix
+	// Construct pokemons matrix
 	for (int i = 0; i < sizeRow; i++) {
 		for (int j = 0; j < sizeCol; j++) {
 			int r = pos[sizeCol * i + j] / sizeCol;
@@ -319,6 +357,13 @@ void Board::buildBoardData() {
 
 	delete[] pos;
 	delete[] checkDuplicate;
+}
+
+void Board::buildBoardDataForLoad(char** pokemon) {
+	// Construct pokemons matrix
+	for (int i = 0; i < sizeRow; ++i)
+		for (int j = 0; j < sizeCol; ++j)
+			pBoard[i][j].setCharacter(pokemon[i][j]);
 }
 
 void Board::selectedBlock(int x, int y, int color) {
@@ -392,23 +437,11 @@ void Board::deleteBlock(int x, int y)
 	int c = getCAt(x, y);
 	pBoard[r][c].setCheck(DEL);
 
-	/*
-	//Delete cornors
-	Control::setConsoleColor(WHITE, BLACK);
-	for (int i = y - 2; i <= y + 2; i += 4) {
-		for (int j = x - 4; j <= x + 4; j += 8) {
-			Control::gotoXY(j, i);
-			putchar(43);
-		}
-	}
-
-		*/
 	Control::setConsoleColor(WHITE, BLACK);
 	for (int i = y - 1; i <= y + 1; i++) {
 		for (int j = x - 3; j <= x + 3; j++) {
 			Control::gotoXY(j, i);
 			putchar(background[i - top][j - left]);
-
 		}
 	}
 
@@ -450,7 +483,7 @@ void Board::deleteBlock(int x, int y)
 	}
 }
 
-void Board::deleteArrow()
+void Board::updateBackground()
 {
 	for (int i = getYAt(0, 0); i <= getYAt(sizeRow - 1, 0); i += 4)
 		for (int j = getXAt(0, 0); j <= getXAt(0, sizeCol - 1); j += 8)

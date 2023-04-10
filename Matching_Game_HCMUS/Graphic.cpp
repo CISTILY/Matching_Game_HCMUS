@@ -72,6 +72,32 @@ void Graphic::printRectangleBlock(int left, int top, int width, int height)
 	putchar(223);
 }
 
+void Graphic::printFileBlock(int left, int top, int width, int height)
+{
+	Control::gotoXY(left + 1, top);
+	for (int i = 0; i < width; i++)
+		putchar(220);
+
+	int i = 0;
+	for (; i < height; i++)
+	{
+		Control::gotoXY(left, top + i + 1);
+		putchar(219);
+
+		Control::gotoXY(left + 2, top + i + 1);
+		for (int j = 0; j < width - 2; ++j)
+			putchar(254);
+
+		Control::gotoXY(left + width + 1, top + i + 1);
+		putchar(219);
+	}
+
+	Control::gotoXY(left + 1, top + i + 1);
+	for (i = 0; i < width; i++)
+		putchar(223);
+}
+
+
 void Graphic::printFrame(int x, int y)
 {
 	Control::gotoXY(x - 4, y - 2);
@@ -188,6 +214,133 @@ void Graphic::backBottomRight(int x, int y, int situation, string* background)
 	default:
 		Control::setConsoleColor(WHITE, BLACK);
 		putchar(43);
+		break;
+	}
+}
+
+void Graphic::createTimeNumber0(char Time_array[][41])
+{
+	strcat_s(Time_array[0], "  ___   ");
+	strcat_s(Time_array[1], " / _ \\  ");
+	strcat_s(Time_array[2], "( (_) ) ");
+	strcat_s(Time_array[3], " \\___/  ");
+}
+
+void Graphic::createTimeNumber1(char Time_array[][41])
+{
+	strcat_s(Time_array[0], " __  ");
+	strcat_s(Time_array[1], "(  ) ");
+	strcat_s(Time_array[2], " )(  ");
+	strcat_s(Time_array[3], "(__) ");
+}
+
+void Graphic::createTimeNumber2(char Time_array[][41])
+{
+	strcat_s(Time_array[0], " ___   ");
+	strcat_s(Time_array[1], "(__ \\  ");
+	strcat_s(Time_array[2], " / _/  ");
+	strcat_s(Time_array[3], "(____) ");
+}
+
+void Graphic::createTimeNumber3(char Time_array[][41])
+{
+	strcat_s(Time_array[0], " ___  ");
+	strcat_s(Time_array[1], "(__ ) ");
+	strcat_s(Time_array[2], " (_ \\ ");
+	strcat_s(Time_array[3], "(___/ ");
+}
+void Graphic::createTimeNumber4(char Time_array[][41])
+{
+	strcat_s(Time_array[0], "  __   ");
+	strcat_s(Time_array[1], " /. |  ");
+	strcat_s(Time_array[2], "(_  _) ");
+	strcat_s(Time_array[3], "  (_)  ");
+}
+
+void Graphic::createTimeNumber5(char Time_array[][41])
+{
+	strcat_s(Time_array[0], " ___  ");
+	strcat_s(Time_array[1], "| __) ");
+	strcat_s(Time_array[2], "|__ \\ ");
+	strcat_s(Time_array[3], "(___/ ");
+}
+
+void Graphic::createTimeNumber6(char Time_array[][41])
+{
+	strcat_s(Time_array[0], "  _   ");
+	strcat_s(Time_array[1], " / )  ");
+	strcat_s(Time_array[2], "/ _ \\ ");
+	strcat_s(Time_array[3], "\\___/ ");
+}
+
+void Graphic::createTimeNumber7(char Time_array[][41])
+{
+	strcat_s(Time_array[0], " ___  ");
+	strcat_s(Time_array[1], "(__ ) ");
+	strcat_s(Time_array[2], " / /  ");
+	strcat_s(Time_array[3], "(_/   ");
+}
+
+void Graphic::createTimeNumber8(char Time_array[][41])
+{
+	strcat_s(Time_array[0], " ___  ");
+	strcat_s(Time_array[1], "( _ ) ");
+	strcat_s(Time_array[2], "/ _ \\ ");
+	strcat_s(Time_array[3], "\\___/ ");
+}
+
+void Graphic::createTimeNumber9(char Time_array[][41])
+{
+	strcat_s(Time_array[0], " ___   ");
+	strcat_s(Time_array[1], "/ _ \\  ");
+	strcat_s(Time_array[2], "\\_  /  ");
+	strcat_s(Time_array[3], " (_/   ");
+}
+
+void Graphic::createTimeTwoDots(char Time_array[][41])
+{
+	strcat_s(Time_array[0], "     ");
+	strcat_s(Time_array[1], " ()  ");
+	strcat_s(Time_array[2], "     ");
+	strcat_s(Time_array[3], " ()  ");
+}
+
+void Graphic::createTime(int x, char Time_array[][41])
+{
+	switch (x)
+	{
+	case 0:
+		createTimeNumber0(Time_array);
+		break;
+	case 1:
+		createTimeNumber1(Time_array);
+		break;
+	case 2:
+		createTimeNumber2(Time_array);
+		break;
+	case 3:
+		createTimeNumber3(Time_array);
+		break;
+	case 4:
+		createTimeNumber4(Time_array);
+		break;
+	case 5:
+		createTimeNumber5(Time_array);
+		break;
+	case 6:
+		createTimeNumber6(Time_array);
+		break;
+	case 7:
+		createTimeNumber7(Time_array);
+		break;
+	case 8:
+		createTimeNumber8(Time_array);
+		break;
+	case 9:
+		createTimeNumber9(Time_array);
+		break;
+	case 10:
+		createTimeTwoDots(Time_array);
 		break;
 	}
 }
