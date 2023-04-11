@@ -327,14 +327,14 @@ void Board::buildBoardData() {
 	bool* checkDuplicate = new bool[sizeRow * sizeCol];
 	int* pos = new int[sizeRow * sizeCol];
 
-	// Random pokemons
+	// Random characters
 	for (int i = 0; i < sizeRow; i++) {
 		for (int j = 0; j < sizeCol; j += 2) {
 			character[i][j] = character[i][j + 1] = rand() % 26 + 'A';
 		}
 	}
 
-	// Random pokemons position 
+	// Random characters position 
 	for (int i = 0; i < sizeRow * sizeCol; i++)
 		checkDuplicate[i] = 0;
 	for (int i = 0; i < sizeRow * sizeCol; i++) {
@@ -345,7 +345,7 @@ void Board::buildBoardData() {
 		checkDuplicate[tmp] = 1;
 		pos[i] = tmp;
 	}
-
+	Control::gotoXY(0, 0);
 	// Construct pokemons matrix
 	for (int i = 0; i < sizeRow; i++) {
 		for (int j = 0; j < sizeCol; j++) {
@@ -424,7 +424,7 @@ void Board::unselectedBlock(int x, int y) {
 void Board::lockBlock(int x, int y)
 {
 	int r = getRAt(x, y);
-	int c = getCAt(x, y);	
+	int c = getCAt(x, y);
 	pBoard[r][c].setCheck(LOCK);
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);
