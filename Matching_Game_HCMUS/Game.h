@@ -80,12 +80,12 @@ struct Game {
 
 	vector<pair<int, int>> _lockedBlockPair; //First: row - Second: column
 
-	bool checkMatchedCharacters(pair<int, int>, pair<int, int>, Board*);
-	int checkIMatching(pair<int, int>, pair<int, int>, bool, Board*);
-	bool checkLMatching(pair<int, int>, pair<int, int>, bool, Board*);
-	bool checkZMatching(pair<int, int>, pair<int, int>, bool, Board*);
-	bool checkUMatching(pair<int, int>, pair<int, int>, bool, Board*);
-	bool checkMatching(pair<int, int>, pair<int, int>, bool, Board*);
+	bool checkMatchedCharacters(pair<int, int>, pair<int, int>, Board*);			//Kiểm tra 2 ô
+	int checkIMatching(pair<int, int>, pair<int, int>, bool, Board*);				//Kiểm tra hình chữ I
+	bool checkLMatching(pair<int, int>, pair<int, int>, bool, Board*);				//Kiểm tra hình chữ L
+	bool checkZMatching(pair<int, int>, pair<int, int>, bool, Board*);				//Kiểm tra hình chữ Z
+	bool checkUMatching(pair<int, int>, pair<int, int>, bool, Board*);				//Kiểm tra hình chữ U
+	bool checkMatching(pair<int, int>, pair<int, int>, bool, Board*);				//Kiểm tra tất cả cá hình
 
 	Game(char[], char[], int, int, int);
 	Game(char[], char[], char[], int, int, int, int, int, int**);
@@ -97,23 +97,22 @@ struct Game {
 	void printInterfaceForLoad(char**, int**);
 	void saveData();
 
-	void changeFile2(int, bool, int&);					// Thay đổi file game
-	void chooseFile2(int&);								// Chọn file
+	void changeFile2(int, bool, int&);							// Thay đổi file game
+	void chooseFile2(int&);										// Chọn file
 	void readFileGame2(int&);									// Đọc file save
 	void saveGame();
 
-	void moveRight();							//Di chuyển qua phải
-	void moveLeft();							//Di chuyển qua trái	
-	void moveUp();								//Di chuyển qua lên
-	void moveDown();							//Di chuyển qua xuống
+	void moveRight();											//Di chuyển qua phải
+	void moveLeft();											//Di chuyển qua trái	
+	void moveUp();												//Di chuyển qua lên
+	void moveDown();											//Di chuyển qua xuống
 
-	char getCharacter(int x, int y);			//Lấy toạ độ của chữ
+	char getCharacter(int x, int y);							//Lấy toạ độ của chữ
 
-	void lockBlock();
-	void deleteBlock();
-	bool isAvailableBlock(bool, Board*);
-
-	void askContinue();							//Chơi tiếp
-	void moveSuggestion();						//Gợi ý
+	void lockBlock();											//Khoá ô
+	void deleteBlock();											//Xoá ô
+	bool isAvailableBlock(bool, Board*);						//Kiểm tra bảng còn chơi tiếp được không
+	void askContinue();											//Chơi tiếp
+	void moveSuggestion();										//Gợi ý
 };
 

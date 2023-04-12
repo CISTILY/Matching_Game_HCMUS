@@ -14,7 +14,7 @@ struct Graphic {
 	static void printRectangleNormal(int, int, int, int);			// Vẽ hình chữ nhật thường
 	static void printRectangleBlock(int, int, int, int);			// Vẽ hình chữ nhật bằng khối
 
-	static void printFileBlock(int, int, int, int);			// Vẽ hình chữ nhật bằng khối
+	static void printFileBlock(int, int, int, int);					// Vẽ hình chữ nhật bằng khối
 
 	static void printFrame(int, int);								// Vẽ khung 
 	static void backUpperLeft(int, int, int, string*);				// Vẽ trả phần khung trái trên
@@ -22,17 +22,17 @@ struct Graphic {
 	static void backBottomLeft(int, int, int, string*);				// Vẽ trả phần khung trái dưới
 	static void backBottomRight(int, int, int, string*);			// Vẽ trả phần khung phải dưới
 
-	static void createTimeNumber0(char[][41]);
-	static void createTimeNumber1(char[][41]);
-	static void createTimeNumber2(char[][41]);
-	static void createTimeNumber3(char[][41]);
-	static void createTimeNumber4(char[][41]);
-	static void createTimeNumber5(char[][41]);
-	static void createTimeNumber6(char[][41]);
-	static void createTimeNumber7(char[][41]);
-	static void createTimeNumber8(char[][41]);
-	static void createTimeNumber9(char[][41]);
-	static void createTimeTwoDots(char[][41]);
-	static void createTime(int, char[][41]);
+	static void createTimeNumber0(char[][41]);						// Vẽ số 0
+	static void createTimeNumber1(char[][41]);						// Vẽ số 1
+	static void createTimeNumber2(char[][41]);						// Vẽ số 2
+	static void createTimeNumber3(char[][41]);						// Vẽ số 3
+	static void createTimeNumber4(char[][41]);						// Vẽ số 4
+	static void createTimeNumber5(char[][41]);						// Vẽ số 5
+	static void createTimeNumber6(char[][41]);						// Vẽ số 6
+	static void createTimeNumber7(char[][41]);						// Vẽ số 7
+	static void createTimeNumber8(char[][41]);						// Vẽ số 8
+	static void createTimeNumber9(char[][41]);						// Vẽ số 9
+	static void createTimeTwoDots(char[][41]);						// Vẽ dấu .
+	static void createTime(int, char[][41]);						// Tạo đồng hồ
 
 };

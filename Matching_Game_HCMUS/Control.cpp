@@ -58,12 +58,6 @@ void Control::hideScrollBars()
 	ShowScrollBar(consoleWindow, SB_BOTH, 0);
 }
 
-//void Control::ShowScrollbar(BOOL Show)
-//{
-//	HWND hWnd = GetConsoleWindow();
-//	ShowScrollBar(hWnd, SB_BOTH, Show);
-//}
-
 void Control::setConsoleTitle()
 {
 	SetConsoleTitle(L"MATCHING GAME");
@@ -162,12 +156,4 @@ void Control::playSound(int i)
 {
 	static vector<const wchar_t*> soundFile{ L"Error.wav", L"Enter.wav", L"EnterMenu.wav", L"GameStart.wav", L"Win.wav",  L"Move.wav", L"GetPoint.wav", L"Wrong.wav", L"MoveSuggestion.wav" };
 	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
-}
-
-int getRandomInt(int begin, int end)
-{
-	static random_device rd;
-	static mt19937 mt(rd());
-	uniform_int_distribution<int> dist(0, end);
-	return dist(mt);
 }

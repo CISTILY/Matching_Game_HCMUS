@@ -19,8 +19,6 @@ void Menu::mainScreen()
 		{options[10], playCustom},
 		{options[11], loadGame}
 	};
-	//Control::playSound(BACKGROUND_SOUND);
-	//printAnimation();
 
 	bool loadMenu = 1;
 	while (true)
@@ -110,43 +108,6 @@ void Menu::printOptionsBoard()
 		putchar(182);
 	}
 }
-//
-//void Menu::printAnimation()
-//{
-//	Control::setConsoleColor(WHITE, BLACK);
-//	Control::clearConsole();
-//	char symbolpos[] = { 5,0,19,0,33,0,47,0,61,0,75,0,89,0,0,103,5,13,19,
-//							   13,33,13,47,13,61,13,75,13,89,13,13,103,13,18,26,18,40,18,
-//							   54,18,68,18,82,18,18,96,5,24,19,24,33,24,47,24,61,24,75,24,
-//							   89,24,24,103,12,30,26,30,40,30,54,30,68,30,82,30,96,30 };
-//	int n = (sizeof(symbolpos) / sizeof(symbolpos[0])) / 2;
-//	bool turn = 0;
-//	unsigned char symbol[] = { 4,15 };
-//
-//	int color[] = { LIGHT_AQUA, AQUA, LIGHT_BLUE, BLUE, LIGHT_PURPLE, PURPLE };
-//	int colorcount = 0;
-//	int loop = 10;
-//	while (loop--)
-//	{
-//		for (int i = 0; i < n; i += 2)
-//		{
-//			Control::setConsoleColor(WHITE, getRandomInt(0, 15));
-//			Control::gotoXY(symbolpos[i * 2], symbolpos[i * 2 + 1]);
-//			putchar(symbol[turn]);
-//		}
-//		for (int i = 1; i < n; i += 2)
-//		{
-//			Control::setConsoleColor(WHITE, getRandomInt(0, 15));
-//			Control::gotoXY(symbolpos[i * 2], symbolpos[i * 2 + 1]);
-//			putchar(symbol[!turn]);
-//		}
-//		Control::gotoXY(0, 0);
-//		printLogo();
-//		colorcount++;
-//		turn = !turn;
-//		Sleep(250);
-//	}
-//}
 
 void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 {

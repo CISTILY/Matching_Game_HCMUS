@@ -346,7 +346,7 @@ void Board::buildBoardData() {
 		pos[i] = tmp;
 	}
 	Control::gotoXY(0, 0);
-	// Construct pokemons matrix
+	// Construct characters matrix
 	for (int i = 0; i < sizeRow; i++) {
 		for (int j = 0; j < sizeCol; j++) {
 			int r = pos[sizeCol * i + j] / sizeCol;
@@ -360,7 +360,7 @@ void Board::buildBoardData() {
 }
 
 void Board::buildBoardDataForLoad(char** pokemon) {
-	// Construct pokemons matrix
+	// Construct characters matrix
 	for (int i = 0; i < sizeRow; ++i)
 		for (int j = 0; j < sizeCol; ++j)
 			pBoard[i][j].setCharacter(pokemon[i][j]);
@@ -425,7 +425,6 @@ void Board::deleteBlock(int x, int y)
 	if (y + 4 <= getYAt(sizeRow - 1, sizeCol - 1) && getCheck(x, y + 4) == DEL) {
 		for (int i = x - 3; i <= x + 3; i++) {
 			Control::gotoXY(i, y + 2);
-			//putchar(32);
 			putchar(background[y + 2 - top][i - left]);
 		}
 	}
@@ -433,7 +432,6 @@ void Board::deleteBlock(int x, int y)
 	if (x - 8 >= getXAt(0, 0) && getCheck(x - 8, y) == DEL) {
 		for (int i = y - 1; i <= y + 1; i++) {
 			Control::gotoXY(x - 4, i);
-			//putchar(32);
 			putchar(background[i - top][x - 4 - left]);
 		}
 	}
@@ -441,7 +439,6 @@ void Board::deleteBlock(int x, int y)
 	if (x + 8 <= getXAt(sizeRow - 1, sizeCol - 1) && getCheck(x + 8, y) == DEL) {
 		for (int i = y - 1; i <= y + 1; i++) {
 			Control::gotoXY(x + 4, i);
-			//putchar(32);
 			putchar(background[i - top][x + 4 - left]);
 		}
 	}
@@ -1148,7 +1145,6 @@ void Board::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock, pai
 	}
 }
 
-//notice
 void Board::createBackground(char mode[]) {
 	ifstream bg;
 	if (strcmp(mode, "EASY") == 0)

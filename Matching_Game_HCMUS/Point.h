@@ -21,7 +21,7 @@ struct Point
 	void setY(int);					// Gán vị trí y
 	void setCheck(int);				// Gán ô
 
-	char getCharacter();
-	void setCharacter(char);
+	char getCharacter();			// Lấy kí tự
+	void setCharacter(char);		// Gán kí tự
 
 };
