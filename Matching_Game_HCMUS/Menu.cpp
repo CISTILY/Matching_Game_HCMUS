@@ -49,7 +49,7 @@ void Menu::mainScreen()
 			function_map[options[current_option]]();
 			break;
 		default:
-			Control::playSound(ERROR_SOUND);
+			PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 			loadMenu = 0;
 		}
 	}
@@ -116,7 +116,7 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 	if ((direction == 0 && (current_option == 0 || current_option == 8))
 		|| (direction == 1 && (current_option == 3 || current_option == 11)))
 	{
-		Control::playSound(ERROR_SOUND);
+		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		return;
 	}
 
@@ -139,7 +139,7 @@ void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
 
 	if (flag)
 	{
-		Control::playSound(ENTER_SOUND);
+		PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		Control::setConsoleColor(WHITE, RED);
 
 		Control::gotoXY(43, top + current_option % 4 * 2);
@@ -161,7 +161,7 @@ void Menu::chooseMode(bool direction, bool flag, int count) //0: lên, 1: xuốn
 	if (((direction == 0) && (current_option == 4 || current_option == 6))
 		|| ((direction == 1) && (current_option == 5 || current_option == 7)))
 	{
-		Control::playSound(ERROR_SOUND);
+		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		return;
 	}
 
@@ -187,7 +187,7 @@ void Menu::chooseMode(bool direction, bool flag, int count) //0: lên, 1: xuốn
 
 	if (flag)
 	{
-		Control::playSound(ENTER_SOUND);
+		PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		Control::setConsoleColor(WHITE, BLUE);
 
 		Graphic::printRectangleSpecial(leftRec, topRec + (current_option - count) % 2 * 3, 25, 2);
@@ -239,7 +239,7 @@ void Menu::playMenu()
 			loop = 0;
 			break;
 		default:
-			Control::playSound(ERROR_SOUND);
+			PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		}
 	}
 }
@@ -257,8 +257,6 @@ void Menu::exitScreen()
 	Graphic::printRectangleNormal(59, 22, 6, 2);
 	Control::setConsoleColor(WHITE, RED);
 	printLogo();
-
-
 	Control::setConsoleColor(BRIGHT_WHITE, RED);
 	Control::gotoXY(42, 20);
 	cout << "Do you want to exit?";
@@ -271,7 +269,7 @@ void Menu::exitScreen()
 		int i = 0;
 		while (i < 2)
 		{
-			Control::playSound(MOVE_SOUND);
+			PlaySound(TEXT("Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
 			Control::setConsoleColor(BRIGHT_WHITE, color[i]);
 			Control::gotoXY(left[choice * 3], top);        putchar(word[i * 2]);
 			Control::gotoXY(left[choice * 3 + 1], top);    cout << str[choice];
@@ -300,7 +298,7 @@ void Menu::exitScreen()
 		}
 		else
 		{
-			Control::playSound(ERROR_SOUND);
+			PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		}
 	}
 }
@@ -319,7 +317,7 @@ void Menu::playMedium()
 
 void Menu::playCustom()
 {
-	Control::playSound(ENTER_SOUND);
+	PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 	int _ROW = 1, _COL = 1;
 
@@ -381,7 +379,7 @@ void Menu::playCustom()
 		putchar(32);
 		putchar(32);
 	}
-	Control::playSound(ENTER_SOUND);
+	PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);
 	Control::gotoXY(xInput - 3, yInput - 1);
@@ -409,7 +407,7 @@ void Menu::playCustom()
 		putchar(32);
 		putchar(32);
 	}
-	Control::playSound(ENTER_SOUND);
+	PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	Control::showCursor(false);
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);
@@ -464,7 +462,7 @@ void Menu::changeFile(int direction, bool flag, int& current_file) //0: lên, 1:
 		|| (direction == 2 && current_file == 0)
 		|| (direction == 3 && current_file == 4))
 	{
-		Control::playSound(ERROR_SOUND);
+		PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		return;
 	}
 
@@ -505,7 +503,7 @@ void Menu::changeFile(int direction, bool flag, int& current_file) //0: lên, 1:
 
 	if (flag)
 	{
-		Control::playSound(ENTER_SOUND);
+		PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		Control::setConsoleColor(WHITE, GREEN);
 
 		if (current_file < 3)
@@ -550,7 +548,7 @@ void Menu::chooseFile(int& current_file)
 			loop = 0;
 			break;
 		default:
-			Control::playSound(ERROR_SOUND);
+			PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		}
 	}
 }
@@ -703,7 +701,7 @@ void Menu::UserMode()
 			loop = 0;
 			break;
 		default:
-			Control::playSound(ERROR_SOUND);
+			PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		}
 	}
 }
@@ -808,7 +806,7 @@ void Menu::enterAccount()
 		cin.getline(account.name, NAMESIZE);
 	}
 
-	Control::playSound(ENTER_SOUND);
+	PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);
 	Control::gotoXY(xInput - 9, yInput - 1);
@@ -834,7 +832,7 @@ void Menu::enterAccount()
 		cin.getline(account.password, PASSSIZE);
 	}
 
-	Control::playSound(ENTER_SOUND);
+	PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	Control::showCursor(false);
 
 	Control::setConsoleColor(WHITE, LIGHT_RED);
@@ -1171,7 +1169,7 @@ void Menu::leaderBoard()
 	putchar(174);
 	while (Control::getConsoleInput() != 6)
 	{
-		Control::playSound(ERROR_SOUND);
+		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	}
 }
 
@@ -1279,6 +1277,6 @@ void Menu::helpScreen()
 	putchar(174);
 	while (Control::getConsoleInput() != 6)
 	{
-		Control::playSound(ERROR_SOUND);
+		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	}
 }

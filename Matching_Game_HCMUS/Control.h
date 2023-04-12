@@ -65,5 +65,4 @@ struct Control {
 	static void clearArea(int, int, int, int);		// Xoá vùng
 	static void disableMouseInput();				// Tắt đầu vào từ chuột
 	static int getConsoleInput();					// Lấy đầu vào từ bàn phím
-	static void playSound(int);						// Chạy nhạc
 };

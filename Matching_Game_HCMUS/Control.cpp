@@ -60,7 +60,7 @@ void Control::hideScrollBars()
 
 void Control::setConsoleTitle()
 {
-	SetConsoleTitle(L"MATCHING GAME");
+	SetConsoleTitle(TEXT("MATCHING GAME"));
 }
 
 void Control::disableMaximize()
@@ -150,10 +150,4 @@ int Control::getConsoleInput()
 		else                                // Nút khác
 			return 0;
 	}
-}
-
-void Control::playSound(int i)
-{
-	static vector<const wchar_t*> soundFile{ L"Error.wav", L"Enter.wav", L"EnterMenu.wav", L"GameStart.wav", L"Win.wav",  L"Move.wav", L"GetPoint.wav", L"Wrong.wav", L"MoveSuggestion.wav" };
-	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
 }
