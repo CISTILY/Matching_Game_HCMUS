@@ -1,6 +1,6 @@
 ﻿#include "Menu.h"
 int Menu::current_option;
-Player Menu::account;
+savefile Menu::account;
 const string Menu::options[12] = { "Play", "Leader Board", "Help", "Exit", "User Mode", " Guest Mode", "Sign in", "Sign up", "Easy", "   Medium   ", "Custom", "Load Games" };
 
 void Menu::mainScreen()
@@ -21,7 +21,7 @@ void Menu::mainScreen()
 	};
 	//Control::playSound(BACKGROUND_SOUND);
 	//printAnimation();
-	
+
 	bool loadMenu = 1;
 	while (true)
 	{
@@ -240,7 +240,7 @@ void Menu::chooseMode(bool direction, bool flag, int count) //0: lên, 1: xuốn
 		Control::gotoXY(70, top + (current_option - count) % 2 * 3);
 		putchar(174);
 	}
-}	
+}
 
 void Menu::mainMenu()
 {
@@ -346,13 +346,13 @@ void Menu::exitScreen()
 
 void Menu::playEasy()
 {
-	Game g(account.playerName, account.password, _EASY, _EASY, current_option);
+	Game g(account.name, account.password, _EASY, _EASY, current_option);
 	g.startGame();
 }
 
 void Menu::playMedium()
 {
-	Game g(account.playerName, account.password, _MEDIUM, _MEDIUM, current_option);
+	Game g(account.name, account.password, _MEDIUM, _MEDIUM, current_option);
 	g.startGame();
 }
 
@@ -489,7 +489,7 @@ void Menu::playCustom()
 		Sleep(200);
 	}
 
-	Game g(account.playerName, account.password, _ROW, _COL, current_option);
+	Game g(account.name, account.password, _ROW, _COL, current_option);
 	g.startGame();
 }
 
@@ -509,9 +509,25 @@ void Menu::changeFile(int direction, bool flag, int& current_file) //0: lên, 1:
 
 	Control::setConsoleColor(WHITE, GRAY);
 	if (current_file < 3)
+	{
 		Graphic::printFileBlock(leftFile + current_file * xDistance, topFile, 8, 4);
+		Control::gotoXY(leftFile + current_file * xDistance + 1, topFile + 6);
+		if (account.state[current_file].state_record.date.dd == 0)
+			cout << "  Empty";
+		else
+			cout << account.state[current_file].state_record.date.dd << "/" << account.state[current_file].state_record.date.mm
+			<< "/" << account.state[current_file].state_record.date.yy;
+	}
 	else
+	{
 		Graphic::printFileBlock(leftFile + (current_file - 2.5) * xDistance, topFile + yDistance, 8, 4);
+		Control::gotoXY(leftFile + (current_file - 2.5) * xDistance + 1, topFile + yDistance + 6);
+		if (account.state[current_file].state_record.date.dd == 0)
+			cout << "  Empty";
+		else
+			cout << account.state[current_file].state_record.date.dd << "/" << account.state[current_file].state_record.date.mm
+			<< "/" << account.state[current_file].state_record.date.yy;
+	}
 
 	if ((current_file == 0 || current_file == 1) && direction == 1)
 		current_file = 3;
@@ -549,6 +565,8 @@ void Menu::chooseFile(int& current_file)
 	changeFile(2, 0, current_file);
 	changeFile(2, 0, current_file);
 	changeFile(2, 0, current_file);
+	changeFile(2, 0, current_file);
+	changeFile(3, 0, current_file);
 	changeFile(2, 1, current_file);
 
 	while (loop)
@@ -576,72 +594,128 @@ void Menu::chooseFile(int& current_file)
 	}
 }
 
-void Menu::readFileGame()
+void Menu::xorChararter(char Character[], char mask) {
+	for (int i = 0; Character[i] != '\0'; i++)
+		Character[i] ^= mask;
+}
+
+void Menu::readFileGame(int& current_file)
 {
-	int current_file = 4;
-	chooseFile(current_file);
+	char fileName[64]{};
+	strcpy_s(fileName, "gamesave\\");
+	strcat_s(fileName, account.name);
+	strcat_s(fileName, ".bin");
 
 	ifstream load;
-	load.open("save.txt");
-	load >> account.playerName >> account.password >> account.mode >> account.score;
-	load >> account.day >> account.month >> account.year >> account.minuteplay >> account.secondplay;
-	load >> account.xcursor >> account.ycursor >> account.rowplay >> account.colplay;
+	load.open(fileName, ios::binary);
 
-	account.pokemon = new char* [account.rowplay];
-	account.status = new int* [account.rowplay];
+	load.read(&account.mask, 1);
 
-	for (int i = 0; i < account.rowplay; ++i)
+	load.read(account.name, NAMESIZE);
+	xorChararter(account.name, account.mask);
+
+	load.read(account.password, PASSSIZE);
+	xorChararter(account.password, account.mask);
+
+
+	load.seekg(3, ios::cur);
+
+	for (int i = 0; i < 5; ++i)
 	{
-		account.pokemon[i] = new char[account.colplay];
-		account.status[i] = new int[account.colplay];
+		load.read((char*)&account.record[i].date.dd, 4);
+		load.read((char*)&account.record[i].date.mm, 4);
+		load.read((char*)&account.record[i].date.yy, 4);
+		load.read((char*)&account.record[i].time.minuteplay, 4);
+		load.read((char*)&account.record[i].time.secondplay, 4);
+		load.read((char*)&account.record[i].points, 4);
+		load.seekg(492, ios::cur);
 	}
 
-	for (int i = 0; i < account.rowplay; ++i)
-		for (int j = 0; j < account.colplay; ++j)
-			load >> account.pokemon[i][j];
 
-	for (int i = 0; i < account.rowplay; ++i)
-		for (int j = 0; j < account.colplay; ++j)
-			load >> account.status[i][j];
+	for (int i = 0; i < 5; ++i)
+	{
+		load.read((char*)&account.state[i].state_record.date.dd, 4);
+		load.read((char*)&account.state[i].state_record.date.mm, 4);
+		load.read((char*)&account.state[i].state_record.date.yy, 4);
+
+		load.read((char*)&account.state[i].state_record.time.minuteplay, 4);
+		load.read((char*)&account.state[i].state_record.time.secondplay, 4);
+
+		load.read((char*)&account.state[i].state_record.points, 4);
+
+		load.read(account.state[i].mode, MODESIZE);
+		xorChararter(account.state[i].mode, account.mask);
+		load.seekg(1, ios::cur);
+
+		load.read((char*)&account.state[i].p, 4);
+		load.read((char*)&account.state[i].q, 4);
+		load.read((char*)&account.state[i].p_, 4);
+		load.read((char*)&account.state[i].q_, 4);
+
+
+		load.read((char*)&account.state[i].board, BOARDSIZE);
+		xorChararter(account.state[i].board, account.mask);
+		load.seekg(1, ios::cur);
+
+		load.read((char*)account.state[i].status, 400);
+
+		load.read((char*)&account.state[i].file_background, URLSIZE);
+		xorChararter(account.state[i].file_background, account.mask);
+		load.seekg(36, ios::cur);
+	}
 	load.close();
 
 
-	/*Control::gotoXY(0, 0);
-	cout << account.playerName << " " << account.password << endl << account.mode << " " << account.score << endl;
-	cout << account.day << " " << account.month << " " << account.year << endl << account.minuteplay << " " << account.secondplay << endl;
-	cout << account.xcursor << " " << account.ycursor << endl << account.rowplay << " " << account.colplay << endl;
-
-	for (int i = 0; i < account.rowplay; ++i)
-	{
-		for (int j = 0; j < account.colplay; ++j)
-			cout << account.pokemon[i][j] << " ";
-		cout << endl;
-	}
-
-
-	for (int i = 0; i < account.rowplay; ++i)
-	{
-		for (int j = 0; j < account.colplay; ++j)
-			cout << account.status[i][j] << " ";
-		cout << endl;
-	}*/
+	chooseFile(current_file);
 }
 
 void Menu::loadGame()
 {
-	readFileGame();
+	int current_file = 4;
+	int count = 0;
 
-	Game g(account.playerName, account.password, account.mode, account.score, account.minuteplay, account.secondplay,
-		account.rowplay, account.colplay, account.status);
-	g.startGameForLoad(account.pokemon, account.status, account.xcursor, account.ycursor);
+	readFileGame(current_file);
 
-	for (int i = 0; i < account.rowplay; ++i)
+	if (account.state[current_file].state_record.date.dd != 0)
 	{
-		delete[] account.pokemon[i];
-		delete[] account.status[i];
+		char** pokemon = new char* [account.state[current_file].p];
+		int** statusboard = new int* [account.state[current_file].p];
+
+		for (int i = 0; i < account.state[current_file].p; ++i)
+		{
+			pokemon[i] = new char[account.state[current_file].q];
+			statusboard[i] = new int[account.state[current_file].q];
+		}
+
+		for (int i = 0; i < account.state[current_file].p; ++i)
+			for (int j = 0; j < account.state[current_file].q; ++j)
+			{
+				pokemon[i][j] = account.state[current_file].board[count];
+				statusboard[i][j] = account.state[current_file].status[count];
+				++count;
+			}
+
+
+		Game g(account.name, account.password, account.state[current_file].mode, account.state[current_file].state_record.points,
+			account.state[current_file].state_record.time.minuteplay, account.state[current_file].state_record.time.secondplay,
+			account.state[current_file].p, account.state[current_file].q, statusboard);
+		g.startGameForLoad(pokemon, statusboard, account.state[current_file].p_, account.state[current_file].q_);
+
+		for (int i = 0; i < account.state[current_file].p; ++i)
+		{
+			delete[] pokemon[i];
+			delete[] statusboard[i];
+		}
+		delete[] pokemon;
+		delete[] statusboard;
+
 	}
-	delete[] account.pokemon;
-	delete[] account.status;
+	else
+	{
+		current_option = 8;
+		playEasy();
+	}
+
 }
 
 void Menu::UserMode()
@@ -678,30 +752,60 @@ void Menu::guestMode()
 	srand((unsigned)time(0));
 
 	for (int i = 0; i < 12; ++i)
-		account.playerName[i] = rand() % 62 + 65;
+		account.name[i] = rand() % 61 + 65;
 
 	strcpy_s(account.password, "123");
 
 	ofstream Create;
-	Create.open("file\\accounts.txt", ios::app);
-	Create << endl << account.playerName << endl << account.password;
+	Create.open("file\\accounts.bin", ios::binary | ios::app);
+	Create.seekp(0, ios::end);
+	Create.write(account.name, 50);
+	Create.write(account.password, 50);
 	Create.close();
+
+
+	char filename[64];
+	strcpy_s(filename, "gamesave\\");
+	strcat_s(filename, account.name);
+	strcat_s(filename, ".bin");
+
+	account.mask = '~';
+	ofstream Create2;
+	Create2.open(filename, ios::binary);
+
+	Create2.write(&account.mask, 1);
+
+	xorChararter(account.name, account.mask);
+	Create2.write(account.name, NAMESIZE);
+	xorChararter(account.password, account.mask);
+	Create2.write(account.password, PASSSIZE);
+
+	Create2.close();
+
+	xorChararter(account.name, account.mask);
+	xorChararter(account.password, account.mask);
+
 
 	printMode();
 }
 
-void Menu::readFileAccounts(ifstream& Acc, char accounts_game[][50])
+void Menu::readFileAccounts(ifstream& Acc, char accounts_game[][50], char account_password[][50])
 {
 	int i = 0;
-	while (!Acc.eof()) {
-		Acc.getline(accounts_game[i], 100);
-		i++;
+	Acc.seekg(0, ios::end);
+	int file_size = Acc.tellg();
+	Acc.seekg(0, ios::beg);
+
+	while (Acc.tellg() < file_size) {
+		Acc.read(accounts_game[i], 50);
+		Acc.read(account_password[i], 50);
+		++i;
 	}
 }
 
 void Menu::enterAccount()
 {
-	account.playerName[0] = 0;
+	account.name[0] = 0;
 	account.password[0] = 0;
 
 	Control::setConsoleColor(WHITE, WHITE);
@@ -737,10 +841,10 @@ void Menu::enterAccount()
 	}
 
 	Control::showCursor(true);
-	while (strlen(account.playerName) == 0 || account.playerName[0] == 0)
+	while (strlen(account.name) == 0 || account.name[0] == 0)
 	{
 		Control::gotoXY(xInput - 6, yInput);
-		cin.getline(account.playerName, NAMESIZE + 1);
+		cin.getline(account.name, NAMESIZE);
 	}
 
 	Control::playSound(ENTER_SOUND);
@@ -760,13 +864,13 @@ void Menu::enterAccount()
 	putchar(186);
 
 	Control::gotoXY(xInput - 6, yInput);
-	cout << account.playerName;
+	cout << account.name;
 
 	Control::setConsoleColor(WHITE, BLACK);
 	while (strlen(account.password) == 0 || account.password[0] == 0)
 	{
 		Control::gotoXY(xInput - 6, yInput + 4);
-		cin.getline(account.password, PASSSIZE + 1);
+		cin.getline(account.password, PASSSIZE);
 	}
 
 	Control::playSound(ENTER_SOUND);
@@ -793,24 +897,24 @@ void Menu::enterAccount()
 	Control::clearArea(30, 28, 40, 1);
 }
 
-bool Menu::rightAccount(char accounts_game[][50])
+bool Menu::rightAccount(char accounts_game[][50], char accounts_password[][50])
 {
 	int i = 0;
 	bool username = false;
 
 	while (accounts_game[i][0] != NULL)
 	{
-		if (strcmp(account.playerName, accounts_game[i]) == 0)
+		if (strcmp(account.name, accounts_game[i]) == 0)
 		{
 			username = true;
 			break;
 		}
-		i += 2;
+		++i;
 	}
 
 	if (username == true)
 	{
-		if (strcmp(account.password, accounts_game[i + 1]) == 0)
+		if (strcmp(account.password, accounts_password[i]) == 0)
 		{
 			Control::gotoXY(44, 28);
 			Control::setConsoleColor(WHITE, RED);
@@ -819,7 +923,7 @@ bool Menu::rightAccount(char accounts_game[][50])
 			Sleep(1200);
 			return true;
 		}
-	}	
+	}
 
 	Control::gotoXY(40, 28);
 	Control::setConsoleColor(WHITE, RED);
@@ -836,12 +940,12 @@ bool Menu::appropriateAccount(char accounts_game[][50])
 
 	while (accounts_game[i][0] != NULL)
 	{
-		if (strcmp(account.playerName, accounts_game[i]) == 0)
+		if (strcmp(account.name, accounts_game[i]) == 0)
 		{
 			username = false;
 			break;
 		}
-		i += 2;
+		++i;
 	}
 
 	if (username == true)
@@ -879,14 +983,15 @@ void Menu::printMode()
 void Menu::signIn()
 {
 	ifstream Acc;
-	char accounts_game[200][50];
-	Acc.open("file\\accounts.txt");
-	readFileAccounts(Acc, accounts_game);
+	char accounts_game[100][50];
+	char accounts_password[100][50];
+	Acc.open("file\\accounts.bin", ios::binary);
+	readFileAccounts(Acc, accounts_game, accounts_password);
 	Acc.close();
 
 	do {
 		enterAccount();
-	} while (!rightAccount(accounts_game));
+	} while (!rightAccount(accounts_game, accounts_password));
 
 	printMode();
 }
@@ -894,19 +999,49 @@ void Menu::signIn()
 void Menu::signUp()
 {
 	ifstream Acc;
-	char accounts_game[200][50];
-	Acc.open("file\\accounts.txt");
-	readFileAccounts(Acc, accounts_game);
+	char accounts_game[100][50];
+	char accounts_password[100][50];
+	Acc.open("file\\accounts.bin", ios::binary);
+	readFileAccounts(Acc, accounts_game, accounts_password);
 	Acc.close();
 
 	do {
 		enterAccount();
 	} while (!appropriateAccount(accounts_game));
 
+	int i = 0;
+	char trash = NULL;
 	ofstream Create;
-	Create.open("file\\accounts.txt", ios::app);
-	Create << endl << account.playerName << endl << account.password;
+
+	Create.open("file\\accounts.bin", ios::binary | ios::app);
+	Create.seekp(0, ios::end);
+	Create.write(account.name, 50);
+	Create.write(account.password, 50);
 	Create.close();
+
+
+	char filename[64];
+	strcpy_s(filename, "gamesave\\");
+	strcat_s(filename, account.name);
+	strcat_s(filename, ".bin");
+
+	account.mask = '~';
+	ofstream Create2;
+	Create2.open(filename, ios::binary);
+
+	Create2.write(&account.mask, 1);
+
+	xorChararter(account.name, account.mask);
+	Create2.write(account.name, NAMESIZE);
+	xorChararter(account.password, account.mask);
+	Create2.write(account.password, PASSSIZE);
+	for (int i = 0; i < 15000; ++i)
+		Create2.write(&trash, 1);
+
+	Create2.close();
+
+	xorChararter(account.name, account.mask);
+	xorChararter(account.password, account.mask);
 
 	printMode();
 }
@@ -916,7 +1051,7 @@ void Menu::leaderBoard()
 	current_option = 0;
 	Control::clearConsole();
 
-	Player p[200]{};
+	savefile p[50]{};
 	int leftRec = 12, topRec = 9;
 
 	Control::setConsoleColor(WHITE, RED);
@@ -1015,26 +1150,35 @@ void Menu::leaderBoard()
 	int lines = 8;
 	int n = 0;
 	string tmp;
-	ifstream fs("file\\leaderboard.txt");
+	ifstream fs("file\\leaderboard.bin", ios::binary);
 
-	while (!fs.eof()) {
-		fs.getline(p[n].playerName, NAMESIZE + 1);
-		fs.getline(p[n].mode, 15);
-		fs >> p[n].score;
-		fs >> p[n].minuteplay >> p[n].secondplay;
-		fs >> p[n].day >> p[n].month >> p[n].year;
-		fs.ignore();
-		n++;
+	fs.seekg(0, ios::end);
+	int file_size = fs.tellg();
+	fs.seekg(0, ios::beg);
+
+	while (fs.tellg() < file_size) {
+		fs.read(p[n].name, NAMESIZE);
+		fs.read(p[n].state[0].mode, 15);
+		fs.seekg(3, ios::cur);
+		fs.read((char*)&p[n].record[0].points, 4);
+		fs.read((char*)&p[n].record[0].time.minuteplay, 4);
+		fs.read((char*)&p[n].record[0].time.secondplay, 4);
+		fs.read((char*)&p[n].record[0].date.dd, 4);
+		fs.read((char*)&p[n].record[0].date.mm, 4);
+		fs.read((char*)&p[n].record[0].date.yy, 4);
+
+		++n;
 	}
 	fs.close();
 
 	for (int i = 0; i < n; i++) {
 		for (int j = i + 1; j < n; j++) {
-			if (p[j].score > p[i].score) {
+			if (p[j].record[0].points > p[i].record[0].points) {
 				swap(p[i], p[j]);
 			}
-			if (p[j].score == p[i].score)
-				if (p[j].minuteplay * 60 + p[j].secondplay < p[i].minuteplay * 60 + p[i].secondplay)
+			if (p[j].record[0].points == p[i].record[0].points)
+				if (p[j].record[0].time.minuteplay * 60 + p[j].record[0].time.secondplay
+					< p[i].record[0].time.minuteplay * 60 + p[i].record[0].time.secondplay)
 					swap(p[i], p[j]);
 		}
 	}
@@ -1043,15 +1187,15 @@ void Menu::leaderBoard()
 		Control::gotoXY(leftRec + 4, y);
 		cout << i;
 		Control::gotoXY(leftRec + 11, y);
-		cout << p[i - 1].playerName;
+		cout << p[i - 1].name;
 		Control::gotoXY(leftRec + 28, y);
-		cout << p[i - 1].mode;
+		cout << p[i - 1].state[0].mode;
 		Control::gotoXY(leftRec + 50, y);
-		cout << p[i - 1].score;
+		cout << p[i - 1].record[0].points;
 		Control::gotoXY(leftRec + 60, y);
-		cout << setw(2) << setfill('0') << p[i - 1].minuteplay << " : " << setw(2) << setfill('0') << p[i - 1].secondplay;
+		cout << setw(2) << setfill('0') << p[i - 1].record[0].time.minuteplay << " : " << setw(2) << setfill('0') << p[i - 1].record[0].time.secondplay;
 		Control::gotoXY(leftRec + 71, y);
-		cout << p[i - 1].day << "/" << p[i - 1].month << "/" << p[i - 1].year;
+		cout << p[i - 1].record[0].date.dd << "/" << p[i - 1].record[0].date.mm << "/" << p[i - 1].record[0].date.yy;
 		y += 2;
 	}
 

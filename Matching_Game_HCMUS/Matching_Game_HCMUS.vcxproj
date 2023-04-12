@@ -144,10 +144,6 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Point.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="save.txt" />
-    <Text Include="start.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

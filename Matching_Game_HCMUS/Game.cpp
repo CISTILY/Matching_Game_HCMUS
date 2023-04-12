@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 
 Game::Game(char accountplayerName[], char accountpassword[], int row, int col, int curent_option)
 {
@@ -42,7 +42,7 @@ Game::Game(char accountplayerName[], char accountpassword[], int row, int col, i
 
 	board = new Board(_row, _col, LEFT, TOP, mode);
 	board->stop = 1;
-	record = new Record;
+	save = new savefile2[2];
 }
 
 Game::Game(char accountplayerName[], char accountpassword[], char accountmode[], int accountscore, int accountminuteplay, int accountsecondplay,
@@ -56,15 +56,6 @@ Game::Game(char accountplayerName[], char accountpassword[], char accountmode[],
 	_x = LEFT, _y = TOP;
 	_remainBlocks = 0;
 	isPlaying = true;
-
-	for (; i < accountrowplay; ++i)
-	{
-		for (; j < accountcolplay; ++j)
-			if (accountstatus[i][j] == 1)
-				break;
-		if (accountstatus[i][j] == 1)
-			break;
-	}
 
 	_lockedBlock = 0;
 	_lockedBlockPair.clear();
@@ -80,20 +71,48 @@ Game::Game(char accountplayerName[], char accountpassword[], char accountmode[],
 	strcpy_s(password, accountpassword);
 	strcpy_s(mode, accountmode);
 
-	second = accountsecondplay;
-	minute = accountminuteplay;
+	if (strcmp(mode, "EASY") == 0)
+	{
+		second = 45 - accountsecondplay;
+		minute = 0 - accountminuteplay;
+	}
+	else if (strcmp(mode, "MEDIUM") == 0)
+	{
+		second = 30 - accountsecondplay;
+		if (second < 0)
+		{
+			second += 60;
+			minute = 0 - accountminuteplay;
+		}
+		else
+			minute = 1 - accountminuteplay;
+	}
+	else
+	{
+		second = _row * _col * 6;
+		minute = second / 60;
+		second = second % 60;
 
+		second -= accountsecondplay;
+		if (second < 0)
+		{
+			second += 60;
+			minute = minute - 1 - accountminuteplay;
+		}
+		else
+			minute -= accountminuteplay;
+	}
 
 	board = new Board(_row, _col, LEFT, TOP, mode);
 	board->stop = 1;
-	record = new Record;
+	save = new savefile2;
 }
 
 Game::~Game() {
 	delete board;
 	board = nullptr;
-	delete record;
-	record = nullptr;
+	delete[] save;
+	save = nullptr;
 }
 
 
@@ -135,7 +154,7 @@ void WriteBlockChar(char array[][41], int row, int col, int x, int y, int color)
 	delete[] charater;
 }
 
-void createClock(int minute, int second, int _col, Board* board, Record* record)
+void createClock(int minute, int second, int _col, Board* board, savefile2* save)
 {
 	Game* gameplay = nullptr;
 	Graphic* graphic = nullptr;
@@ -153,9 +172,9 @@ void createClock(int minute, int second, int _col, Board* board, Record* record)
 	tm now;
 	localtime_s(&now, &t);
 
-	record->date.yy = now.tm_year + 1900;
-	record->date.mm = now.tm_mon + 1;
-	record->date.dd = now.tm_mday;
+	save[1].state->state_record.date.yy = now.tm_year + 1900;
+	save[1].state->state_record.date.mm = now.tm_mon + 1;
+	save[1].state->state_record.date.dd = now.tm_mday;
 
 	int second_limit = second + now.tm_sec;
 	int minute_limit = minute + now.tm_min + second_limit / 60;
@@ -173,8 +192,8 @@ void createClock(int minute, int second, int _col, Board* board, Record* record)
 		localtime_s(&now, &t);   // get the tm structure representing local time
 		findTimeLeft(hour_limit, minute_limit, second_limit, now.tm_hour, now.tm_min, now.tm_sec, minute_left, second_left);
 
-		record->time.minute = minute_left;
-		record->time.second = second_left;
+		save[1].state->state_record.time.minuteplay = minute_left;
+		save[1].state->state_record.time.secondplay = second_left;
 
 		graphic->createTime(minute_left / 10, Time_array);
 		graphic->createTime(minute_left % 10, Time_array);
@@ -194,6 +213,20 @@ void createClock(int minute, int second, int _col, Board* board, Record* record)
 			for (int j = 0; j < 41; ++j)
 				Time_array[i][j] = 0;
 	}
+
+	int min = 0, sec = 0;
+
+	sec += second - save[1].state->state_record.time.secondplay;
+
+	if (sec < 0)
+	{
+		sec += 60;
+		--min;
+	}
+	min = minute - save[1].state->state_record.time.minuteplay;
+
+	save[1].state->state_record.time.secondplay = sec;
+	save[1].state->state_record.time.minuteplay = min;
 
 	if (minute_left == 0 && second_left == 0)
 		board->stop = 2;
@@ -215,7 +248,7 @@ void Game::startGame()
 		//Control::gotoXY(_x, _y);
 
 		thread clock;
-		clock = thread(createClock, minute, second, _col, board, record);
+		clock = thread(createClock, minute, second, _col, board, save);
 		clock.detach();
 
 		if (!isAvailableBlock(true, board)) {
@@ -270,8 +303,7 @@ void Game::startGame()
 				board->stop = 0;
 				saveGame();
 				saveData();
-				Menu::exitScreen();
-				return;
+				break;
 			}
 		}
 		if (isPause)
@@ -298,6 +330,7 @@ void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycurs
 {
 	Control::clearConsole();
 	Control::playSound(GAMESTART_SOUND);
+
 	bool isPause = false;
 	while (isPlaying) {
 		if (isPause == true)
@@ -331,8 +364,10 @@ void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycurs
 		else
 		{
 			printInterfaceForLoad(pokemon, status);
+
 			_x = board->getXAt(0, 0);
 			_y = board->getYAt(0, 0);
+			board->selectedBlock(_x, _y, GREEN);
 
 			int r = 0, c = 0, lock = 0;
 
@@ -368,31 +403,41 @@ void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycurs
 
 				lockBlock();
 			}
+			else
+			{
+				r = 0;
+				c = 0;
+			}
 
-
-			for (int i = c; i < board->getCAt(xcursor, ycursor); ++i)
+			for (int i = c; i < ycursor; ++i)
 			{
 				moveRight();
 				Sleep(350);
 			}
 
-			for (int i = c; i > board->getCAt(xcursor, ycursor); --i)
+			for (int i = c; i > ycursor; --i)
 			{
 				moveLeft();
 				Sleep(350);
 			}
 
-			for (int i = r; i < board->getRAt(xcursor, ycursor); ++i)
+			for (int i = r; i < xcursor; ++i)
 			{
 				moveDown();
 				Sleep(350);
 			}
 
-			for (int i = r; i > board->getRAt(xcursor, ycursor); --i)
+			for (int i = r; i > xcursor; --i)
 			{
 				moveUp();
 				Sleep(350);
 			}
+
+			int tmpxcursor = board->getXAt(xcursor, ycursor);
+			int tmpycursor = board->getYAt(xcursor, ycursor);
+
+			xcursor = tmpxcursor;
+			ycursor = tmpycursor;
 
 
 			if (board->pBoard[board->getRAt(xcursor, ycursor)][board->getCAt(xcursor, ycursor)].getCheck() == 1)
@@ -403,7 +448,7 @@ void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycurs
 
 
 		thread clock;
-		clock = thread(createClock, minute, second, _col, board, record);
+		clock = thread(createClock, minute, second, _col, board, save);
 		clock.detach();
 
 		if (!isAvailableBlock(true, board)) {
@@ -458,8 +503,7 @@ void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycurs
 				board->stop = 0;
 				saveGame();
 				saveData();
-				Menu::exitScreen();
-				return;
+				break;
 			}
 		}
 		if (isPause)
@@ -497,58 +541,317 @@ void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycurs
 			second = second % 60;
 		}
 
-		startGame();
+		isPause = true;
 	}
 	saveData();
 }
 
 void Game::saveData() {
-	int min = 0, sec = 0;
+	char trash = NULL;
+	ofstream fOut("file\\leaderboard.bin", ios::binary | ios::app);
+	fOut.seekp(0, ios::end);
+	fOut.write(playerName, NAMESIZE);
+	fOut.write(mode, 15);
 
-	sec += second - record->time.second;
-	if (sec < 0)
-	{
-		sec += 60;
-		--min;
-	}
-	min = minute - record->time.minute;
+	for (int i = 0; i < 3; ++i)
+		fOut.write(&trash, 1);
 
-	ofstream fs("file\\leaderboard.txt", ios::app);
-	fs << endl << playerName << endl << mode << endl << score << endl;
-	fs << min << " " << sec << endl;
-	fs << record->date.dd << " " << record->date.mm << " " << record->date.yy;
-	fs.close();
+	fOut.write((char*)&score, 4);
+	fOut.write((char*)&save[1].state->state_record.time.minuteplay, 4);
+	fOut.write((char*)&save[1].state->state_record.time.secondplay, 4);
+	fOut.write((char*)&save[1].state->state_record.date.dd, 4);
+	fOut.write((char*)&save[1].state->state_record.date.mm, 4);
+	fOut.write((char*)&save[1].state->state_record.date.yy, 4);
+
+	fOut.close();
 }
 
+void Game::changeFile2(int direction, bool flag, int& current_file) //0: lên, 1: xuống, 2: trái, 3: phải 
+{
+	int leftFile = 26, topFile = 7, xDistance = 22, yDistance = 10;
+
+	if (((direction == 0) && (current_file == 0 || current_file == 1 || current_file == 2))
+		|| ((direction == 1) && (current_file == 3 || current_file == 4))
+		|| (direction == 2 && current_file == 0)
+		|| (direction == 3 && current_file == 4))
+	{
+		Control::playSound(ERROR_SOUND);
+		return;
+	}
+
+	Control::setConsoleColor(WHITE, GRAY);
+	if (current_file < 3)
+	{
+		Graphic::printFileBlock(leftFile + current_file * xDistance, topFile, 8, 4);
+		Control::gotoXY(leftFile + current_file * xDistance + 1, topFile + 6);
+		if (save[0].state[current_file].state_record.date.dd == 0)
+			cout << "  Empty";
+		else
+			cout << save[0].state[current_file].state_record.date.dd << "/" << save[0].state[current_file].state_record.date.mm
+			<< "/" << save[0].state[current_file].state_record.date.yy;
+	}
+	else
+	{
+		Graphic::printFileBlock(leftFile + (current_file - 2.5) * xDistance, topFile + yDistance, 8, 4);
+		Control::gotoXY(leftFile + (current_file - 2.5) * xDistance + 1, topFile + yDistance + 6);
+		if (save[0].state[current_file].state_record.date.dd == 0)
+			cout << "  Empty";
+		else
+			cout << save[0].state[current_file].state_record.date.dd << "/" << save[0].state[current_file].state_record.date.mm
+			<< "/" << save[0].state[current_file].state_record.date.yy;
+	}
+
+	if ((current_file == 0 || current_file == 1) && direction == 1)
+		current_file = 3;
+	else if (current_file == 2 && direction == 1)
+		current_file = 4;
+	else if (current_file == 3 && direction == 0)
+		current_file = 0;
+	else if (current_file == 4 && direction == 0)
+		current_file = 2;
+	else if (direction == 3)
+		++current_file;
+	else if (direction == 2)
+		--current_file;
+
+	if (flag)
+	{
+		Control::playSound(ENTER_SOUND);
+		Control::setConsoleColor(WHITE, GREEN);
+
+		if (current_file < 3)
+			Graphic::printFileBlock(leftFile + current_file * xDistance, topFile, 8, 4);
+		else
+			Graphic::printFileBlock(leftFile + (current_file - 2.5) * xDistance, topFile + yDistance, 8, 4);
+	}
+}
+
+void Game::chooseFile2(int& current_file)
+{
+	Control::clearConsole();
+	Control::setAndCenterWindow();
+
+	int loop = 1;
+
+
+	changeFile2(2, 0, current_file);
+	changeFile2(2, 0, current_file);
+	changeFile2(2, 0, current_file);
+	changeFile2(2, 0, current_file);
+	changeFile2(3, 0, current_file);
+	changeFile2(2, 1, current_file);
+
+	while (loop)
+	{
+		switch (Control::getConsoleInput())
+		{
+		case 2:
+			changeFile2(0, 1, current_file);
+			break;
+		case 3:
+			changeFile2(2, 1, current_file);
+			break;
+		case 4:
+			changeFile2(3, 1, current_file);
+			break;
+		case 5:
+			changeFile2(1, 1, current_file);
+			break;
+		case 6:
+			loop = 0;
+			break;
+		default:
+			Control::playSound(ERROR_SOUND);
+		}
+	}
+}
+
+void Game::readFileGame2(int& current_file)
+{
+	char fileName[64]{};
+	strcpy_s(fileName, "gamesave\\");
+	strcat_s(fileName, playerName);
+	strcat_s(fileName, ".bin");
+
+	ifstream load2;
+	load2.open(fileName, ios::binary);
+
+	load2.read(&save[0].mask, 1);
+
+	load2.read(save[0].name, NAMESIZE);
+	Menu::xorChararter(save[0].name, save[0].mask);
+
+
+	load2.read(save[0].password, PASSSIZE);
+	Menu::xorChararter(save[0].password, save[0].mask);
+
+
+
+	load2.seekg(3, ios::cur);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		load2.read((char*)&save[0].record[i].date.dd, 4);
+		load2.read((char*)&save[0].record[i].date.mm, 4);
+		load2.read((char*)&save[0].record[i].date.yy, 4);
+		load2.read((char*)&save[0].record[i].time.minuteplay, 4);
+		load2.read((char*)&save[0].record[i].time.secondplay, 4);
+		load2.read((char*)&save[0].record[i].points, 4);
+		load2.seekg(492, ios::cur);
+	}
+	for (int i = 0; i < 5; ++i)
+	{
+		load2.read((char*)&save[0].state[i].state_record.date.dd, 4);
+		load2.read((char*)&save[0].state[i].state_record.date.mm, 4);
+		load2.read((char*)&save[0].state[i].state_record.date.yy, 4);
+
+		load2.read((char*)&save[0].state[i].state_record.time.minuteplay, 4);
+		load2.read((char*)&save[0].state[i].state_record.time.secondplay, 4);
+
+		load2.read((char*)&save[0].state[i].state_record.points, 4);
+
+		load2.read(save[0].state[i].mode, MODESIZE);
+		Menu::xorChararter(save[0].state[i].mode, save[0].mask);
+		load2.seekg(1, ios::cur);
+
+		load2.read((char*)&save[0].state[i].p, 4);
+		load2.read((char*)&save[0].state[i].q, 4);
+		load2.read((char*)&save[0].state[i].p_, 4);
+		load2.read((char*)&save[0].state[i].q_, 4);
+
+
+		load2.read((char*)&save[0].state[i].board, BOARDSIZE);
+		Menu::xorChararter(save[0].state[i].board, save[0].mask);
+		load2.seekg(1, ios::cur);
+
+		load2.read((char*)save[0].state[i].status, 400);
+
+		load2.read((char*)&save[0].state[i].file_background, URLSIZE);
+		Menu::xorChararter(save[0].state[i].file_background, save[0].mask);
+		load2.seekg(36, ios::cur);
+	}
+	load2.close();
+
+
+	chooseFile2(current_file);
+}
 
 void Game::saveGame() {
 
 	int current_file = 4;
-	Menu::chooseFile(current_file);
+	int count = 0;
 
-	ofstream fs("save.txt", ios::ate);
+	readFileGame2(current_file);
 
-	fs << playerName << endl << password << endl << mode << endl << score << endl << endl;
-	fs << record->date.dd << " " << record->date.mm << " " << record->date.yy << endl;
-	fs << record->time.minute << " " << record->time.second << endl << endl;
-	fs << _x << " " << _y << endl << _row << " " << _col << endl << endl;
+	char fileName[64]{};
+	strcpy_s(fileName, "gamesave\\");
+	strcat_s(fileName, playerName);
+	strcat_s(fileName, ".bin");
 
-	for (int i = 0; i < _row; ++i)
+	save[1].state->state_record.points = score;
+
+	strcpy_s(save[1].state->mode, mode);
+
+	Record2 tmp = save[1].state->state_record;
+
+	for (int i = 0; i < 5; ++i)
 	{
-		for (int j = 0; j < _col; ++j)
-			fs << board->pBoard[i][j].getCharacter();
-		fs << endl;
+		if (save[0].record[i].points < tmp.points)
+
+			swap(save[0].record[i], tmp);
 	}
 
-	fs << endl;
 
 	for (int i = 0; i < _row; ++i)
-	{
 		for (int j = 0; j < _col; ++j)
-			fs << board->pBoard[i][j].getCheck() << " ";
-		fs << endl;
+		{
+			save[1].state->board[count] = board->pBoard[i][j].getCharacter();
+			save[1].state->status[count] = board->pBoard[i][j].getCheck();
+			++count;
+		}
+
+
+	if (strcmp(mode, "EASY") == 0)
+		strcpy_s(save[1].state->file_background, "background\\easy.txt");
+	else if (strcmp(mode, "MEDIUM") == 0)
+		strcpy_s(save[1].state->file_background, "background\\medium.txt");
+	else
+		strcpy_s(save[1].state->file_background, "background\\custom.txt");
+
+	save[1].state->p = _row;
+	save[1].state->q = _col;
+	save[1].state->p_ = board->getRAt(_x, _y);
+	save[1].state->q_ = board->getCAt(_x, _y);
+
+	swap(save[0].state[current_file].mode, save[1].state->mode);
+	swap(save[0].state[current_file].board, save[1].state->board);
+	swap(save[0].state[current_file].status, save[1].state->status);
+	swap(save[0].state[current_file].file_background, save[1].state->file_background);
+	swap(save[0].state[current_file].p, save[1].state->p);
+	swap(save[0].state[current_file].q, save[1].state->q);
+	swap(save[0].state[current_file].p_, save[1].state->p_);
+	swap(save[0].state[current_file].q_, save[1].state->q_);
+	swap(save[0].state[current_file].state_record, save[1].state->state_record);
+
+	Menu::xorChararter(save[0].name, save[0].mask);
+	Menu::xorChararter(save[0].password, save[0].mask);
+	for (int i = 0; i < 5; ++i)
+	{
+		Menu::xorChararter(save[0].state[i].mode, save[0].mask);
+		Menu::xorChararter(save[0].state[i].board, save[0].mask);
+		Menu::xorChararter(save[0].state[i].file_background, save[0].mask);
 	}
 
+	char trash = NULL;
+	ofstream fs(fileName, ios::binary);
+
+	fs.write(&save[0].mask, 1);
+	fs.write(save[0].name, NAMESIZE);
+	fs.write(save[0].password, PASSSIZE);
+
+	for (int i = 0; i < 3; ++i)
+		fs.write(&trash, 1);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		fs.write((char*)&save[0].record[i].date.dd, 4);
+		fs.write((char*)&save[0].record[i].date.mm, 4);
+		fs.write((char*)&save[0].record[i].date.yy, 4);
+		fs.write((char*)&save[0].record[i].time.minuteplay, 4);
+		fs.write((char*)&save[0].record[i].time.secondplay, 4);
+		fs.write((char*)&save[0].record[i].points, 4);
+
+		for (int j = 0; j < 492; ++j)
+			fs.write(&trash, 1);
+	}
+
+	for (int i = 0; i < 5; ++i)
+	{
+		fs.write((char*)&save[0].state[i].state_record.date.dd, 4);
+		fs.write((char*)&save[0].state[i].state_record.date.mm, 4);
+		fs.write((char*)&save[0].state[i].state_record.date.yy, 4);
+
+		fs.write((char*)&save[0].state[i].state_record.time.minuteplay, 4);
+		fs.write((char*)&save[0].state[i].state_record.time.secondplay, 4);
+
+		fs.write((char*)&save[0].state[i].state_record.points, 4);
+
+		fs.write(save[0].state[i].mode, MODESIZE);
+		fs.write(&trash, 1);
+
+		fs.write((char*)&save[0].state[i].p, 4);
+		fs.write((char*)&save[0].state[i].q, 4);
+		fs.write((char*)&save[0].state[i].p_, 4);
+		fs.write((char*)&save[0].state[i].q_, 4);
+
+		fs.write((char*)&save[0].state[i].board, BOARDSIZE);
+		fs.write(&trash, 1);
+		fs.write((char*)save[0].state[i].status, 400);
+		fs.write((char*)&save[0].state[i].file_background, URLSIZE);
+
+		for (int j = 0; j < 36; ++j)
+			fs.write(&trash, 1);
+	}
 	fs.close();
 }
 

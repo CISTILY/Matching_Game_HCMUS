@@ -12,28 +12,53 @@
 #define _EASY 4
 #define _MEDIUM 6
 
+#define PADDING 500
 #define NAMESIZE 50
 #define PASSSIZE 50
+#define MODESIZE 15
+#define BOARDSIZE 999
+#define URLSIZE 100
 
 using namespace std;
 
-struct Player {
-	char playerName[NAMESIZE];
+struct Time
+{
+	int minuteplay;
+	int secondplay;
+};
+
+struct Date {
+	int dd, mm, yy;
+};
+
+struct Record {
+	Date date;
+	Time time;
+	int points;
+};
+
+struct State {
+	Record state_record;
+	char mode[MODESIZE];
+	int p, q;
+	int p_, q_;
+	char board[BOARDSIZE];
+	int status[100];
+	char file_background[URLSIZE];
+};
+
+struct savefile {
+	char mask;
+	char name[NAMESIZE];
 	char password[PASSSIZE];
-	char mode[15];
-	int score;
-	int day, month, year;
-	int minuteplay, secondplay;
-	int xcursor, ycursor;
-	int rowplay, colplay;
-	char** pokemon;
-	int** status;
+	Record record[5];
+	State state[5];
 };
 
 
 struct Menu
 {
-	static Player account;
+	static savefile account;
 	static bool exitGame;										// Event thoát game
 	static int current_option;									// Lựa chọn hiện tại
 	const static string options[12];							// Tên các lựa chọn
@@ -52,16 +77,17 @@ struct Menu
 	static void playCustom();									// Chế độ custom
 	static void changeFile(int, bool, int&);					// Thay đổi file game
 	static void chooseFile(int&);								// Chọn file
-	static void readFileGame();									// Đọc file save
+	static void xorChararter(char[], char);						// XOR các kí tự
+	static void readFileGame(int&);									// Đọc file save
 	static void loadGame();										// Chơi file đã lưu
 	static void printLogo();									// In ra logo
 	static void printOptionsBoard();							// In ra các bảng lựa chọn
 	//static void printAnimation();								// In hiệu ứng mở đầu
 	static void changeOption(bool, bool);						// Thay đổi lựa chọn
 	static void chooseMode(bool, bool, int);					// Thay đổi chế độ
-	static void readFileAccounts(ifstream&, char[][50]);		// Đọc file accounts
+	static void readFileAccounts(ifstream&, char[][50], char[][50]);		// Đọc file accounts
 	static void enterAccount();									// Nhập tài khoản, mật khẩu
-	static bool rightAccount(char[][50]);						// Kiểm tra đúng tài khoản
+	static bool rightAccount(char[][50], char[][50]);						// Kiểm tra đúng tài khoản
 	static bool appropriateAccount(char[][50]);					// Kiểm tra đã tồn tại tài khoản
 	static void printMode();
 };
