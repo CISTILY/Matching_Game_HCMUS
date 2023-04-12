@@ -369,23 +369,6 @@ void Board::buildBoardDataForLoad(char** pokemon) {
 void Board::selectedBlock(int x, int y, int color) {
 	Control::setConsoleColor(WHITE, color);
 	Graphic::printFrame(x, y);
-
-	/*if (getCheck(x, y) != DEL) {
-		Control::gotoXY(x, y);
-		putchar(getCharacter(x, y));
-		Control::gotoXY(x, y);
-	}*/
-
-
-	//if (getCheck(x, y) == DEL) {
-	//	for (int i = y - 1; i <= y + 1; i++) {
-	//		for (int j = x - 3; j <= x + 3; j++) {
-	//			Control::gotoXY(j, i);
-	//			//putchar(32);
-	//			putchar(background[i - top][j - left]);
-	//		}
-	//	}
-	//}
 }
 
 void Board::unselectedBlock(int x, int y) {
@@ -399,26 +382,7 @@ void Board::unselectedBlock(int x, int y) {
 	Graphic::backUpperRight(x, y, getCheckUpperRight(x, y), background);
 	Graphic::backBottomLeft(x, y, getCheckBottomLeft(x, y), background);
 	Graphic::backBottomRight(x, y, getCheckBottomRight(x, y), background);
-
-	/*Graphic::backFrame(x, y);*/
 	Control::setConsoleColor(WHITE, BLACK);
-
-	/*if (getCheck(x, y) != DEL) {
-		Control::gotoXY(x, y);
-		putchar(getCharacter(x, y));
-		Control::gotoXY(x, y);
-	}*/
-
-
-	//if (getCheck(x, y) == DEL) {
-	//	for (int i = y - 1; i <= y + 1; i++) {
-	//		for (int j = x - 3; j <= x + 3; j++) {
-	//			Control::gotoXY(j, i);
-	//			//putchar(32);
-	//			putchar(background[i - top][j - left]);
-	//		}
-	//	}
-	//}
 }
 
 void Board::lockBlock(int x, int y)

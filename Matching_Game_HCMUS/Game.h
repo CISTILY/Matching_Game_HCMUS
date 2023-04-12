@@ -58,7 +58,7 @@ struct Game {
 
 	vector<pair<int, int>> _lockedBlockPair; //First: row - Second: column
 
-	bool checkMatchedPokemons(pair<int, int>, pair<int, int>, Board*);
+	bool checkMatchedCharacters(pair<int, int>, pair<int, int>, Board*);
 	int checkIMatching(pair<int, int>, pair<int, int>, bool, Board*);
 	bool checkLMatching(pair<int, int>, pair<int, int>, bool, Board*);
 	bool checkZMatching(pair<int, int>, pair<int, int>, bool, Board*);

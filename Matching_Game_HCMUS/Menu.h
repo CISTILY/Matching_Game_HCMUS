@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "Control.h"
-#include "Game.h"
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <random>
 #include <fstream>
+#include "Control.h"
+#include "Game.h"
 #include <windows.h>
 #include <iomanip>
 

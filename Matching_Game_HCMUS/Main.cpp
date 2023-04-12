@@ -5,4 +5,5 @@ int main()
 {
     Control::setUpConsole();
     Menu::mainScreen();
+    return 0;
 }

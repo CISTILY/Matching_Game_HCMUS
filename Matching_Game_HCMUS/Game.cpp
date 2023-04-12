@@ -776,7 +776,7 @@ void Game::lockBlock()
 	}
 }
 
-bool Game::checkMatchedPokemons(pair<int, int> firstBlock, pair<int, int> secondBlock, Board* board)
+bool Game::checkMatchedCharacters(pair<int, int> firstBlock, pair<int, int> secondBlock, Board* board)
 {
 	return (board->getCharacter(firstBlock.first, firstBlock.second) == board->getCharacter(secondBlock.first, secondBlock.second));
 }
@@ -803,7 +803,7 @@ int Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 			return 2;
 		}
 
-		if (checkMatchedPokemons(firstBlock, secondBlock, board)) {
+		if (checkMatchedCharacters(firstBlock, secondBlock, board)) {
 			if (isChecking == false) {
 				board->drawLineI(firstBlock, secondBlock);
 				Sleep(200);
@@ -829,7 +829,7 @@ int Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 			return 2;
 		}
 
-		if (checkMatchedPokemons(firstBlock, secondBlock, board)) {
+		if (checkMatchedCharacters(firstBlock, secondBlock, board)) {
 			if (isChecking == false) {
 				board->drawLineI(firstBlock, secondBlock);
 				Sleep(200);
@@ -1105,7 +1105,7 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 }
 bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, bool isChecking, Board* board)
 {
-	if (!checkMatchedPokemons(firstBlock, secondBlock, board)) {
+	if (!checkMatchedCharacters(firstBlock, secondBlock, board)) {
 		if (isChecking == false) {
 			Control::playSound(WRONG_SOUND);
 			Control::setConsoleColor(WHITE, BLUE);
