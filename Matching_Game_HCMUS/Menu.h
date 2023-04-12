@@ -58,7 +58,7 @@ struct savefile {
 
 struct Menu
 {
-	static savefile account;
+	static savefile account;												// Account của người chơi
 	static bool exitGame;													// Event thoát game
 	static int current_option;												// Lựa chọn hiện tại
 	const static string options[12];										// Tên các lựa chọn

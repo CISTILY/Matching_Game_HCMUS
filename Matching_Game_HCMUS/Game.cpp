@@ -235,7 +235,7 @@ void createClock(int minute, int second, int _col, Board* board, savefile2* save
 void Game::startGame()
 {
 	Control::clearConsole();
-	PlaySound(TEXT("GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(TEXT("Sound effects\\GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (isPlaying) {
 		_remainBlocks = _row * _col;
 		score = 0;
@@ -310,7 +310,7 @@ void Game::startGame()
 			continue;
 
 		if (board->stop == 2) {
-			PlaySound(TEXT("Wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
+			PlaySound(TEXT("Sound effects\\Wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
 			Control::setConsoleColor(WHITE, RED);
 			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 13, 19);
 			cout << "Game Announcement";
@@ -329,7 +329,7 @@ void Game::startGame()
 void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycursor)
 {
 	Control::clearConsole();
-	PlaySound(TEXT("GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(TEXT("Sound effects\\GameStart.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 	bool isPause = false;
 	while (isPlaying) {
@@ -468,7 +468,7 @@ void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycurs
 			switch (Control::getConsoleInput())
 			{
 			case 0:
-				PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
+				PlaySound(TEXT("Sound effects\\Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 				break;
 			case 1:
 				saveData();
@@ -510,7 +510,7 @@ void Game::startGameForLoad(char** pokemon, int** status, int xcursor, int ycurs
 			continue;
 
 		if (board->stop == 2) {
-			PlaySound(TEXT("Wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
+			PlaySound(TEXT("Sound effects\\Wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
 			Control::setConsoleColor(WHITE, RED);
 			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 13, 19);
 			cout << "Game Announcement";
@@ -575,7 +575,7 @@ void Game::changeFile2(int direction, bool flag, int& current_file) //0: lên, 1
 		|| (direction == 2 && current_file == 0)
 		|| (direction == 3 && current_file == 4))
 	{
-		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		return;
 	}
 
@@ -616,7 +616,7 @@ void Game::changeFile2(int direction, bool flag, int& current_file) //0: lên, 1
 
 	if (flag)
 	{
-		PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		Control::setConsoleColor(WHITE, GREEN);
 
 		if (current_file < 3)
@@ -661,7 +661,7 @@ void Game::chooseFile2(int& current_file)
 			loop = 0;
 			break;
 		default:
-			PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
+			PlaySound(TEXT("Sound effects\\Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		}
 	}
 }
@@ -860,7 +860,7 @@ void Game::moveRight()
 	if (_x < board->getXAt(board->getSizeRow() - 1, board->getSizeCol() - 1))
 	{
 		
-		PlaySound(TEXT("Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		if (board->getCheck(_x, _y) != LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -876,14 +876,14 @@ void Game::moveRight()
 		}
 	}
 	else
-		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
 void Game::moveLeft()
 {
 	if (_x > board->getXAt(0, 0))
 	{
-		PlaySound(TEXT("Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		if (board->getCheck(_x, _y) != LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -899,14 +899,14 @@ void Game::moveLeft()
 		}
 	}
 	else
-		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
 void Game::moveDown()
 {
 	if (_y < board->getYAt(board->getSizeRow() - 1, board->getSizeCol() - 1))
 	{
-		PlaySound(TEXT("Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		if (board->getCheck(_x, _y) != LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -922,14 +922,14 @@ void Game::moveDown()
 		}
 	}
 	else
-		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
 void Game::moveUp()
 {
 	if (_y > board->getYAt(0, 0))
 	{
-		PlaySound(TEXT("Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		if (board->getCheck(_x, _y) != LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -945,7 +945,7 @@ void Game::moveUp()
 		}
 	}
 	else
-		PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
 void Game::printInterface()
@@ -1066,7 +1066,7 @@ char Game::getCharacter(int x, int y)
 
 void Game::lockBlock()
 {
-	PlaySound(TEXT("Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(TEXT("Sound effects\\Enter.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	if (board->getCheck(_x, _y) == LOCK || board->getCheck(_x, _y) == DEL) {
 		return;
 	}
@@ -1411,7 +1411,7 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 {
 	if (!checkMatchedCharacters(firstBlock, secondBlock, board)) {
 		if (isChecking == false) {
-			PlaySound(TEXT("Wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
+			PlaySound(TEXT("Sound effects\\Wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
 			Control::setConsoleColor(WHITE, BLUE);
 			Control::gotoXY(_col * 8 + LEFT + DISTANCE + 16, 17);
 			cout << "Not Matched";
@@ -1508,7 +1508,7 @@ void Game::deleteBlock() {
 	_lockedBlock = 0;
 	bool isChecking = false;
 	if (!checkMatching(_lockedBlockPair[0], _lockedBlockPair[1], isChecking, board)) {
-		PlaySound(TEXT("Wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 		for (auto block : _lockedBlockPair)
 			board->unselectedBlock(block.first, block.second);
@@ -1517,7 +1517,7 @@ void Game::deleteBlock() {
 		return;
 	}
 
-	PlaySound(TEXT("GetPoint.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(TEXT("Sound effects\\GetPoint.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 	for (auto block : _lockedBlockPair)
 		board->deleteBlock(block.first, block.second);
@@ -1539,7 +1539,7 @@ void Game::deleteBlock() {
 		cout << "CONGRATULATIONS!";
 		Control::gotoXY(_col * 8 + LEFT + DISTANCE + 14, 22);
 		cout << "Your score: " << score;
-		PlaySound(TEXT("Win.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		PlaySound(TEXT("Sound effects\\Win.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		board->unselectedBlock(_x, _y);
 		Sleep(5000);
 		return;
@@ -1614,7 +1614,7 @@ void Game::askContinue()
 		int i = 0;
 		while (i < 2)
 		{
-			PlaySound(TEXT("Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
+			PlaySound(TEXT("Sound effects\\Move.wav"), NULL, SND_FILENAME | SND_ASYNC);
 			Control::setConsoleColor(BRIGHT_WHITE, color[i]);
 			Control::gotoXY(left[choice * 3], top);        putchar(word[i * 2]);
 			Control::gotoXY(left[choice * 3 + 1], top);    cout << str[choice];
@@ -1638,7 +1638,7 @@ void Game::askContinue()
 			return;
 		}
 		else
-			PlaySound(TEXT("Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
+			PlaySound(TEXT("Sound effects\\Error.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	}
 }
 
@@ -1648,7 +1648,7 @@ void Game::moveSuggestion() {
 	int sizeCol = board->getSizeCol();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
-	PlaySound(TEXT("MoveSuggestion.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(TEXT("Sound effects\\MoveSuggestion.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	for (int i = 0; i < sizeRow; i++) {
 		for (int j = 0; j < sizeCol; j++) {
 			firstBlock.first = board->getXAt(i, j);
